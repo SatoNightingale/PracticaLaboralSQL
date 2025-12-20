@@ -1,19 +1,16 @@
 package com.satoshihans.practicalaboralsql.models;
 
 public class LineaDeServicios {
-    private String id, idServicio;
-    private float importe;
+    private String idFactura, idServicio;
 
     /**
-     * Contructor de Linea de Servicios
-     * @param id
+     * Contructor de Linea de Servicio
+     * @param idFactura
      * @param idServicio
-     * @param importe
      */
-    public LineaDeServicios(String id, String idServicio, float importe){
-        this.id = id;
+    public LineaDeServicios(String idFactura, String idServicio){
+        this.idFactura = idFactura;
         this.idServicio = idServicio;
-        this.importe = importe;
     }
 
     /**
@@ -22,19 +19,13 @@ public class LineaDeServicios {
     public void setIdServicio(String idServicio) {
         this.idServicio = idServicio;
     }
-    public void setId(String id) {
-        this.id = id;
-    }
-    public void setImporte(float importe) {
-        this.importe = importe;
+    public void setId(String idFactura) {
+        this.idFactura = idFactura;
     }
     public String getId() {
-        return id;
+        return idFactura;
     }
     public String getIdServicio() {
         return idServicio;
-    }
-    public float getImporte() {
-        return importe;
     }
 }
