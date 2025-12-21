@@ -1,7 +1,7 @@
-package com.satoshihans.practicalaboralsql.models;
+package com.satoshihans.practicalaboralsql.models.dto;
 
 
-public class Factura {
+public class FacturaDTO {
     private String id, idCliente;
     
     /**
@@ -9,7 +9,7 @@ public class Factura {
      * @param id
      * @param idCliente
      */
-    public Factura(String id, String idCliente){
+    public FacturaDTO(String id, String idCliente){
         this.id = id;
         this.idCliente = idCliente;
     }
@@ -28,5 +28,13 @@ public class Factura {
     }
     public String getIdCliente() {
         return idCliente;
+    }
+
+    @Override
+    public String toString(){
+        return "Factura: {" +
+                    "id: " +id+
+                    "id de Cliente: " +idCliente+
+                    "}";
     }
 }

@@ -1,7 +1,10 @@
-package com.satoshihans.practicalaboralsql.models;
+package com.satoshihans.practicalaboralsql.models.entity;
+
+
+
 
 public class Cliente {
-    private String idCliente, nombre, direccion, gmal;
+    private String idCliente, nombre, direccion, gmail;
     private int telefono;
 
     /**
@@ -12,11 +15,11 @@ public class Cliente {
      * @param gmal
      * @param telefono
      */
-    public Cliente(String idCliente, String nombre, String direccion, String gmal, int telefono){
+    public Cliente(String idCliente, String nombre, String direccion, String gmail, int telefono){
         this.nombre = nombre;
         this.idCliente = idCliente;
         this.direccion = direccion;
-        this.gmal = gmal;
+        this.gmail = gmail;
         this.telefono = telefono;
     }
 
@@ -32,8 +35,8 @@ public class Cliente {
     public void setIdCliente(String idCliente) {
         this.idCliente = idCliente;
     }
-    public void setGmal(String gmal) {
-        this.gmal = gmal;
+    public void setGmail(String gmail) {
+        this.gmail = gmail;
     }
     public void setTelefono(int telefono) {
         this.telefono = telefono;
@@ -47,8 +50,8 @@ public class Cliente {
     public String getIdCliente() {
         return idCliente;
     }
-    public String getGmal() {
-        return gmal;
+    public String getGmail() {
+        return gmail;
     }
     public int getTelefono() {
         return telefono;

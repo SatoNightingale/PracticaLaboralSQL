@@ -1,4 +1,4 @@
-package com.satoshihans.practicalaboralsql.models;
+package com.satoshihans.practicalaboralsql.models.entity;
 
 public class Municipio {
     private String idP, id, nombre;
