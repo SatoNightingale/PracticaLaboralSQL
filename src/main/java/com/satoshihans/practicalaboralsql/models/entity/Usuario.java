@@ -1,26 +1,27 @@
 package com.satoshihans.practicalaboralsql.models.entity;
 
+import jakarta.persistence.GeneratedValue;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Usuario")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class Usuario {
-    private String nombre, cod, gmail;
 
-    /**
-     * Contructor de Usuario
-     * @param nombreU
-     * @param cod
-     */
-    public Usuario(String nombre, String cod, String gmail){
-        this.nombre = nombre;
-        this.cod = cod;
-        this.gmail = gmail;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "nombre")
+    private String nombre;
 
-    /**
-     * Getes y Setes
-     */
-    public void setNombreU(String nombre){this.nombre = nombre;}
-    public void setCod(String cod){this.cod = cod;}
-    public void setGmail(String gmail){this.gmail = gmail;}
-    public String getNombreU(){return nombre;}
-    public String getCod(){return cod;}
-    public String getGmail(){return gmail;}
+    @Column(name = "cod")
+    private String cod;
+
+    @Column(name = "gmail")
+    private String gmail;
 }

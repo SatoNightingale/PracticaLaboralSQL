@@ -1,23 +1,24 @@
 package com.satoshihans.practicalaboralsql.models.entity;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "Provincia")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class Provincia {
-    private String id, nombre;
 
-    /**
-     * Contructor de Provincia
-     * @param id
-     * @param nombre
-     */
-    public Provincia(String id, String nombre){
-        this.id = id;
-        this.nombre = nombre;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private String id;
 
-    /**
-     * Gets y Sets
-     */
-    public void setNombre(String nombre){this.nombre = nombre;}
-    public void setId(String id){this.id = id;}
-    public String getNombre(){return nombre;}
-    public String getId(){return id;}
+    @Column(name = "nombre")
+    private String nombre;
+    
 }

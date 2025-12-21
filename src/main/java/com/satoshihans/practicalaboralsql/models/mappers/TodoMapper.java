@@ -28,13 +28,13 @@ public class TodoMapper {
      */
     public static FacturaDTO toDtoFacturaDTO(Factura factura){return new FacturaDTO(factura.getId(), factura.getIdCliente());}
     public static ClienteDTO toDtoClienteDTO(Cliente cliente){return new ClienteDTO(cliente.getIdCliente(), cliente.getNombre(), cliente.getDireccion(), cliente.getGmail(), cliente.getTelefono());}
-    public static LineaDeServiciosDTO toDtoLineaDeServiciosDTO(LineaDeServicios lineaDeServicios){return new LineaDeServiciosDTO(lineaDeServicios.getId(), lineaDeServicios.getIdServicio());}
+    public static LineaDeServiciosDTO toDtoLineaDeServiciosDTO(LineaDeServicios lineaDeServicios){return new LineaDeServiciosDTO(lineaDeServicios.getIdFactura(), lineaDeServicios.getIdServicio());}
     public static ServiciosDTO toDtoServiciosDTO(Servicios servicios){return new ServiciosDTO(servicios.getIdServicio(),  servicios.getNombre(), servicios.getDescripcion());}
     public static EspecialistaDTO toDtEspecialistaDTO(Especialista especialista){return new EspecialistaDTO(especialista.getNombre(), especialista.getIdDepartamento(), especialista.getEspecialidad());}
     public static MunicipioDTO toDtoMunicipioDTO(Municipio municipio){return new MunicipioDTO(municipio.getIdP(), municipio.getId(), municipio.getNombre());}
     public static ProvinciaDTO toDtoProvinciaDTO(Provincia provincia){return new ProvinciaDTO(provincia.getId(), provincia.getNombre());}
     public static Trabaja_enDTO toDtoTabaja_enDTO(Trabaja_en trabaja_en){return new Trabaja_enDTO(trabaja_en.getIdEspecialista(), trabaja_en.getIdServicio(), trabaja_en.getImporte());}
-    public static UsuarioDTO toDtoUsuarioDTO(Usuario usuario){return new UsuarioDTO(usuario.getNombreU(), usuario.getCod(), usuario.getGmail());}
+    public static UsuarioDTO toDtoUsuarioDTO(Usuario usuario){return new UsuarioDTO(usuario.getNombre(), usuario.getCod(), usuario.getGmail());}
     public static EmpleadosDTO toDtoEmpleadosDTO(Empleados empleados){return new EmpleadosDTO(empleados.getNombre(), empleados.getApellido(), empleados.getDireccion(), empleados.getPuesto(), empleados.getEdad(), empleados.getTelefono(), empleados.getId());}
 
     /**

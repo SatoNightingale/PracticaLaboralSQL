@@ -1,39 +1,26 @@
 package com.satoshihans.practicalaboralsql.models.entity;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "Servicios")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class Servicios {
-    private String idServicio, nombre, descripcion;
 
-    /**
-     * Contructor de Servicio
-     * @param idServicio
-     * @param nombre
-     * @param descripcion
-     */
-    public Servicios(String idServicio, String nombre, String descripcion){
-        this.idServicio = idServicio;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idServicio")
+    private String idServicio;
 
-    /**
-     * Gets y Sets
-     */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    public void setIdServicio(String idServicio) {
-        this.idServicio = idServicio;
-    }
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-    public String getNombre() {
-        return nombre;
-    }
-    public String getIdServicio() {
-        return idServicio;
-    }
-    public String getDescripcion() {
-        return descripcion;
-    }
+    @Column(name = "nombre")
+    private String nombre;
+
+    @Column(name = "descripcion")
+    private String descripcion;
 }
