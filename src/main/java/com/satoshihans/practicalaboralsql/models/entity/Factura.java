@@ -12,11 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class Factura {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String id;
+    private Long id;
 
-    @Column(name = "idCliente")
-    private String idCliente;
+    @OneToOne
+    @JoinColumn(name = "idCliente", referencedColumnName = "id")
+    private Cliente cliente;
 }

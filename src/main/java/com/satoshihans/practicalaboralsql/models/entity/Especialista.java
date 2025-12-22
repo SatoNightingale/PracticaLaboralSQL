@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Especialistas")
+@Table(name = "Especialista")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,11 +15,15 @@ public class Especialista {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
     @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "idDepartamento")
-    private String idDepartamento;
+    @OneToOne
+    @JoinColumn(name = "idDepartamento", referencedColumnName = "id")
+    private Departamento departamento;
 
     @Column(name = "especialidad")
     private String especialidad;

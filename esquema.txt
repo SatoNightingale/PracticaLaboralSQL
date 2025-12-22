@@ -1,0 +1,6 @@
+Factura(idFactura, idCliente)
+LineaDeServicios(idServicio, idFactura, importe)
+Cliente(idCliente, nombre, direccion, email, telefono)
+Especialista(idEspecialista, nombre, idDepartamento)
+Departamento(idDepartamento, nombre, direccion)
+trabajaEn(idEspecialista, idServicio)

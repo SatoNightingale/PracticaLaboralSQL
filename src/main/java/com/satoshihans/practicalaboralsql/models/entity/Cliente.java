@@ -17,8 +17,8 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idCliente")
-    private String idCliente;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "nombre")
     private String nombre;
@@ -30,6 +30,6 @@ public class Cliente {
     private String gmail;
 
     @Column(name = "telefono")
-    private int telefono;
+    private String telefono;
 
 }

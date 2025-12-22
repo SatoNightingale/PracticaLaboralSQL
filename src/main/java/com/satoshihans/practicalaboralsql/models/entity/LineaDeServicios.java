@@ -15,9 +15,13 @@ public class LineaDeServicios {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idFactura")
-    private String idFactura;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "idServicio")
-    private String idServicio;
+    @ManyToOne
+    @JoinColumn(name = "idFactura", referencedColumnName = "id")
+    private Factura factura;
+
+    @Column(name = "importe")
+    private float importe;
 }
