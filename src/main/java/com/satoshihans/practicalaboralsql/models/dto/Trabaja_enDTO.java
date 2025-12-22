@@ -1,35 +1,39 @@
 package com.satoshihans.practicalaboralsql.models.dto;
 
+import com.satoshihans.practicalaboralsql.models.entity.Especialista;
+import com.satoshihans.practicalaboralsql.models.entity.LineaDeServicios;
+
 public class Trabaja_enDTO {
-    private String idEspecialista, idServicio;
+    private LineaDeServicios lineaDeServicios;
+    private Especialista especialista;
     private Float importe;
 
     /**
      * Constructor de Trabaja_en 
-     * @param idEspecialista
-     * @param idServicio
+     * @param especialista
+     * @param lineaDeServicios
      * @param importe
      */
-    public Trabaja_enDTO(String idEspecialista, String idServicio, Float importe){
-        this.idEspecialista = idEspecialista;
-        this.idServicio = idServicio;
+    public Trabaja_enDTO(Especialista especialista, LineaDeServicios lineaDeServicios, Float importe){
+        this.especialista = especialista;
+        this.lineaDeServicios = lineaDeServicios;
         this.importe = importe;
     }
 
     /**
      * Gets y Sets 
      */
-    public String getIdEspecialista() {
-        return idEspecialista;
+    public LineaDeServicios getLineaDeServicios() {
+        return lineaDeServicios;
     }
-    public void setIdEspecialista(String idEspecialista) {
-        this.idEspecialista = idEspecialista;
+    public void setLineaDeServicios(LineaDeServicios lineaDeServicios) {
+        this.lineaDeServicios = lineaDeServicios;
     }
-    public String getIdServicio() {
-        return idServicio;
+    public Especialista getEspecialista() {
+        return especialista;
     }
-    public void setIdServicio(String idServicio) {
-        this.idServicio = idServicio;
+    public void setEspecialista(Especialista especialista) {
+        this.especialista = especialista;
     }
     public Float getImporte() {
         return importe;
@@ -41,9 +45,10 @@ public class Trabaja_enDTO {
     @Override
     public String toString(){
         return "Traba en: {" +
-                    "id de Servicio: " +idServicio+
-                    "id de Especialista: " +idEspecialista+
+                    "id de Servicio: " +lineaDeServicios.getId()+
+                    "id de Especialista: " +especialista.getId()+
                     "importe: " +importe+
                     "}";
     }
+
 }

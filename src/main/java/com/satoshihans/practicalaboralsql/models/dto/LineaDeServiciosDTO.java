@@ -1,40 +1,59 @@
 package com.satoshihans.practicalaboralsql.models.dto;
 
+import com.satoshihans.practicalaboralsql.models.entity.Factura;
+
 public class LineaDeServiciosDTO {
-    private String idFactura, idServicio;
+    private Long id;
+    private Float importe;
+    private Factura factura;
 
     /**
      * Contructor de Linea de Servicio
-     * @param idFactura
-     * @param idServicio
+     * @param factura
+     * @param id
+     * @param importe
      */
-    public LineaDeServiciosDTO(String idFactura, String idServicio){
-        this.idFactura = idFactura;
-        this.idServicio = idServicio;
+    public LineaDeServiciosDTO(Factura factura, Long id, Float importe){
+        this.factura = factura;
+        this.id = id;
+        this.importe = importe;
     }
 
     /**
      * Gets y Sets
      */
-    public void setIdServicio(String idServicio) {
-        this.idServicio = idServicio;
+    public Long getId() {
+        return id;
     }
-    public void setId(String idFactura) {
-        this.idFactura = idFactura;
+
+    public void setId(Long id) {
+        this.id = id;
     }
-    public String getId() {
-        return idFactura;
+
+    public Float getImporte() {
+        return importe;
     }
-    public String getIdServicio() {
-        return idServicio;
+
+    public void setImporte(Float importe) {
+        this.importe = importe;
+    }
+
+    public Factura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
     }
 
     @Override
     public String toString(){
         return "Linea de Servicio: {" +
-                    "id de Factura: " +idFactura +
-                    "id de Servicio: " + idServicio+
+                    "id de Factura: " +factura.getId() +
+                    "id de Servicio: " + id+
+                    "importe: " +importe +
                     "}";
                     
     }
+
 }

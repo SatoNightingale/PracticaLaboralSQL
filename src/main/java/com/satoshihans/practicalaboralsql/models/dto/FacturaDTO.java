@@ -1,40 +1,42 @@
 package com.satoshihans.practicalaboralsql.models.dto;
 
+import com.satoshihans.practicalaboralsql.models.entity.Cliente;
 
 public class FacturaDTO {
-    private String id, idCliente;
+    private Long id; 
+    private Cliente cliente;
     
     /**
      * Constructor de Factura
      * @param id
-     * @param idCliente
+     * @param cliente
      */
-    public FacturaDTO(String id, String idCliente){
+    public FacturaDTO(Long id, Cliente cliente){
         this.id = id;
-        this.idCliente = idCliente;
+        this.cliente = cliente;
     }
 
     /**
      * Gets y Sets
      */
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    public void setIdCliente(String idCliente) {
-        this.idCliente = idCliente;
+    public void setIdCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
-    public String getId() {
+    public Long getId() {
         return id;
     }
-    public String getIdCliente() {
-        return idCliente;
+    public Cliente getIdCliente() {
+        return cliente;
     }
 
     @Override
     public String toString(){
         return "Factura: {" +
                     "id: " +id+
-                    "id de Cliente: " +idCliente+
+                    "id de Cliente: " +cliente.getId()+
                     "}";
     }
 }

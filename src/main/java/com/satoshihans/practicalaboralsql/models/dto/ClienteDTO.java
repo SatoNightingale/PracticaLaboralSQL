@@ -1,8 +1,8 @@
 package com.satoshihans.practicalaboralsql.models.dto;
 
 public class ClienteDTO {
-    private String idCliente, nombre, direccion, gmail;
-    private int telefono;
+    private String telefono, nombre, direccion, gmail, id;
+    
 
     /**
      * Contructor de Cliente
@@ -12,9 +12,9 @@ public class ClienteDTO {
      * @param gmal
      * @param telefono
      */
-    public ClienteDTO(String idCliente, String nombre, String direccion, String gmail, int telefono){
+    public ClienteDTO(String telefono, String nombre, String direccion, String gmail, String id){
         this.nombre = nombre;
-        this.idCliente = idCliente;
+        this.id = id;
         this.direccion = direccion;
         this.gmail = gmail;
         this.telefono = telefono;
@@ -29,13 +29,13 @@ public class ClienteDTO {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-    public void setIdCliente(String idCliente) {
-        this.idCliente = idCliente;
+    public void setId(String id) {
+        this.id = id;
     }
     public void setGmail(String gmail) {
         this.gmail = gmail;
     }
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
     public String getNombre() {
@@ -44,13 +44,13 @@ public class ClienteDTO {
     public String getDireccion() {
         return direccion;
     }
-    public String getIdCliente() {
-        return idCliente;
+    public String getId() {
+        return id;
     }
     public String getGmail() {
         return gmail;
     }
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
@@ -62,7 +62,7 @@ public class ClienteDTO {
                     "gmail: " + gmail +
                     "direccion: " + direccion +
                     "telefono: " + telefono +
-                    "id de Cliendte: " + idCliente +
+                    "id de Cliendte: " + id +
                     "}"; 
     }
 }

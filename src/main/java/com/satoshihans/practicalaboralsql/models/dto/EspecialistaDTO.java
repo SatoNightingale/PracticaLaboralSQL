@@ -1,18 +1,24 @@
 package com.satoshihans.practicalaboralsql.models.dto;
 
+import com.satoshihans.practicalaboralsql.models.entity.Departamento;
+
 public class EspecialistaDTO {
-    private String nombre, idDepartamento, especialidad;
+    private String nombre, especialidad;
+    private Long id;
+    private Departamento departamento;
 
     /**
      * Contructor de Especialista
      * @param nombre
-     * @param idDepartamento
+     * @param departamento
      * @param especialidad
+     * @param id
      */
-    public EspecialistaDTO(String nombre, String idDepartamento, String especialidad){
+    public EspecialistaDTO(String nombre, Departamento departamento, String especialidad, Long id){
         this.nombre = nombre;
-        this.idDepartamento = idDepartamento;
+        this.departamento = departamento;
         this.especialidad = especialidad;
+        this.id = id;
     }
 
     /**
@@ -24,11 +30,11 @@ public class EspecialistaDTO {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public String getIdDepartamento() {
-        return idDepartamento;
+    public Departamento getDepartamento() {
+        return departamento;
     }
-    public void setIdDepartamento(String idDepartamento) {
-        this.idDepartamento = idDepartamento;
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
     }
     public String getEspecialidad() {
         return especialidad;
@@ -36,13 +42,20 @@ public class EspecialistaDTO {
     public void setEspecialidad(String especialidad) {
         this.especialidad = especialidad;
     }
+    public Long getId(){
+        return id;
+    }
+    public void setId(Long id){
+        this.id = id;
+    }
 
     @Override
     public String toString(){
         return "Especialista: {"+
                     "nombre: " +nombre+
-                    "id de Departamento: " +idDepartamento+
                     "especialidad: " +especialidad+
+                    "id: " +id+
+                    "id de Departamento: " +departamento.getId()+
                     "}";
     }
 }
