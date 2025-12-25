@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package interfaz;
+package com.satoshihans.practicalaboralsql.interfaz;
 
 /**
  *
  * @author yakil
  */
-public class EspecialistaInterfaz extends javax.swing.JFrame {
+public class DepartamentoInterfaz extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJFrame
      */
-    public EspecialistaInterfaz() {
+    public DepartamentoInterfaz() {
         initComponents();
     }
 
@@ -30,8 +30,8 @@ public class EspecialistaInterfaz extends javax.swing.JFrame {
         seccion = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         importarVersat = new javax.swing.JButton();
-        buscarEspecialista = new javax.swing.JButton();
-        newEspecialista = new javax.swing.JButton();
+        buscarDepartamento = new javax.swing.JButton();
+        newDepartamento = new javax.swing.JButton();
         exportarReporte = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         atras = new javax.swing.JButton();
@@ -52,12 +52,12 @@ public class EspecialistaInterfaz extends javax.swing.JFrame {
 
         importarVersat.setText("Inportar Versat");
 
-        buscarEspecialista.setText("Buscar Especialista");
+        buscarDepartamento.setText("Buscar Departamento");
 
-        newEspecialista.setText("Nuevo Especialista");
-        newEspecialista.addActionListener(new java.awt.event.ActionListener() {
+        newDepartamento.setText("Nuevo Departamento");
+        newDepartamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newEspecialistaActionPerformed(evt);
+                newDepartamentoActionPerformed(evt);
             }
         });
 
@@ -71,11 +71,11 @@ public class EspecialistaInterfaz extends javax.swing.JFrame {
                 .addGap(80, 80, 80)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(exportarReporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(newEspecialista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                    .addComponent(newDepartamento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addComponent(importarVersat, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(90, 90, 90)
-                .addComponent(buscarEspecialista)
+                .addGap(65, 65, 65)
+                .addComponent(buscarDepartamento)
                 .addGap(80, 80, 80))
         );
         jPanel2Layout.setVerticalGroup(
@@ -84,15 +84,15 @@ public class EspecialistaInterfaz extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(importarVersat, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buscarEspecialista, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(newEspecialista, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buscarDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(newDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
                 .addComponent(exportarReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
-        jLabel1.setText("ʕ·͡ᴥ·ʔ Especialistas");
+        jLabel1.setText("ʕ·͡ᴥ·ʔDepartamento");
 
         atras.setText("Atras");
         atras.setPreferredSize(new java.awt.Dimension(115, 27));
@@ -153,12 +153,12 @@ public class EspecialistaInterfaz extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_atrasActionPerformed
 
-    private void newEspecialistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEspecialistaActionPerformed
+    private void newDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newDepartamentoActionPerformed
         // TODO add your handling code here:
-        NuevoEspecialistaInterfaz nei = new NuevoEspecialistaInterfaz();
-        nei.setVisible(true);
+        NuevoDepartamentoInterfaz di = new NuevoDepartamentoInterfaz();
+        di.setVisible(true);
         this.setVisible(false);
-    }//GEN-LAST:event_newEspecialistaActionPerformed
+    }//GEN-LAST:event_newDepartamentoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -177,14 +177,18 @@ public class EspecialistaInterfaz extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EspecialistaInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DepartamentoInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EspecialistaInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DepartamentoInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EspecialistaInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DepartamentoInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EspecialistaInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DepartamentoInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -193,20 +197,20 @@ public class EspecialistaInterfaz extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EspecialistaInterfaz().setVisible(true);
+                new DepartamentoInterfaz().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton atras;
-    private javax.swing.JButton buscarEspecialista;
+    private javax.swing.JButton buscarDepartamento;
     private javax.swing.JButton exportarReporte;
     private javax.swing.JButton importarVersat;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JButton newEspecialista;
+    private javax.swing.JButton newDepartamento;
     private javax.swing.JButton seccion;
     // End of variables declaration//GEN-END:variables
 }

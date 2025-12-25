@@ -1,7 +1,8 @@
 package com.satoshihans.practicalaboralsql.models.dto;
 
 public class ClienteDTO {
-    private String telefono, nombre, direccion, gmail, id;
+    private Long id;
+    private String telefono, nombre, direccion, gmail;
     
 
     /**
@@ -12,7 +13,7 @@ public class ClienteDTO {
      * @param gmal
      * @param telefono
      */
-    public ClienteDTO(String telefono, String nombre, String direccion, String gmail, String id){
+    public ClienteDTO(String telefono, String nombre, String direccion, String gmail, Long id){
         this.nombre = nombre;
         this.id = id;
         this.direccion = direccion;
@@ -29,7 +30,7 @@ public class ClienteDTO {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public void setGmail(String gmail) {
@@ -44,7 +45,7 @@ public class ClienteDTO {
     public String getDireccion() {
         return direccion;
     }
-    public String getId() {
+    public Long getId() {
         return id;
     }
     public String getGmail() {

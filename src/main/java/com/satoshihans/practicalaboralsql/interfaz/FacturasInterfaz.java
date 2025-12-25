@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package interfaz;
+package com.satoshihans.practicalaboralsql.interfaz;
 
 /**
  *
  * @author yakil
  */
-public class DepartamentoInterfaz extends javax.swing.JFrame {
+public class FacturasInterfaz extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJFrame
      */
-    public DepartamentoInterfaz() {
+    public FacturasInterfaz() {
         initComponents();
     }
 
@@ -30,9 +30,9 @@ public class DepartamentoInterfaz extends javax.swing.JFrame {
         seccion = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         importarVersat = new javax.swing.JButton();
-        buscarDepartamento = new javax.swing.JButton();
-        newDepartamento = new javax.swing.JButton();
-        exportarReporte = new javax.swing.JButton();
+        buscarFactura = new javax.swing.JButton();
+        newFactura = new javax.swing.JButton();
+        esportarReporte = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         atras = new javax.swing.JButton();
 
@@ -52,30 +52,30 @@ public class DepartamentoInterfaz extends javax.swing.JFrame {
 
         importarVersat.setText("Inportar Versat");
 
-        buscarDepartamento.setText("Buscar Departamento");
+        buscarFactura.setText("Buscar Factura");
 
-        newDepartamento.setText("Nuevo Departamento");
-        newDepartamento.addActionListener(new java.awt.event.ActionListener() {
+        newFactura.setText("Nueva Factura");
+        newFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newDepartamentoActionPerformed(evt);
+                newFacturaActionPerformed(evt);
             }
         });
 
-        exportarReporte.setText("Exportar Reporte");
+        esportarReporte.setText("Exportar Reporte");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(exportarReporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(newDepartamento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                .addGap(79, 79, 79)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(esportarReporte)
+                    .addComponent(newFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
                 .addComponent(importarVersat, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65)
-                .addComponent(buscarDepartamento)
+                .addGap(90, 90, 90)
+                .addComponent(buscarFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(80, 80, 80))
         );
         jPanel2Layout.setVerticalGroup(
@@ -84,15 +84,15 @@ public class DepartamentoInterfaz extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(importarVersat, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buscarDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(newDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50)
-                .addComponent(exportarReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                    .addComponent(buscarFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(newFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addComponent(esportarReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
-        jLabel1.setText("ʕ·͡ᴥ·ʔDepartamento");
+        jLabel1.setText("ʕ·͡ᴥ·ʔ Facturas");
 
         atras.setText("Atras");
         atras.setPreferredSize(new java.awt.Dimension(115, 27));
@@ -108,7 +108,7 @@ public class DepartamentoInterfaz extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(atras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -153,12 +153,12 @@ public class DepartamentoInterfaz extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_atrasActionPerformed
 
-    private void newDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newDepartamentoActionPerformed
+    private void newFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFacturaActionPerformed
         // TODO add your handling code here:
-        NuevoDepartamentoInterfaz di = new NuevoDepartamentoInterfaz();
-        di.setVisible(true);
+        NuevaFacturaInterfaz nfi = new NuevaFacturaInterfaz();
+        nfi.setVisible(true);
         this.setVisible(false);
-    }//GEN-LAST:event_newDepartamentoActionPerformed
+    }//GEN-LAST:event_newFacturaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -177,40 +177,34 @@ public class DepartamentoInterfaz extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DepartamentoInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturasInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DepartamentoInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturasInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DepartamentoInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturasInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DepartamentoInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturasInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DepartamentoInterfaz().setVisible(true);
+                new FacturasInterfaz().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton atras;
-    private javax.swing.JButton buscarDepartamento;
-    private javax.swing.JButton exportarReporte;
+    private javax.swing.JButton buscarFactura;
+    private javax.swing.JButton esportarReporte;
     private javax.swing.JButton importarVersat;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JButton newDepartamento;
+    private javax.swing.JButton newFactura;
     private javax.swing.JButton seccion;
     // End of variables declaration//GEN-END:variables
 }
