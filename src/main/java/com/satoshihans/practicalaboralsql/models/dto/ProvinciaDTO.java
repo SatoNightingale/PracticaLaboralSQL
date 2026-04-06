@@ -2,11 +2,10 @@ package com.satoshihans.practicalaboralsql.models.dto;
 
 import lombok.*;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class ClienteDTO {
+public class ProvinciaDTO {
     private Long id;
-    private String telefono, nombre, direccion, gmail;
-    private MunicipioDTO municipio;
+    private String nombre;
 }

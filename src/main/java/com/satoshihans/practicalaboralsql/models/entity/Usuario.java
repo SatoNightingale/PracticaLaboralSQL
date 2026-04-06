@@ -1,17 +1,19 @@
 package com.satoshihans.practicalaboralsql.models.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Data;
 
 @Entity
-@Table(name = "Especialista")
+@Table(name = "Usuario")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Especialista {
+
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +23,9 @@ public class Especialista {
     @Column(name = "nombre")
     private String nombre;
 
-    @ManyToOne
-    @JoinColumn(name = "idDepartamento", referencedColumnName = "id")
-    private Departamento departamento;
-
-    @Column(name = "especialidad")
-    private String especialidad;
+    @Column(name = "contrasena")
+    private String direccion;
+    
+    @Column(name = "gmail")
+    private String gmail;
 }

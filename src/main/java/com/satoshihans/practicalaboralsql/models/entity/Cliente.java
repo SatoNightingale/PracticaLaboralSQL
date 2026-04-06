@@ -2,17 +2,13 @@ package com.satoshihans.practicalaboralsql.models.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name = "Cliente")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-
 public class Cliente {
 
     @Id
@@ -25,6 +21,10 @@ public class Cliente {
 
     @Column(name = "direccion")
     private String direccion;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_municipio", referencedColumnName = "id")
+    private Municipio municipio;
     
     @Column(name = "gmail")
     private String gmail;

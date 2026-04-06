@@ -8,7 +8,6 @@ public class PracticalaboralsqlApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PracticalaboralsqlApplication.class, args);
-		System.out.println("Prueba");
 	}
 	
 }

@@ -12,10 +12,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class Trabaja_en {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
+    @ManyToOne
     @JoinColumn(name = "idEspecialista", referencedColumnName = "id")
     private Especialista especialista;
 
+    @ManyToOne
     @JoinColumn(name = "idServicio", referencedColumnName = "id")
     private LineaDeServicios idServicio;
 

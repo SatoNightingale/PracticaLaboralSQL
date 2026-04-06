@@ -23,5 +23,13 @@ public class LineaDeServicios {
     private Factura factura;
 
     @Column(name = "importe")
-    private float importe;
+    private double importe;
+
+    @ManyToOne
+    @JoinColumn(name = "idServicio", referencedColumnName = "id")
+    private Servicio servicio;
+
+    @ManyToOne
+    @JoinColumn(name = "idUsuario", referencedColumnName = "id")
+    private Usuario usuario;
 }

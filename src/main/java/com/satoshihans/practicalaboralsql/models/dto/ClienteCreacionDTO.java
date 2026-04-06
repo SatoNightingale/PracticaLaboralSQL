@@ -5,8 +5,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ClienteDTO {
-    private Long id;
+public class ClienteCreacionDTO {
     private String telefono, nombre, direccion, gmail;
     private MunicipioDTO municipio;
 }

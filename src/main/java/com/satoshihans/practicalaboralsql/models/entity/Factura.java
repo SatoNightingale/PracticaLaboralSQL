@@ -21,4 +21,10 @@ public class Factura {
     @OneToOne
     @JoinColumn(name = "idCliente", referencedColumnName = "id")
     private Cliente cliente;
+
+    @Column(name = "importe")
+    private Double importe;
+
+    @Column(name = "fecha")
+    private String fecha;
 }

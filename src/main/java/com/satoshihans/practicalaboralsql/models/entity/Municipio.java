@@ -1,17 +1,18 @@
 package com.satoshihans.practicalaboralsql.models.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Data;
 
 @Entity
-@Table(name = "Especialista")
+@Table(name = "Municipio")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Especialista {
+public class Municipio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +23,6 @@ public class Especialista {
     private String nombre;
 
     @ManyToOne
-    @JoinColumn(name = "idDepartamento", referencedColumnName = "id")
-    private Departamento departamento;
-
-    @Column(name = "especialidad")
-    private String especialidad;
+    @JoinColumn(name = "id_provincia", referencedColumnName = "id")
+    private Provincia provincia;
 }
