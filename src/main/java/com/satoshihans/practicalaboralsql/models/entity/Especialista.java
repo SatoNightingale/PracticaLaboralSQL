@@ -21,6 +21,7 @@ public class Especialista {
     @Column(name = "nombre")
     private String nombre;
 
+    // Cada especialista va en un solo departamento
     @ManyToOne
     @JoinColumn(name = "idDepartamento", referencedColumnName = "id")
     private Departamento departamento;

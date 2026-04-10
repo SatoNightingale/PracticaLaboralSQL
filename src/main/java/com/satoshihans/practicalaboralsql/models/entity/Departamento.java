@@ -27,5 +27,6 @@ public class Departamento {
     private String direccion;
 
     @OneToMany(mappedBy = "departamento")
+    // Cada departamento tiene varios especialistas
     private List<Especialista> especialistas;
 }

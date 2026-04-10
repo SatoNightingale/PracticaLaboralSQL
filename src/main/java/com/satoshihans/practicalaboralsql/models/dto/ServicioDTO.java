@@ -1,11 +1,21 @@
 package com.satoshihans.practicalaboralsql.models.dto;
 
+import com.satoshihans.practicalaboralsql.models.entity.Servicio;
+
 import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@Data
 public class ServicioDTO {
-    private @Getter @Setter Long id;
-    private @Getter @Setter String nombre, descripcion;
+    private Long id;
+    private String nombre, descripcion;
+
+    public static ServicioDTO fromEntity(Servicio entity){
+        return new ServicioDTO(
+            entity.getId(), 
+            entity.getNombre(), 
+            entity.getDescripcion()
+        );
+    }
 }

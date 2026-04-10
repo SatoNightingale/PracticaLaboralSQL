@@ -8,5 +8,5 @@ import lombok.*;
 public class ClienteDTO {
     private Long id;
     private String telefono, nombre, direccion, gmail;
-    private MunicipioDTO municipio;
+    private Long id_municipio;
 }

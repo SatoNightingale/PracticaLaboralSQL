@@ -24,7 +24,7 @@ public class Usuario {
     private String nombre;
 
     @Column(name = "contrasena")
-    private String direccion;
+    private String contrasena;
     
     @Column(name = "gmail")
     private String gmail;

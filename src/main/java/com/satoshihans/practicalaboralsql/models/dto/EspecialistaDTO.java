@@ -4,61 +4,18 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@Data
 public class EspecialistaDTO {
-    private @Getter @Setter Long id;
-    private @Getter @Setter String nombre, especialidad;
-    private @Getter @Setter DepartamentoDTO departamento;
+    private Long id;
+    private String nombre, especialidad;
+    private Long idDepartamento;
 
-    // /**
-    //  * Contructor de Especialista
-    //  * @param nombre
-    //  * @param departamento
-    //  * @param especialidad
-    //  * @param id
-    //  */
-    // public EspecialistaDTO(String nombre, Departamento departamento, String especialidad, Long id){
-    //     this.nombre = nombre;
-    //     this.departamento = departamento;
-    //     this.especialidad = especialidad;
-    //     this.id = id;
-    // }
-
-    // /**
-    //  * Gets y Sets
-    //  */
-    // public String getNombre() {
-    //     return nombre;
-    // }
-    // public void setNombre(String nombre) {
-    //     this.nombre = nombre;
-    // }
-    // public Departamento getDepartamento() {
-    //     return departamento;
-    // }
-    // public void setDepartamento(Departamento departamento) {
-    //     this.departamento = departamento;
-    // }
-    // public String getEspecialidad() {
-    //     return especialidad;
-    // }
-    // public void setEspecialidad(String especialidad) {
-    //     this.especialidad = especialidad;
-    // }
-    // public Long getId(){
-    //     return id;
-    // }
-    // public void setId(Long id){
-    //     this.id = id;
-    // }
-
-    // @Override
-    // public String toString(){
-    //     return "Especialista: {"+
-    //                 "nombre: " +nombre+
-    //                 "especialidad: " +especialidad+
-    //                 "id: " +id+
-    //                 "id de Departamento: " +departamento.getId()+
-    //                 "}";
+    // public static EspecialistaDTO fromEntity(Especialista entity){
+    //     return new EspecialistaDTO(
+    //         entity.getId(),
+    //         entity.getNombre(),
+    //         entity.getEspecialidad(),
+    //         entity.getDepartamento().getId()
+    //     );
     // }
 }

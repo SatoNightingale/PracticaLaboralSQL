@@ -1,9 +1,7 @@
 package com.satoshihans.practicalaboralsql.models.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "Trabaja_en")
@@ -12,19 +10,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class Trabaja_en {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
+    // Un especialista puede tener varios contratos
     @ManyToOne
     @JoinColumn(name = "idEspecialista", referencedColumnName = "id")
     private Especialista especialista;
 
+    // Una linea de servicios consta de varios contratos
     @ManyToOne
     @JoinColumn(name = "idServicio", referencedColumnName = "id")
-    private LineaDeServicios idServicio;
+    private LineaDeServicios lineaServicios;
 
+    // Cada especialista aporta a la linea de servicios su propio importe
     @Column(name = "importe")
     private Float importe;
 }

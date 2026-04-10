@@ -7,12 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.satoshihans.practicalaboralsql.dao.MunicipioRepository;
 import com.satoshihans.practicalaboralsql.models.dto.MunicipioCreacionDTO;
 import com.satoshihans.practicalaboralsql.models.dto.MunicipioDTO;
 import com.satoshihans.practicalaboralsql.models.entity.Municipio;
 import com.satoshihans.practicalaboralsql.models.entity.Provincia;
 import com.satoshihans.practicalaboralsql.models.mappers.AdvanceMapper;
+import com.satoshihans.practicalaboralsql.repositories.MunicipioRepository;
 
 @Service
 public class MunicipioService {
@@ -20,13 +20,16 @@ public class MunicipioService {
     @Autowired
     private MunicipioRepository municipioRepository;
 
+    // @Autowired
+    // private JpaRepository<Municipio, Long> repo;
+
     @Autowired
     private ProvinciaService provinciaService;
 
     @Autowired
     private AdvanceMapper mapper;
 
-    public Municipio add_municipio(MunicipioCreacionDTO dto) {
+    public MunicipioDTO add_municipio(MunicipioCreacionDTO dto) {
         Municipio nuevo = new Municipio();
         nuevo.setNombre(dto.getNombre());
         Provincia provincia = null;
@@ -34,14 +37,15 @@ public class MunicipioService {
         if(dto.getId_provincia() != null && provinciaService.existsById(dto.getId_provincia())){
             provincia = provinciaService.getById(dto.getId_provincia());
         } else if (dto.getNombre_provincia() != null){
-            provincia = provinciaService.add_provincia(dto.getNombre_provincia());
+            provinciaService.add_provincia(dto.getNombre_provincia());
+            provincia = provinciaService.getById(dto.getId_provincia());
         } else {
-            System.err.println("No existe la provincia con id " + dto.getId_provincia());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "No se encontro la provincia con id " + dto.getId_provincia());
         }
         nuevo.setProvincia(provincia);
         municipioRepository.save(nuevo);
-        return nuevo;
+        return mapper.toDTO(nuevo);
     }
 
     public List<MunicipioDTO> listar_municipios() {
@@ -51,7 +55,9 @@ public class MunicipioService {
 
     public Municipio getById(Long id){
         return municipioRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "No existe el municipio con id" + id
+            ));
     }
 
     public boolean existsById(Long id){

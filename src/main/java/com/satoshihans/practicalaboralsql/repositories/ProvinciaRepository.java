@@ -1,4 +1,4 @@
-package com.satoshihans.practicalaboralsql.dao;
+package com.satoshihans.practicalaboralsql.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

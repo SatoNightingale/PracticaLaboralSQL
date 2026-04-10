@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.satoshihans.practicalaboralsql.dao.ProvinciaRepository;
 import com.satoshihans.practicalaboralsql.models.dto.ProvinciaDTO;
 import com.satoshihans.practicalaboralsql.models.entity.Provincia;
 import com.satoshihans.practicalaboralsql.models.mappers.AdvanceMapper;
+import com.satoshihans.practicalaboralsql.repositories.ProvinciaRepository;
 
 @Service
 public class ProvinciaService {
@@ -22,11 +22,11 @@ public class ProvinciaService {
     @Autowired
     private AdvanceMapper mapper;
 
-    public Provincia add_provincia(@RequestBody String nombre) {
+    public ProvinciaDTO add_provincia(@RequestBody String nombre) {
         Provincia nuevo = new Provincia();
         nuevo.setNombre(nombre);
         provinciaRepository.save(nuevo);
-        return nuevo;
+        return mapper.toDTO(nuevo);
     }
 
     public List<ProvinciaDTO> listar_provincias() {
@@ -36,7 +36,10 @@ public class ProvinciaService {
 
     public Provincia getById(Long id){
         return provinciaRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            .orElseThrow(() -> 
+                new ResponseStatusException(HttpStatus.NOT_FOUND, 
+                "No existe la entidad con id " + id)
+        );
     }
 
     public boolean existsById(Long id){

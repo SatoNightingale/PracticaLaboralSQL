@@ -1,5 +1,8 @@
 package com.satoshihans.practicalaboralsql.models.entity;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,13 +21,17 @@ public class Factura {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne
+    @Column(name = "fecha")
+    private LocalDateTime fechaEmision;
+
+    @Column(name = "importe")
+    private Double importeTotal;
+
+    @ManyToOne
     @JoinColumn(name = "idCliente", referencedColumnName = "id")
     private Cliente cliente;
 
-    @Column(name = "importe")
-    private Double importe;
-
-    @Column(name = "fecha")
-    private String fecha;
+    @OneToMany
+    private List<LineaDeServicios> lineasDeServicio;
+    
 }

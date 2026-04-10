@@ -7,5 +7,5 @@ import lombok.*;
 @Data
 public class ClienteCreacionDTO {
     private String telefono, nombre, direccion, gmail;
-    private MunicipioDTO municipio;
+    private Long id_municipio;
 }

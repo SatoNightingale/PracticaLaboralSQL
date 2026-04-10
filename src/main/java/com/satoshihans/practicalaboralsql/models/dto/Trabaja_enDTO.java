@@ -5,7 +5,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 public class Trabaja_enDTO {
-    private LineaDeServiciosDTO lineaDeServicios;
     private EspecialistaDTO especialista;
+    // private LineaDeServiciosDTO lineaDeServicios;
     private Float importe;
 }

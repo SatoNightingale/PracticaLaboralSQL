@@ -12,12 +12,13 @@ public class TodoMapper {
      * Transforma las entidades en clases DTO
      */
     public static FacturaDTO toFacturaDTO(Factura factura){
-        return new FacturaDTO(
-            factura.getId(),
-            toClienteDTO(factura.getCliente()),
-            factura.getImporte(),
-            factura.getFecha()
-        );
+        return null;
+        // return new FacturaDTO(
+        //     factura.getId(),
+        //     factura.getFechaEmision(),
+        //     factura.getImporteTotal(),
+        //     factura.getCliente().getId()
+        // );
     }
 
     public static ClienteDTO toClienteDTO(Cliente cliente){
@@ -32,14 +33,14 @@ public class TodoMapper {
     }
 
     public static LineaDeServiciosDTO toLineaDeServiciosDTO(LineaDeServicios lineaDeServicios) {
-        return new LineaDeServiciosDTO(
-            lineaDeServicios.getId(),
-            lineaDeServicios.getImporte(),
-            toFacturaDTO(lineaDeServicios.getFactura()),
-            toServicioDTO(lineaDeServicios.getServicio()),
-            toUsuarioDTO(lineaDeServicios.getUsuario())
-        );
-    
+        return null;
+        // return new LineaDeServiciosDTO(
+        //     lineaDeServicios.getId(),
+        //     lineaDeServicios.getImporte(),
+        //     lineaDeServicios.getFactura().getId(),
+        //     lineaDeServicios.getServicio().getId(),
+        //     lineaDeServicios.getAdministrador().getId()
+        // );
     }
     
     public static EspecialistaDTO toEspecialistaDTO(Especialista especialista){
@@ -47,16 +48,17 @@ public class TodoMapper {
             especialista.getId(),
             especialista.getNombre(),
             especialista.getEspecialidad(),
-            toDepartamentoDTO(especialista.getDepartamento())
+            especialista.getDepartamento().getId()
         );
     }
 
     public static Trabaja_enDTO toTabaja_enDTO(Trabaja_en trabaja_en){
-        return new Trabaja_enDTO(
-            toLineaDeServiciosDTO(trabaja_en.getIdServicio()),
-            toEspecialistaDTO(trabaja_en.getEspecialista()),
-            trabaja_en.getImporte()
-        );
+        return null;
+        // return new Trabaja_enDTO(
+        //     toLineaDeServiciosDTO(trabaja_en.getIdServicio()),
+        //     toEspecialistaDTO(trabaja_en.getEspecialista()),
+        //     trabaja_en.getImporte()
+        // );
     }
 
     public static DepartamentoDTO toDepartamentoDTO(Departamento departamento){
@@ -69,8 +71,8 @@ public class TodoMapper {
 
     public static UsuarioDTO toUsuarioDTO(Usuario usuario){
         return new UsuarioDTO(
+            usuario.getId(),
             usuario.getNombre(),
-            usuario.getDireccion(),
             usuario.getGmail()
         );
     }
@@ -88,13 +90,13 @@ public class TodoMapper {
      * Transforma las clases DTO en entidades
      */
     public static Factura toEntityFactura(FacturaDTO dto){
-        return new Factura(
-            dto.getId(),
-            toEntityCliente(dto.getCliente()),
-            dto.getImporte(),
-            dto.getFecha()
-        );
-        // return new Factura(dto.getId(), dto.getIdCliente());
+        // return new Factura(
+        //     dto.getId(),
+        //     toEntityCliente(dto.getCliente()),
+        //     dto.getImporte(),
+        //     dto.getFecha()
+        // );
+        return null;
     }
 
     public static Cliente toEntityCliente(ClienteDTO dto){

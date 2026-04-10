@@ -3,10 +3,11 @@ package com.satoshihans.practicalaboralsql.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.satoshihans.practicalaboralsql.models.dto.*;
-import com.satoshihans.practicalaboralsql.models.entity.*;
 import com.satoshihans.practicalaboralsql.services.MunicipioService;
 import com.satoshihans.practicalaboralsql.services.ProvinciaService;
 
@@ -22,13 +23,17 @@ public class ControladorLocalidades {
 
 
     @PostMapping("/add_provincia")
-    public Provincia add_provincia(@RequestBody String nombre) {
-        return provinciaService.add_provincia(nombre);
+    public ResponseEntity<?> add_provincia(@RequestBody String nombre) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            provinciaService.add_provincia(nombre)
+        );
     }
 
     @PostMapping("/add_municipio")
-    public Municipio add_municipio(@RequestBody MunicipioCreacionDTO dto) {
-        return municipioService.add_municipio(dto);
+    public ResponseEntity<?> add_municipio(@RequestBody MunicipioCreacionDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            municipioService.add_municipio(dto)
+        );
     }
 
     @GetMapping("/provincias")
