@@ -9,7 +9,7 @@ Provincia(idProvincia, nombre)
 Usuario(idUsuario, nombre, contrasena, email)
 trabajaEn(idEspecialista, idLineaServicio, importe_asignado)
 consta_de(idLineaServicio, idServicio) # 'realiza' en la foto
-administra(idUSuario, idLineaServicio)
+administra(idUsuario, idLineaServicio)
 
 
 

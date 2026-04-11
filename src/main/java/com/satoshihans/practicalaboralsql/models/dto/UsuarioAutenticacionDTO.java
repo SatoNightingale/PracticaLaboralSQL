@@ -5,7 +5,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UsuarioDTO {
-    private Long id;
-    private String nombre, email;
+public class UsuarioAutenticacionDTO {
+    private String nombre, contrasena;
 }

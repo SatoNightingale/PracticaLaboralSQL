@@ -51,7 +51,7 @@ public class ClienteService {
     public Cliente getById(Long id){
         return clienteRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "No se ha encontrado la entidad con id" + id
+                "No se ha encontrado el cliente con id" + id
             ));
     }
 

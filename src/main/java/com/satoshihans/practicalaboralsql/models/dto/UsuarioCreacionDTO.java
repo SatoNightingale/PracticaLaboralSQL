@@ -6,5 +6,5 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 public class UsuarioCreacionDTO {
-    private String nombre, contrasena, gmail;
+    private String nombre, contrasena, email;
 }

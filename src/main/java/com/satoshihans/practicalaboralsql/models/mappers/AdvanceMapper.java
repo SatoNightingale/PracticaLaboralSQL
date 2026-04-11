@@ -54,9 +54,7 @@ public interface AdvanceMapper {
     public Servicio toEntity(ServicioDTO dto);
 
     /* Usuario */
-    public UsuarioDTO toDTO(Usuario entity);
-    @Mapping(target = "contrasena", ignore = true)
-    public Usuario toEntity(UsuarioDTO dto);
+    
 
     /* LineaDeServicios */
     @Mapping(target = "id_factura", source = "factura.id")

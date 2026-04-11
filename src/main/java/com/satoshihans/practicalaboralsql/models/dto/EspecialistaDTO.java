@@ -8,7 +8,7 @@ import lombok.*;
 public class EspecialistaDTO {
     private Long id;
     private String nombre, especialidad;
-    private Long idDepartamento;
+    private DepartamentoDTO departamento;
 
     // public static EspecialistaDTO fromEntity(Especialista entity){
     //     return new EspecialistaDTO(
