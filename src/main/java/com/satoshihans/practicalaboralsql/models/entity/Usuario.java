@@ -28,4 +28,6 @@ public class Usuario {
     
     @Column(name = "email")
     private String email;
+
+    private boolean autenticado;
 }

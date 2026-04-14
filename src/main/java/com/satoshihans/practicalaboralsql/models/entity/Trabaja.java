@@ -27,5 +27,5 @@ public class Trabaja {
 
     // Cada especialista aporta a la linea de servicios su propio importe
     @Column(name = "importe")
-    private Float importe;
+    private Double importe;
 }

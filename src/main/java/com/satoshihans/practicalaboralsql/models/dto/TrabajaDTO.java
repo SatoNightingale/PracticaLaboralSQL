@@ -6,5 +6,5 @@ import lombok.*;
 @AllArgsConstructor
 public class TrabajaDTO {
     private EspecialistaDTO especialista;
-    private Float importe;
+    private Double importe;
 }

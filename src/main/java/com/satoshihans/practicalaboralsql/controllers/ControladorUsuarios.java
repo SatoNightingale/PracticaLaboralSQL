@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.satoshihans.practicalaboralsql.models.dto.UsuarioAutenticacionDTO;
@@ -59,11 +60,17 @@ public class ControladorUsuarios {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/autenticar")
+    @PutMapping("/autenticar")
     public ResponseEntity<?> autenticarUsuario(@RequestBody UsuarioAutenticacionDTO dto) {
         return ResponseEntity.status(HttpStatus.OK).body(
             usuariosService.autenticar(dto)
         );
+    }
+
+    @PutMapping("/desautenticar")
+    public ResponseEntity<Void> autenticarUsuario(@RequestParam Long usuario_id) {
+        usuariosService.desautenticar(usuario_id);
+        return ResponseEntity.accepted().build();
     }
     
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.satoshihans.practicalaboralsql.models.dto.AdministraCreacionDTO;
+import com.satoshihans.practicalaboralsql.models.dto.AdministraCreacionDesdeLineaDeServiciosDTO;
 import com.satoshihans.practicalaboralsql.models.entity.Administra;
 import com.satoshihans.practicalaboralsql.models.entity.LineaDeServicios;
 import com.satoshihans.practicalaboralsql.models.mappers.ServicioMapper;
@@ -31,7 +32,7 @@ public class AdministraService {
     private ServicioMapper mapper;
 
 
-    public Administra add(AdministraCreacionDTO dto, LineaDeServicios lineaServicios){
+    public Administra add(AdministraCreacionDesdeLineaDeServiciosDTO dto, LineaDeServicios lineaServicios){
         Administra nuevo = mapper.toNewEntity(dto, lineaServicios, especialistaRepository, usuarioRepository);
         Administra guardado = administraRepository.save(nuevo);
         return guardado;

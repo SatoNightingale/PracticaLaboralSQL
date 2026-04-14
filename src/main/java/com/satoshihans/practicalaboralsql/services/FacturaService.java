@@ -7,10 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.satoshihans.practicalaboralsql.models.dto.FacturaCreacionDTO;
-import com.satoshihans.practicalaboralsql.models.dto.FacturaDTO;
+import com.satoshihans.practicalaboralsql.models.dto.*;
 import com.satoshihans.practicalaboralsql.models.entity.Factura;
+import com.satoshihans.practicalaboralsql.models.entity.LineaDeServicios;
 import com.satoshihans.practicalaboralsql.models.mappers.FacturaMapper;
+import com.satoshihans.practicalaboralsql.models.mappers.ServicioMapper;
 import com.satoshihans.practicalaboralsql.repositories.ClienteRepository;
 import com.satoshihans.practicalaboralsql.repositories.FacturaRepository;
 
@@ -22,17 +23,34 @@ public class FacturaService {
 
     @Autowired
     private ClienteRepository clienteRepo;
-    
+
+    @Autowired
+    private UsuarioService usuarioService;
+
     @Autowired
     private LineaDeServiciosService lineaDeServiciosService;
 
     @Autowired
     private FacturaMapper mapper;
 
+    @Autowired
+    private ServicioMapper servicioMapper;
+
     public FacturaDTO add(FacturaCreacionDTO dto) {
+        usuarioService.checkAutenticado(dto.getIdUsuarioAdmin());
         Factura nuevo = mapper.toNewEntity(dto, clienteRepo, lineaDeServiciosService);
         Factura guardado = facturaRepository.save(nuevo);
         return mapper.toDTO(guardado);
+    }
+
+    public LineaDeServiciosDTO add_LineaDeServicios(LineaDeServiciosCreacionDTO dto){
+        usuarioService.checkAutenticado(dto.getIdUsuarioAdmin());
+        Factura factura = facturaRepository.findById(dto.getIdFactura()).orElseThrow();
+        LineaDeServicios nuevo = lineaDeServiciosService.add(
+            mapper.toCreacionDTO(dto), factura, dto.getIdUsuarioAdmin());
+        factura.setImporteTotal(lineaDeServiciosService.getImporteTotalFactura(factura.getId()));
+        facturaRepository.save(factura);
+        return servicioMapper.toDTO(nuevo);
     }
 
     public List<FacturaDTO> listar() {

@@ -59,11 +59,35 @@ public class UsuarioService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    public Usuario getAutenticado(Long usuario_id){
+        checkAutenticado(usuario_id);
+        return usuarioRepository.findById(usuario_id).orElseThrow();
+    }
+
     public UsuarioDTO autenticar(UsuarioAutenticacionDTO dto){
         Usuario usuario = usuarioRepository.findByNombreAndContrasena(dto.getNombre(), dto.getContrasena()).orElseThrow(() ->
             new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales inválidas")
         );
         
+        if(usuario.isAutenticado()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario ya se encuentra autenticado");
+        }
+        usuario.setAutenticado(true);
+        usuarioRepository.save(usuario);
         return mapper.toDTO(usuario);
+    }
+
+    public void desautenticar(Long usuario_id){
+        Usuario usuario = usuarioRepository.findById(usuario_id).orElseThrow();
+        if(!usuario.isAutenticado()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario no está autenticado");
+        }
+        usuario.setAutenticado(false);
+        usuarioRepository.save(usuario);
+    }
+
+    public void checkAutenticado(Long usuario_id){
+        if(!usuarioRepository.existsByIdAndAutenticadoTrue(usuario_id))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario no está autenticado");
     }
 }

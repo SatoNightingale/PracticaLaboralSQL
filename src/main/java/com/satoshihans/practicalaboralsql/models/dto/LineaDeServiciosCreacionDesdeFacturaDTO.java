@@ -7,9 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class LineaDeServiciosCreacionDTO {
-    private Long idFactura;
-    private Long idUsuarioAdmin;
-    private Long idServicio;
+public class LineaDeServiciosCreacionDesdeFacturaDTO {
+    private Long id_servicio;
     private List<TrabajaCreacionDTO> contratos;
 }

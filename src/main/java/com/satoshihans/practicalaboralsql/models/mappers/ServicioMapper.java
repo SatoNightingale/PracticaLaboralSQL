@@ -3,11 +3,13 @@ package com.satoshihans.practicalaboralsql.models.mappers;
 import org.mapstruct.*;
 
 import com.satoshihans.practicalaboralsql.models.dto.AdministraCreacionDTO;
+import com.satoshihans.practicalaboralsql.models.dto.AdministraCreacionDesdeLineaDeServiciosDTO;
 import com.satoshihans.practicalaboralsql.models.dto.AdministraDTO;
 import com.satoshihans.practicalaboralsql.models.dto.LineaDeServiciosDTO;
 import com.satoshihans.practicalaboralsql.models.dto.ServicioDTO;
 import com.satoshihans.practicalaboralsql.models.dto.TrabajaCreacionDTO;
 import com.satoshihans.practicalaboralsql.models.dto.TrabajaDTO;
+import com.satoshihans.practicalaboralsql.models.dto.TrabajaModificacionDTO;
 import com.satoshihans.practicalaboralsql.models.entity.Administra;
 import com.satoshihans.practicalaboralsql.models.entity.LineaDeServicios;
 import com.satoshihans.practicalaboralsql.models.entity.Servicio;
@@ -27,48 +29,6 @@ public abstract class ServicioMapper {
     @Mapping(target = "id_factura", source = "factura.id")
     public abstract LineaDeServiciosDTO toDTO(LineaDeServicios entity);
 
-    // @Mapping(target = "id", ignore = true)
-    // @Mapping(target = "servicio", source = "id_servicio", qualifiedByName = "servicioFromId")
-    // public abstract LineaDeServicios toNewEntity(
-    //     LineaDeServiciosCreacionDTO dto,
-    //     @Context Factura factura,
-    //     @Context Long idUsuarioAdmin,
-    //     @Context ServicioRepository servicioRepository,
-    //     @Context TrabajaRepository trabajaRepository,
-    //     @Context AdministraRepository administraRepository
-    // );
-    // @AfterMapping
-    // protected void resolverDependencias(LineaDeServiciosCreacionDTO dto,
-    //     @MappingTarget LineaDeServicios entity,
-    //     @Context Factura factura,
-    //     @Context Long idUsuarioAdmin,
-    //     @Context ServicioRepository servicioRepository,
-    //     @Context TrabajaRepository trabajaRepository,
-    //     @Context AdministraRepository administraRepository
-    // ){
-    //     List<Trabaja> contratos = new ArrayList<>();
-    //     List<Administra> asignaciones = new ArrayList<>();
-    //     Double importe = 0.0;
-
-    //     for (TrabajaCreacionDTO trabajaDto : dto.getContratos()) {
-    //         importe += trabajaDto.getImporte();
-    //         contratos.add(trabajaRepository.add_nodto(trabajaDto, entity));
-    //         asignaciones.add(administraRepository.add(
-    //             new AdministraCreacionDTO(
-    //                 idUsuarioAdmin,
-    //                 trabajaDto.getId_especialista(),
-    //                 entity.getId(),
-    //                 LocalDateTime.now()
-    //             ), entity
-    //         ));
-    //     }
-        
-    //     entity.setFactura(factura);
-    //     entity.setImporte(importe);
-    //     entity.setContratados(contratos);
-    //     entity.setAsignaciones(asignaciones);
-    // }
-
     /* Trabaja */
 
     public abstract TrabajaDTO toDTO(Trabaja entity);
@@ -78,6 +38,14 @@ public abstract class ServicioMapper {
     @Mapping(target = "importe", source = "dto.importe")
     public abstract Trabaja toNewEntity(TrabajaCreacionDTO dto, LineaDeServicios lineaServicios,
         @Context EspecialistaRepository repo
+    );
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "especialista", source = "idEspecialista", qualifiedByName = "especialistaFromId")
+    @Mapping(target = "lineaServicios", source = "idLineaDeServicios", qualifiedByName = "lineaServiciosFromId")
+    public abstract Trabaja updateEntity(TrabajaModificacionDTO dto, @MappingTarget Trabaja entity,
+        @Context EspecialistaRepository especialistaRepo,
+        @Context LineaDeServiciosRepository lineaServiciosRepo
     );
 
     /* Administra */
@@ -99,7 +67,7 @@ public abstract class ServicioMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "asignado", source = "dto.idEspecialistaAsignado", qualifiedByName = "especialistaFromId")
     @Mapping(target = "usuario", source = "dto.idUsuario", qualifiedByName = "usuarioFromId")
-    public abstract Administra toNewEntity(AdministraCreacionDTO dto, LineaDeServicios lineaServicios,
+    public abstract Administra toNewEntity(AdministraCreacionDesdeLineaDeServiciosDTO dto, LineaDeServicios lineaServicios,
         @Context EspecialistaRepository especialistaRepo,
         @Context UsuarioRepository usuarioRepo
     );

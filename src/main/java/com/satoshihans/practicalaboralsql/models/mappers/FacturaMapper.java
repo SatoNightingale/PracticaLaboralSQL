@@ -9,9 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-import com.satoshihans.practicalaboralsql.models.dto.FacturaCreacionDTO;
-import com.satoshihans.practicalaboralsql.models.dto.FacturaDTO;
-import com.satoshihans.practicalaboralsql.models.dto.LineaDeServiciosCreacionDTO;
+import com.satoshihans.practicalaboralsql.models.dto.*;
 import com.satoshihans.practicalaboralsql.models.entity.Factura;
 import com.satoshihans.practicalaboralsql.models.entity.LineaDeServicios;
 import com.satoshihans.practicalaboralsql.repositories.ClienteRepository;
@@ -21,7 +19,6 @@ import com.satoshihans.practicalaboralsql.services.LineaDeServiciosService;
 public abstract class FacturaMapper {
 
     public abstract FacturaDTO toDTO(Factura entity);
-
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "cliente", source = "idCliente", qualifiedByName = "clienteFromId")
@@ -40,7 +37,7 @@ public abstract class FacturaMapper {
         List<LineaDeServicios> lineasdeServicio = new ArrayList<>();
         Double importe = 0.0;
 
-        for (LineaDeServiciosCreacionDTO lineaServiciosDTO : dto.getLineasDeServicios()) {
+        for (LineaDeServiciosCreacionDesdeFacturaDTO lineaServiciosDTO : dto.getLineasDeServicios()) {
             LineaDeServicios nuevaLineaServicios = lineaDeServiciosService.add(
                 lineaServiciosDTO, entity, dto.getIdUsuarioAdmin()
             );
@@ -51,4 +48,6 @@ public abstract class FacturaMapper {
         entity.setLineasDeServicio(lineasdeServicio);
         entity.setImporteTotal(importe);
     }
+
+    public abstract LineaDeServiciosCreacionDesdeFacturaDTO toCreacionDTO(LineaDeServiciosCreacionDTO dto);
 }

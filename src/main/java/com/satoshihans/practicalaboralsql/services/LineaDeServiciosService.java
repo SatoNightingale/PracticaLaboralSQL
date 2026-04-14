@@ -3,6 +3,7 @@ package com.satoshihans.practicalaboralsql.services;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.satoshihans.practicalaboralsql.models.dto.*;
 import com.satoshihans.practicalaboralsql.models.entity.*;
 import com.satoshihans.practicalaboralsql.models.mappers.ServicioMapper;
+import com.satoshihans.practicalaboralsql.repositories.EspecialistaRepository;
 import com.satoshihans.practicalaboralsql.repositories.LineaDeServiciosRepository;
 import com.satoshihans.practicalaboralsql.repositories.ServicioRepository;
 
@@ -31,10 +33,16 @@ public class LineaDeServiciosService {
     private AdministraService administraService;
     
     @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private EspecialistaRepository especialistaRepo;
+
+    @Autowired
     private ServicioMapper mapper;
 
 
-    public LineaDeServicios add(LineaDeServiciosCreacionDTO dto, Factura factura, Long idUsuarioAdmin) {
+    public LineaDeServicios add(LineaDeServiciosCreacionDesdeFacturaDTO dto, Factura factura, Long idUsuarioAdmin) {
         LineaDeServicios nuevo = new LineaDeServicios();
 
         Servicio servicio = servicioRepo.findById(dto.getId_servicio()).orElseThrow();
@@ -46,10 +54,9 @@ public class LineaDeServiciosService {
             importe += trabajaDto.getImporte();
             contratos.add(trabajaService.add_nodto(trabajaDto, nuevo));
             asignaciones.add(administraService.add(
-                new AdministraCreacionDTO(
+                new AdministraCreacionDesdeLineaDeServiciosDTO(
                     idUsuarioAdmin,
                     trabajaDto.getId_especialista(),
-                    null, // WARNING
                     LocalDateTime.now()
                 ), nuevo
             ));
@@ -63,6 +70,47 @@ public class LineaDeServiciosService {
 
         lineaDeServiciosRepository.save(nuevo);
         return nuevo;
+    }
+
+    public Double getImporteTotalFactura(Long id_factura){
+        return lineaDeServiciosRepository.sumImporteByFacturaId(id_factura);
+    }
+
+    public LineaDeServiciosDTO asignarEspecialistaImporte(EspecialistaAsignacionDTO dto){
+        Usuario administrador = usuarioService.getAutenticado(dto.getIdUsuarioAdmin());
+        usuarioService.checkAutenticado(administrador.getId());
+        LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
+            dto.getIdLineaServicio()).orElseThrow();
+        Especialista especialista = especialistaRepo.findById(dto.getIdEspecialista())
+            .orElseThrow();
+        Optional<Trabaja> contrato = trabajaService.getByEspecialistaAndLineaServicios(
+            dto.getIdEspecialista(), dto.getIdLineaServicio());
+        if(contrato.isPresent()){
+            trabajaService.update(new TrabajaModificacionDTO(
+                contrato.get().getId(),
+                especialista.getId(),
+                lineaDeServicios.getId(),
+                dto.getImporte()
+            ));
+        } else {
+            Trabaja nuevo_contrato = trabajaService.add_nodto(new TrabajaCreacionDTO(
+                dto.getIdEspecialista(),
+                dto.getImporte()
+            ), lineaDeServicios);
+            lineaDeServicios.getContratados().add(nuevo_contrato);
+        }
+        Administra nueva_asignacion = administraService.add(new AdministraCreacionDTO(
+            administrador.getId(),
+            especialista.getId(),
+            lineaDeServicios.getId(),
+            LocalDateTime.now()
+        ));
+        lineaDeServicios.getAsignaciones().add(nueva_asignacion);
+        lineaDeServiciosRepository.save(lineaDeServicios);
+        // Ahora hay que recalcular el importe de la factura
+        // Vendria bien usar lo que deepseek dijo de los eventos pa desacoplar
+        // No se puede tener un FacturaService en LineaDeServicioService y un LineaDeServicioService en FacturaService
+        return mapper.toDTO(lineaDeServicios);
     }
 
     public List<LineaDeServiciosDTO> listar() {
