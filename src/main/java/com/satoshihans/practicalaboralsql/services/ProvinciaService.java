@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.satoshihans.practicalaboralsql.models.dto.ProvinciaDTO;
 import com.satoshihans.practicalaboralsql.models.entity.Provincia;
-import com.satoshihans.practicalaboralsql.models.mappers.AdvanceMapper;
+import com.satoshihans.practicalaboralsql.models.mappers.LocalizacionMapper;
 import com.satoshihans.practicalaboralsql.repositories.ProvinciaRepository;
 
 @Service
@@ -20,7 +20,7 @@ public class ProvinciaService {
     private ProvinciaRepository provinciaRepository;
 
     @Autowired
-    private AdvanceMapper mapper;
+    private LocalizacionMapper mapper;
 
     public ProvinciaDTO add_provincia(@RequestBody String nombre) {
         Provincia nuevo = new Provincia();
@@ -38,7 +38,7 @@ public class ProvinciaService {
         return provinciaRepository.findById(id)
             .orElseThrow(() -> 
                 new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "No existe la entidad con id " + id)
+                "No existe la provincia con id " + id)
         );
     }
 

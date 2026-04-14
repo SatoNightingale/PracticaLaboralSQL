@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.satoshihans.practicalaboralsql.models.dto.DepartamentoCreacionDTO;
 import com.satoshihans.practicalaboralsql.models.dto.DepartamentoDTO;
 import com.satoshihans.practicalaboralsql.models.entity.Departamento;
-import com.satoshihans.practicalaboralsql.models.mappers.AdvanceMapper;
+import com.satoshihans.practicalaboralsql.models.mappers.EspecialistaMapper;
 import com.satoshihans.practicalaboralsql.repositories.DepartamentoRepository;
 
 @Service
@@ -20,7 +20,7 @@ public class DepartamentoService {
     private DepartamentoRepository departamentoRepository;
 
     @Autowired
-    private AdvanceMapper mapper;
+    private EspecialistaMapper mapper;
 
     public Departamento add_departamento(DepartamentoCreacionDTO dto) {
         Departamento nuevo = mapper.toNewEntity(dto);

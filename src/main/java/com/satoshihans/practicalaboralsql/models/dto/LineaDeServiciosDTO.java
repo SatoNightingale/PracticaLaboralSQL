@@ -12,17 +12,7 @@ import lombok.*;
 public class LineaDeServiciosDTO {
     private Long id;
     private Long id_factura;
-    private Long id_servicio;
-    private List<Trabaja_enDTO> contratados;
+    private ServicioDTO servicio;
+    private List<TrabajaDTO> contratados;
     private Double importe;
-    
-    // public static LineaDeServiciosDTO fromEntity(LineaDeServicios entity){
-    //     return new LineaDeServiciosDTO(
-    //         entity.getId(),
-    //         entity.getImporte(),
-    //         entity.getFactura().getId(),
-    //         entity.getServicio().getId(),
-    //         entity.getAdministrador().getId()
-    //     );
-    // }
 }

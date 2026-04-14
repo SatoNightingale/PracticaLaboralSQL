@@ -6,6 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 public class ClienteCreacionDTO {
-    private String telefono, nombre, direccion, gmail;
+    private String telefono, nombre, direccion, email;
     private Long id_municipio;
+    private MunicipioCreacionDTO municipio;
 }

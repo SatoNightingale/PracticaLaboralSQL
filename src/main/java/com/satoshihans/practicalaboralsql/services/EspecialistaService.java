@@ -71,7 +71,7 @@ public class EspecialistaService {
         return mapper.toDTO(especialista);
     }
 
-    private Especialista getById(Long id){
+    public Especialista getById(Long id){
         return especialistaRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "No se ha encontrado el especialista con id " + id

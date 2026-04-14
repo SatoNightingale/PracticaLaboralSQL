@@ -8,5 +8,5 @@ import lombok.*;
 public class MunicipioDTO {
     private Long id;
     private String nombre;
-    private Long id_provincia;
+    private ProvinciaDTO provincia;
 }

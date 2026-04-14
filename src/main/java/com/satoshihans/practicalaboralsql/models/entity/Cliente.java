@@ -26,8 +26,8 @@ public class Cliente {
     @JoinColumn(name = "id_municipio", referencedColumnName = "id")
     private Municipio municipio;
     
-    @Column(name = "gmail")
-    private String gmail;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "telefono")
     private String telefono;

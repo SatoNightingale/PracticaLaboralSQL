@@ -7,9 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.satoshihans.practicalaboralsql.models.dto.FacturaCreacionDTO;
 import com.satoshihans.practicalaboralsql.models.dto.FacturaDTO;
 import com.satoshihans.practicalaboralsql.models.entity.Factura;
-import com.satoshihans.practicalaboralsql.models.mappers.AdvanceMapper;
+import com.satoshihans.practicalaboralsql.models.mappers.FacturaMapper;
+import com.satoshihans.practicalaboralsql.repositories.ClienteRepository;
 import com.satoshihans.practicalaboralsql.repositories.FacturaRepository;
 
 @Service
@@ -19,25 +21,27 @@ public class FacturaService {
     private FacturaRepository facturaRepository;
 
     @Autowired
-    private ClienteService clienteService;
+    private ClienteRepository clienteRepo;
     
     @Autowired
-    private AdvanceMapper mapper;
+    private LineaDeServiciosService lineaDeServiciosService;
 
+    @Autowired
+    private FacturaMapper mapper;
 
-    public List<FacturaDTO> listar_facturas() {
+    public FacturaDTO add(FacturaCreacionDTO dto) {
+        Factura nuevo = mapper.toNewEntity(dto, clienteRepo, lineaDeServiciosService);
+        Factura guardado = facturaRepository.save(nuevo);
+        return mapper.toDTO(guardado);
+    }
+
+    public List<FacturaDTO> listar() {
         return facturaRepository.findAll().stream().map(
             (Factura f) -> mapper.toDTO(f)).toList();
     }
 
-    public FacturaDTO add_Factura(FacturaDTO dto) {
-        Factura nuevo = mapper.toEntity(dto, clienteService);
-        // Factura nuevo = new Factura();
-        // nuevo.setFecha(dto.getFecha());
-        // nuevo.setImporte(dto.getImporte());
-        // nuevo.setCliente(clienteService.getById(dto.getId_cliente()));
-        facturaRepository.save(nuevo);
-        return dto;
+    public FacturaDTO getAsDto(Long id){
+        return mapper.toDTO(getById(id));
     }
 
     public Factura getById(Long id){

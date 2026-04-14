@@ -10,8 +10,9 @@ import org.springframework.web.server.ResponseStatusException;
 import com.satoshihans.practicalaboralsql.models.dto.ClienteCreacionDTO;
 import com.satoshihans.practicalaboralsql.models.dto.ClienteDTO;
 import com.satoshihans.practicalaboralsql.models.entity.Cliente;
-import com.satoshihans.practicalaboralsql.models.mappers.AdvanceMapper;
+import com.satoshihans.practicalaboralsql.models.mappers.ClienteMapper;
 import com.satoshihans.practicalaboralsql.repositories.ClienteRepository;
+import com.satoshihans.practicalaboralsql.repositories.MunicipioRepository;
 
 @Service
 public class ClienteService {
@@ -20,32 +21,37 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private MunicipioService municipioService;
+    private MunicipioRepository municipioRepo;
     
     @Autowired
-    private AdvanceMapper mapper;
+    private ClienteMapper mapper;
 
 
-    public List<ClienteDTO> listar_clientes() {
+    public ClienteDTO add(ClienteCreacionDTO dto) {
+        Cliente nuevo = mapper.toNewEntity(dto, municipioRepo);
+        clienteRepository.save(nuevo);
+        return mapper.toDTO(nuevo);
+    }
+
+    public List<ClienteDTO> listar() {
         return clienteRepository.findAll().stream().map(
             (Cliente c) -> mapper.toDTO(c)).toList();
     }
 
-    public ClienteDTO add_cliente(ClienteCreacionDTO dto) {
-        Cliente nuevo = mapper.toNewEntity(dto, municipioService);
-        // Cliente nuevo = new Cliente();
-        // nuevo.setNombre(dto.getNombre());
-        // nuevo.setDireccion(dto.getDireccion());
-        // nuevo.setGmail(dto.getGmail());
-        // nuevo.setTelefono(dto.getTelefono());
-        // if(municipioService.existsById(dto.getId_municipio())){
-        //     Municipio municipio = municipioService.getById(dto.getId_municipio());
-        //     nuevo.setMunicipio(municipio);
-        // } else
-        //     throw new RuntimeException("No existe el municipio con id " + dto.getId_municipio());
+    public ClienteDTO getAsDto(Long id){
+        return mapper.toDTO(getById(id));
+    }
 
-        clienteRepository.save(nuevo);
-        return mapper.toDTO(nuevo);
+    public ClienteDTO update(Long id, ClienteDTO dto){
+        Cliente usuario = getById(id);
+        Cliente actualizado = mapper.updateEntity(dto, usuario);
+        Cliente guardado = clienteRepository.save(actualizado);
+        return mapper.toDTO(guardado);
+    }
+
+    public void delete(Long id){
+        getById(id); // si no da error aqui, pues...
+        clienteRepository.deleteById(id);
     }
 
     public Cliente getById(Long id){

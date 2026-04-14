@@ -8,6 +8,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import com.satoshihans.practicalaboralsql.models.dto.DepartamentoCreacionDTO;
+import com.satoshihans.practicalaboralsql.models.dto.DepartamentoDTO;
 import com.satoshihans.practicalaboralsql.models.dto.EspecialistaCreacionDTO;
 import com.satoshihans.practicalaboralsql.models.dto.EspecialistaDTO;
 import com.satoshihans.practicalaboralsql.models.dto.EspecialistaModificacionDTO;
@@ -15,11 +16,10 @@ import com.satoshihans.practicalaboralsql.models.entity.Departamento;
 import com.satoshihans.practicalaboralsql.models.entity.Especialista;
 import com.satoshihans.practicalaboralsql.services.DepartamentoService;
 
-@Mapper(componentModel = "spring", uses = {AdvanceMapper.class, RelationResolver.class},
+@Mapper(componentModel = "spring", uses = {RelationResolver.class},
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public abstract class EspecialistaMapper {
 
-    // @Mapping(target = "idDepartamento", source = "departamento.id")
     public abstract EspecialistaDTO toDTO(Especialista entity);
 
     @Mapping(target = "id", ignore = true)
@@ -39,4 +39,10 @@ public abstract class EspecialistaMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "departamento", ignore = true)
     public abstract Especialista updateEntity(EspecialistaModificacionDTO dto, @MappingTarget Especialista entity);
+
+    public abstract DepartamentoDTO toDTO(Departamento entity);
+
+    @Mapping(target = "especialistas", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    public abstract Departamento toNewEntity(DepartamentoCreacionDTO dto);
 }

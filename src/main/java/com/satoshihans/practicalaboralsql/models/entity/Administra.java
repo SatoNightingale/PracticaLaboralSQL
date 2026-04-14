@@ -18,14 +18,14 @@ public class Administra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private LineaDeServicios lineaServicios; // Linea a la que se asigno un especialista
+    @OneToOne
+    private Usuario usuario; // Usuario que realiza la asignacion
 
     @OneToOne
     private Especialista asignado; // Especialista asignado a la linea de servicios
 
-    @OneToOne
-    private Usuario usuario; // Usuario que realiza la asignacion
+    @ManyToOne
+    private LineaDeServicios lineaServicios; // Linea a la que se asigno un especialista
     
     private LocalDateTime fechaAsignacion; // Fecha de la asignacion
 }

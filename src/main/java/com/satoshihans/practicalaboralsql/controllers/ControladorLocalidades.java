@@ -22,14 +22,14 @@ public class ControladorLocalidades {
     private ProvinciaService provinciaService;
 
 
-    @PostMapping("/add_provincia")
+    @PostMapping("/provincias")
     public ResponseEntity<?> add_provincia(@RequestBody String nombre) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
             provinciaService.add_provincia(nombre)
         );
     }
 
-    @PostMapping("/add_municipio")
+    @PostMapping("/municipios")
     public ResponseEntity<?> add_municipio(@RequestBody MunicipioCreacionDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
             municipioService.add_municipio(dto)

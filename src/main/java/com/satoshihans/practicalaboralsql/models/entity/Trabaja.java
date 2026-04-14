@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Trabaja_en {
+public class Trabaja {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

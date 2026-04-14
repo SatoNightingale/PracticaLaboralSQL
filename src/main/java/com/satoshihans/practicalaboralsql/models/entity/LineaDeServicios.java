@@ -35,9 +35,9 @@ public class LineaDeServicios {
 
     // Una linea de servicios tiene varios especialistas contratados (y cada especialista tiene asignado su propio importe)
     @OneToMany(mappedBy = "id")
-    private List<Trabaja_en> contratados;
+    private List<Trabaja> contratados;
 
     @OneToMany(mappedBy = "id")
-    // Varios usuarios pueden ser administradores de una misma linea de servicios
-    private List<Administra> administradores;
+    // Una linea de servicios tiene varias asignaciones
+    private List<Administra> asignaciones;
 }
