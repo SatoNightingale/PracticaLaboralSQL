@@ -24,13 +24,13 @@ public class UsuarioService {
     private UsuarioMapper mapper;
 
 
-    public Usuario add(UsuarioCreacionDTO dto) {
+    public UsuarioDTO add(UsuarioCreacionDTO dto) {
         Usuario nuevo = mapper.toNewEntity(dto);
         if(usuarioRepository.existsByNombre(dto.getNombre())){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un usuario con ese nombre");
         }
         usuarioRepository.save(nuevo);
-        return nuevo;
+        return mapper.toDTO(nuevo);
     }
 
     public List<UsuarioDTO> listar() {
@@ -39,24 +39,19 @@ public class UsuarioService {
     }
 
     public UsuarioDTO getAsDto(Long id){
-        return mapper.toDTO(getById(id));
+        return mapper.toDTO(usuarioRepository.findById(id).orElseThrow());
     }
     
     public UsuarioDTO update(Long id, UsuarioDTO dto){
-        Usuario usuario = getById(id);
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
         Usuario actualizado = mapper.updateEntity(dto, usuario);
         Usuario guardado = usuarioRepository.save(actualizado);
         return mapper.toDTO(guardado);
     }
 
     public void delete(Long id){
-        getById(id); // si no da error aqui, pues...
+        usuarioRepository.findById(id).orElseThrow(); // si no da error aqui, pues...
         usuarioRepository.deleteById(id);
-    }
-
-    public Usuario getById(Long id){
-        return usuarioRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public Usuario getAutenticado(Long usuario_id){

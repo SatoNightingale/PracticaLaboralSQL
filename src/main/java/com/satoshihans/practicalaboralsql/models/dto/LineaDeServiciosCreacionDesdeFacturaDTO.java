@@ -8,6 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 public class LineaDeServiciosCreacionDesdeFacturaDTO {
-    private Long id_servicio;
+    private Long idServicio;
     private List<TrabajaCreacionDTO> contratos;
 }

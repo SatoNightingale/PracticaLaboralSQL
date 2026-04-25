@@ -48,10 +48,21 @@ public class FacturaService {
         Factura factura = facturaRepository.findById(dto.getIdFactura()).orElseThrow();
         LineaDeServicios nuevo = lineaDeServiciosService.add(
             mapper.toCreacionDTO(dto), factura, dto.getIdUsuarioAdmin());
-        factura.setImporteTotal(lineaDeServiciosService.getImporteTotalFactura(factura.getId()));
+        // recalcularImporteFactura(factura);
         facturaRepository.save(factura);
         return servicioMapper.toDTO(nuevo);
     }
+
+    // public void recalcularImporteFactura(Factura factura){
+    //     factura.setImporteTotal(lineaDeServiciosService.getImporteTotalFactura(factura.getId()));
+    // }
+
+    // @EventListener
+    // public void recalcularImporteFactura(FacturaModificadaEvent event){
+    //     Factura factura = facturaRepository.findById(event.getIdFactura()).orElseThrow();
+    //     factura.setImporteTotal(event.getImporteTotal());
+    //     facturaRepository.save(factura);
+    // }
 
     public List<FacturaDTO> listar() {
         return facturaRepository.findAll().stream().map(
@@ -67,5 +78,11 @@ public class FacturaService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "No se encontro la factura con id: " + id
             ));
+    }
+
+    public boolean validarFactura(Long idFactura){
+        Factura factura = facturaRepository.findById(idFactura).orElseThrow();
+        Double importeTotal = lineaDeServiciosService.getImporteTotalFactura(idFactura);
+        return importeTotal == factura.getImporteTotal();
     }
 }

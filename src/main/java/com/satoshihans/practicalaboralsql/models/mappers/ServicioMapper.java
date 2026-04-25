@@ -2,18 +2,8 @@ package com.satoshihans.practicalaboralsql.models.mappers;
 
 import org.mapstruct.*;
 
-import com.satoshihans.practicalaboralsql.models.dto.AdministraCreacionDTO;
-import com.satoshihans.practicalaboralsql.models.dto.AdministraCreacionDesdeLineaDeServiciosDTO;
-import com.satoshihans.practicalaboralsql.models.dto.AdministraDTO;
-import com.satoshihans.practicalaboralsql.models.dto.LineaDeServiciosDTO;
-import com.satoshihans.practicalaboralsql.models.dto.ServicioDTO;
-import com.satoshihans.practicalaboralsql.models.dto.TrabajaCreacionDTO;
-import com.satoshihans.practicalaboralsql.models.dto.TrabajaDTO;
-import com.satoshihans.practicalaboralsql.models.dto.TrabajaModificacionDTO;
-import com.satoshihans.practicalaboralsql.models.entity.Administra;
-import com.satoshihans.practicalaboralsql.models.entity.LineaDeServicios;
-import com.satoshihans.practicalaboralsql.models.entity.Servicio;
-import com.satoshihans.practicalaboralsql.models.entity.Trabaja;
+import com.satoshihans.practicalaboralsql.models.dto.*;
+import com.satoshihans.practicalaboralsql.models.entity.*;
 import com.satoshihans.practicalaboralsql.repositories.*;
 
 @Mapper(componentModel = "spring", uses = {RelationResolver.class})
@@ -22,7 +12,10 @@ public abstract class ServicioMapper {
     /* Servicio */
 
     public abstract ServicioDTO toDTO(Servicio entity);
-    public abstract Servicio toEntity(ServicioDTO dto);
+    @Mapping(target = "id", ignore = true)
+    public abstract Servicio toNewEntity(ServicioCreacionDTO dto);
+    @Mapping(target = "id", ignore = true)
+    public abstract Servicio updateEntity(ServicioCreacionDTO dto, @MappingTarget Servicio entity);
 
     /* LineaDeServicios */
 

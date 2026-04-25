@@ -5,9 +5,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class EspecialistaAsignacionDTO {
+public class EspecialistaEliminarAsignacionDTO {
     private Long idEspecialista;
-    // private Long idLineaServicio;
     private Long idUsuarioAdmin;
-    private Double importe;
 }

@@ -12,7 +12,6 @@ import com.satoshihans.practicalaboralsql.models.dto.ClienteDTO;
 import com.satoshihans.practicalaboralsql.models.entity.Cliente;
 import com.satoshihans.practicalaboralsql.models.mappers.ClienteMapper;
 import com.satoshihans.practicalaboralsql.repositories.ClienteRepository;
-import com.satoshihans.practicalaboralsql.repositories.MunicipioRepository;
 
 @Service
 public class ClienteService {
@@ -21,14 +20,26 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private MunicipioRepository municipioRepo;
+    private LocalizacionService localizacionService;
     
     @Autowired
     private ClienteMapper mapper;
 
 
     public ClienteDTO add(ClienteCreacionDTO dto) {
-        Cliente nuevo = mapper.toNewEntity(dto, municipioRepo);
+        Cliente nuevo;
+        if(dto.getIdMunicipio() == null || (
+            !localizacionService.municipioExistsById(dto.getIdMunicipio()) && 
+            dto.getMunicipioCreacion() != null
+        )){
+            localizacionService.add_municipio(dto.getMunicipioCreacion());
+        } else 
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Datos de municipio invalidos"
+        );
+        nuevo = mapper.toNewEntity(dto);
+        nuevo.setMunicipio(localizacionService.getById(dto.getIdMunicipio()));
         clienteRepository.save(nuevo);
         return mapper.toDTO(nuevo);
     }

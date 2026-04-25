@@ -44,10 +44,22 @@ public class TrabajaService {
         return trabajaRepository.findByEspecialistaIdAndLineaServiciosId(idEspecialista, idLineaDeServicio);
     }
 
+    public Double sumImporteByLineaServiciosId(Long id){
+        return trabajaRepository.sumImporteByLineaServiciosId(id);
+    }
+
     public TrabajaDTO update(TrabajaModificacionDTO dto){
         Trabaja entity = trabajaRepository.findById(dto.getIdTrabaja()).orElseThrow();
         Trabaja actualizado = mapper.updateEntity(dto, entity, especialistaRepo, lineaDeServiciosRepo);
         Trabaja guardado = trabajaRepository.save(actualizado);
         return mapper.toDTO(guardado);
+    }
+
+    public void delete(Long idEspecialista, Long idLineaServicios){
+        trabajaRepository.deleteByEspecialistaAndLineaServicios(idEspecialista, idLineaServicios);
+    }
+
+    public void delete(Trabaja t){
+        trabajaRepository.delete(t);
     }
 }

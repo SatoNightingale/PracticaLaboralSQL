@@ -7,6 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 public class MunicipioCreacionDTO {
     private String nombre;
-    private Long id_provincia;
-    private String nombre_provincia;
+    private Long idProvincia;
+    private String nombreProvincia;
 }
