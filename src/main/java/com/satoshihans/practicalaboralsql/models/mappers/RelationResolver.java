@@ -1,7 +1,5 @@
 package com.satoshihans.practicalaboralsql.models.mappers;
 
-import java.util.Optional;
-
 import org.mapstruct.*;
 
 import com.satoshihans.practicalaboralsql.models.entity.*;

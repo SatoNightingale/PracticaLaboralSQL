@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.satoshihans.practicalaboralsql.models.dto.*;
@@ -16,6 +18,7 @@ import com.satoshihans.practicalaboralsql.models.mappers.ServicioMapper;
 import com.satoshihans.practicalaboralsql.repositories.EspecialistaRepository;
 import com.satoshihans.practicalaboralsql.repositories.LineaDeServiciosRepository;
 import com.satoshihans.practicalaboralsql.repositories.ServicioRepository;
+// import com.satoshihans.practicalaboralsql.events.FacturaModificadaEvent;
 
 @Service
 public class LineaDeServiciosService {
@@ -41,11 +44,14 @@ public class LineaDeServiciosService {
     @Autowired
     private ServicioMapper mapper;
 
+    // @Autowired
+    // private ApplicationEventPublisher publisher;
+
 
     public LineaDeServicios add(LineaDeServiciosCreacionDesdeFacturaDTO dto, Factura factura, Long idUsuarioAdmin) {
         LineaDeServicios nuevo = new LineaDeServicios();
 
-        Servicio servicio = servicioRepo.findById(dto.getId_servicio()).orElseThrow();
+        Servicio servicio = servicioRepo.findById(dto.getIdServicio()).orElseThrow();
         List<Trabaja> contratos = new ArrayList<>();
         List<Administra> asignaciones = new ArrayList<>();
         Double importe = 0.0;
@@ -76,15 +82,15 @@ public class LineaDeServiciosService {
         return lineaDeServiciosRepository.sumImporteByFacturaId(id_factura);
     }
 
-    public LineaDeServiciosDTO asignarEspecialistaImporte(EspecialistaAsignacionDTO dto){
+    @Transactional
+    public LineaDeServiciosDTO asignarEspecialista(EspecialistaAsignacionDTO dto, Long idLineaServicios){
         Usuario administrador = usuarioService.getAutenticado(dto.getIdUsuarioAdmin());
-        usuarioService.checkAutenticado(administrador.getId());
         LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
-            dto.getIdLineaServicio()).orElseThrow();
+            idLineaServicios).orElseThrow();
         Especialista especialista = especialistaRepo.findById(dto.getIdEspecialista())
             .orElseThrow();
         Optional<Trabaja> contrato = trabajaService.getByEspecialistaAndLineaServicios(
-            dto.getIdEspecialista(), dto.getIdLineaServicio());
+            dto.getIdEspecialista(), idLineaServicios);
         if(contrato.isPresent()){
             trabajaService.update(new TrabajaModificacionDTO(
                 contrato.get().getId(),
@@ -97,21 +103,29 @@ public class LineaDeServiciosService {
                 dto.getIdEspecialista(),
                 dto.getImporte()
             ), lineaDeServicios);
+            Administra nueva_asignacion = administraService.add(new AdministraCreacionDTO(
+                administrador.getId(),
+                especialista.getId(),
+                lineaDeServicios.getId(),
+                LocalDateTime.now()
+            ));
+            lineaDeServicios.getAsignaciones().add(nueva_asignacion);
             lineaDeServicios.getContratados().add(nuevo_contrato);
         }
-        Administra nueva_asignacion = administraService.add(new AdministraCreacionDTO(
-            administrador.getId(),
-            especialista.getId(),
-            lineaDeServicios.getId(),
-            LocalDateTime.now()
-        ));
-        lineaDeServicios.getAsignaciones().add(nueva_asignacion);
+
+        // recalcularLinea(lineaDeServicios);
         lineaDeServiciosRepository.save(lineaDeServicios);
-        // Ahora hay que recalcular el importe de la factura
-        // Vendria bien usar lo que deepseek dijo de los eventos pa desacoplar
-        // No se puede tener un FacturaService en LineaDeServicioService y un LineaDeServicioService en FacturaService
+        // Long idFactura = lineaDeServicios.getFactura().getId();
+        // publisher.publishEvent(new FacturaModificadaEvent(
+        //     idFactura,
+        //     getImporteTotalFactura(idFactura)
+        // ));
         return mapper.toDTO(lineaDeServicios);
     }
+
+    // public void recalcularLinea(LineaDeServicios lineadDeServicios){
+    //     lineadDeServicios.setImporte(trabajaService.sumImporteByLineaServiciosId(lineadDeServicios.getId()));
+    // }
 
     public List<LineaDeServiciosDTO> listar() {
         return lineaDeServiciosRepository.findAll().stream().map(
@@ -123,5 +137,46 @@ public class LineaDeServiciosService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "No se ha encontrado la linea de servicios con id " + id
             ));
+    }
+
+    @Transactional
+    public void eliminarAsignacion(EspecialistaEliminarAsignacionDTO dto, Long idLineaServicios){
+        Usuario administrador = usuarioService.getAutenticado(dto.getIdUsuarioAdmin());
+        LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
+            idLineaServicios).orElseThrow();
+        Especialista especialista = especialistaRepo.findById(dto.getIdEspecialista())
+            .orElseThrow();
+        Optional<Trabaja> contrato = trabajaService.getByEspecialistaAndLineaServicios(
+            dto.getIdEspecialista(), idLineaServicios);
+        contrato.ifPresentOrElse(
+            (Trabaja t) -> {
+                Administra a = administraService.getByIds(
+                    administrador.getId(),
+                    especialista.getId(),
+                    idLineaServicios
+                );
+                trabajaService.delete(t);
+                administraService.delete(a);
+                // Eliminar entidades trabaja y administra de la linea de servicios
+                lineaDeServicios.getContratados().remove(t);
+                lineaDeServicios.getAsignaciones().remove(a);
+                // Si despues de la operacion la linea quedo vacia, eliminala
+                if(lineaDeServicios.getContratados().isEmpty()){
+                    lineaDeServiciosRepository.delete(lineaDeServicios);
+                }
+            },
+            () -> {
+                throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "No se ha encontrado el especialista con id: " + dto.getIdEspecialista()
+                );
+            }
+        );
+    }
+
+    public boolean validarLinea(Long idLineaServicios){
+        LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(idLineaServicios).orElseThrow();
+        Double importeTotal = trabajaService.sumImporteByLineaServiciosId(idLineaServicios);
+        return importeTotal <= lineaDeServicios.getImporte();
     }
 }

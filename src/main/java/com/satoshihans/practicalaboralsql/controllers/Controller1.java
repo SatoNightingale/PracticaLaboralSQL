@@ -21,7 +21,7 @@ public class Controller1 {
     /* Departamentos */
     @GetMapping("/departamento")
     public ResponseEntity<?> listar_departamentos() {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(
+        return ResponseEntity.status(HttpStatus.OK).body(
             departamentoService.listar_departamentos()
         );
     }

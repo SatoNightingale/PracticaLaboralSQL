@@ -43,4 +43,16 @@ public class AdministraService {
         Administra guardado = administraRepository.save(nuevo);
         return guardado;
     }
+
+    public Administra getByIds(Long idAdmin, Long idEspecialista, Long idLineaServicios){
+        return administraRepository.getByUsuarioAndAsignadoAndLineaServicios(idAdmin, idEspecialista, idLineaServicios);
+    }
+
+    public void delete(Long idAdmin, Long idEspecialista, Long idLineaServicios){
+        administraRepository.deleteByUsuarioAndAsignadoAndLineaServicios(idAdmin, idEspecialista, idLineaServicios);
+    }
+
+    public void delete(Administra a){
+        administraRepository.delete(a);
+    }
 }

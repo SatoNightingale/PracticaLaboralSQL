@@ -3,10 +3,8 @@ package com.satoshihans.practicalaboralsql.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
+import com.satoshihans.practicalaboralsql.models.dto.ServicioCreacionDTO;
 import com.satoshihans.practicalaboralsql.models.dto.ServicioDTO;
 import com.satoshihans.practicalaboralsql.models.entity.Servicio;
 import com.satoshihans.practicalaboralsql.models.mappers.ServicioMapper;
@@ -22,19 +20,30 @@ public class ServicioService {
     private ServicioMapper mapper;
 
 
-    public List<ServicioDTO> listar_clientes() {
-        return servicioRepository.findAll().stream().map(
-            (Servicio c) -> mapper.toDTO(c)).toList();
-    }
-
-    public Servicio add_servicio(ServicioDTO dto) {
-        Servicio nuevo = mapper.toEntity(dto);
+    public Servicio add(ServicioCreacionDTO dto) {
+        Servicio nuevo = mapper.toNewEntity(dto);
         servicioRepository.save(nuevo);
         return nuevo;
     }
 
-    public Servicio getById(Long id){
-        return servicioRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public List<ServicioDTO> listar() {
+        return servicioRepository.findAll().stream().map(
+            (Servicio c) -> mapper.toDTO(c)).toList();
     }
+
+    public ServicioDTO getAsDto(Long id){
+        return mapper.toDTO(servicioRepository.findById(id).orElseThrow());
+    }
+    
+    public ServicioDTO update(Long id, ServicioCreacionDTO dto){
+        Servicio servicio = servicioRepository.findById(id).orElseThrow();
+        Servicio actualizado = mapper.updateEntity(dto, servicio);
+        Servicio guardado = servicioRepository.save(actualizado);
+        return mapper.toDTO(guardado);
+    }
+
+    public void delete(Long id){
+        servicioRepository.deleteById(id);
+    }
+
 }
