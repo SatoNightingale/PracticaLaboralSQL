@@ -22,13 +22,17 @@ public class DepartamentoService {
     @Autowired
     private EspecialistaMapper mapper;
 
-    public Departamento add_departamento(DepartamentoCreacionDTO dto) {
+    public Departamento add_NoDto(DepartamentoCreacionDTO dto) {
         Departamento nuevo = mapper.toNewEntity(dto);
-        departamentoRepository.save(nuevo);
-        return nuevo;
+        Departamento guardado = departamentoRepository.save(nuevo);
+        return guardado;
     }
 
-    public List<DepartamentoDTO> listar_departamentos() {
+    public DepartamentoDTO add(DepartamentoCreacionDTO dto) {
+        return mapper.toDTO(add_NoDto(dto));
+    }
+
+    public List<DepartamentoDTO> listar() {
         return departamentoRepository.findAll().stream().map(
             (Departamento u) -> mapper.toDTO(u)).toList();
     }
@@ -36,6 +40,18 @@ public class DepartamentoService {
     public Departamento getById(Long id){
         return departamentoRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    public DepartamentoDTO update(Long id, DepartamentoCreacionDTO dto){
+        Departamento entity = getById(id);
+        Departamento actualizado = mapper.updateEntity(dto, entity);
+        Departamento guardado = departamentoRepository.save(actualizado);
+        return mapper.toDTO(guardado);
+    }
+
+    public void delete(Long id){
+        getById(id);
+        departamentoRepository.deleteById(id);
     }
 
     public boolean existsById(Long id){

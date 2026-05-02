@@ -12,6 +12,7 @@ import com.satoshihans.practicalaboralsql.models.dto.DepartamentoDTO;
 import com.satoshihans.practicalaboralsql.models.dto.EspecialistaCreacionDTO;
 import com.satoshihans.practicalaboralsql.models.dto.EspecialistaDTO;
 import com.satoshihans.practicalaboralsql.models.dto.EspecialistaModificacionDTO;
+import com.satoshihans.practicalaboralsql.models.dto.EspecialistaNombreDTO;
 import com.satoshihans.practicalaboralsql.models.entity.Departamento;
 import com.satoshihans.practicalaboralsql.models.entity.Especialista;
 import com.satoshihans.practicalaboralsql.services.DepartamentoService;
@@ -22,6 +23,8 @@ public abstract class EspecialistaMapper {
 
     public abstract EspecialistaDTO toDTO(Especialista entity);
 
+    public abstract EspecialistaNombreDTO toNombreDTO(Especialista entity);
+
     @Mapping(target = "id", ignore = true)
     public abstract Especialista toNewEntity(EspecialistaCreacionDTO dto, @Context DepartamentoService service);
     @AfterMapping
@@ -31,7 +34,7 @@ public abstract class EspecialistaMapper {
             entity.setDepartamento(departamento);
         } else {
             DepartamentoCreacionDTO nuevoDepartamento = dto.getDepartamento();
-            Departamento departamento = departamentoService.add_departamento(nuevoDepartamento);
+            Departamento departamento = departamentoService.add_NoDto(nuevoDepartamento);
             entity.setDepartamento(departamento);
         }
     }
@@ -45,4 +48,8 @@ public abstract class EspecialistaMapper {
     @Mapping(target = "especialistas", ignore = true)
     @Mapping(target = "id", ignore = true)
     public abstract Departamento toNewEntity(DepartamentoCreacionDTO dto);
+
+    @Mapping(target = "especialistas", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    public abstract Departamento updateEntity(DepartamentoCreacionDTO dto, @MappingTarget Departamento entity);
 }

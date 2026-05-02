@@ -45,6 +45,11 @@ public class EspecialistaService {
             (Especialista c) -> mapper.toDTO(c)).toList();
     }
 
+    public List<EspecialistaNombreDTO> list_nombres() {
+        return especialistaRepository.findAll().stream().map(
+            (Especialista c) -> mapper.toNombreDTO(c)).toList();
+    }
+
     public EspecialistaDTO getAsDto(Long id){
         return mapper.toDTO(getById(id));
     }

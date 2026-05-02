@@ -1,3 +1,3 @@
 @echo off
 
-start ./mvnw.cmd spring-boot:run
+start mvnw.cmd spring-boot:run

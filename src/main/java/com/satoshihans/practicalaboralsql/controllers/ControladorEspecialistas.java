@@ -30,6 +30,14 @@ public class ControladorEspecialistas {
     @Autowired
     private EspecialistaService especialistaService;
 
+    @Operation(summary = "Agregar un especialista")
+    @PostMapping
+    public ResponseEntity<?> add_especialista(@RequestBody EspecialistaCreacionDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            especialistaService.add(dto)
+        );
+    }
+
     @Operation(summary = "Listar todos los especialistas registrados")
     @GetMapping
     public ResponseEntity<?> listar_especialistas() {
@@ -38,19 +46,19 @@ public class ControladorEspecialistas {
         );
     }
 
+    @Operation(summary = "Listar el nombre y el id de todos los especialistas registrados")
+    @GetMapping("/nombres")
+    public ResponseEntity<?> listar_nombres_especialistas() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            especialistaService.list_nombres()
+        );
+    }
+
     @Operation(summary = "Obtener los datos de un especialista")
     @GetMapping("/{id}")
     public ResponseEntity<?> get_especialista(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(
             especialistaService.getAsDto(id)
-        );
-    }
-
-    @Operation(summary = "Agregar un especialista")
-    @PostMapping
-    public ResponseEntity<?> add_especialista(@RequestBody EspecialistaCreacionDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            especialistaService.add(dto)
         );
     }
 
