@@ -13,7 +13,7 @@ public abstract class ClienteMapper {
 
     public abstract ClienteDTO toDTO(Cliente entity);
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "codigoId", source = "id")
     @Mapping(target = "municipio", ignore = true)
     public abstract Cliente toNewEntity(ClienteCreacionDTO dto);
 

@@ -1,6 +1,5 @@
 package com.satoshihans.practicalaboralsql.models.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,24 +11,23 @@ import lombok.*;
 public class Cliente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private String codigoId;
 
     @Column(name = "nombre")
     private String nombre;
 
     @Column(name = "direccion")
     private String direccion;
-    
+
     @ManyToOne
     @JoinColumn(name = "id_municipio", referencedColumnName = "id")
     private Municipio municipio;
-    
+
     @Column(name = "email")
     private String email;
 
     @Column(name = "telefono")
     private String telefono;
-
 }

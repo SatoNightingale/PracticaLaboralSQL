@@ -49,30 +49,30 @@ public class ClienteService {
             (Cliente c) -> mapper.toDTO(c)).toList();
     }
 
-    public ClienteDTO getAsDto(Long id){
+    public ClienteDTO getAsDto(String id){
         return mapper.toDTO(getById(id));
     }
 
-    public ClienteDTO update(Long id, ClienteDTO dto){
+    public ClienteDTO update(String id, ClienteDTO dto){
         Cliente usuario = getById(id);
         Cliente actualizado = mapper.updateEntity(dto, usuario);
         Cliente guardado = clienteRepository.save(actualizado);
         return mapper.toDTO(guardado);
     }
 
-    public void delete(Long id){
+    public void delete(String id){
         getById(id); // si no da error aqui, pues...
         clienteRepository.deleteById(id);
     }
 
-    public Cliente getById(Long id){
+    public Cliente getById(String id){
         return clienteRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "No se ha encontrado el cliente con id" + id
             ));
     }
 
-    public boolean existsById(Long id){
+    public boolean existsById(String id){
         return clienteRepository.existsById(id);
     }
 }
