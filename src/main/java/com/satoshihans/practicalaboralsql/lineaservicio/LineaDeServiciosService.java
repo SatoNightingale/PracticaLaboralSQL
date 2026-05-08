@@ -1,0 +1,180 @@
+package com.satoshihans.practicalaboralsql.lineaservicio;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.satoshihans.practicalaboralsql.asignacion.*;
+import com.satoshihans.practicalaboralsql.especialista.*;
+import com.satoshihans.practicalaboralsql.factura.Factura;
+import com.satoshihans.practicalaboralsql.servicio.*;
+import com.satoshihans.practicalaboralsql.usuario.*;
+
+@Service
+public class LineaDeServiciosService {
+
+    @Autowired
+    private LineaDeServiciosRepository lineaDeServiciosRepository;
+
+    @Autowired
+    private ServicioRepository servicioRepo;
+
+    @Autowired
+    private TrabajaService trabajaService;
+
+    @Autowired
+    private AdministraService administraService;
+    
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private EspecialistaRepository especialistaRepo;
+
+    @Autowired
+    private ServicioMapper mapper;
+
+    // @Autowired
+    // private ApplicationEventPublisher publisher;
+
+
+    public LineaDeServicios add(LineaDeServiciosCreacionDesdeFacturaDTO dto, Factura factura, Long idUsuarioAdmin) {
+        LineaDeServicios nuevo = new LineaDeServicios();
+
+        Servicio servicio = servicioRepo.findById(dto.getIdServicio()).orElseThrow();
+        List<Trabaja> contratos = new ArrayList<>();
+        List<Administra> asignaciones = new ArrayList<>();
+        Double importe = 0.0;
+
+        for (TrabajaCreacionDTO trabajaDto : dto.getContratos()) {
+            importe += trabajaDto.getImporte();
+            contratos.add(trabajaService.add_nodto(trabajaDto, nuevo));
+            asignaciones.add(administraService.add(
+                new AdministraCreacionDesdeLineaDeServiciosDTO(
+                    idUsuarioAdmin,
+                    trabajaDto.getId_especialista(),
+                    LocalDateTime.now()
+                ), nuevo
+            ));
+        }
+        
+        nuevo.setFactura(factura);
+        nuevo.setImporte(importe);
+        nuevo.setServicio(servicio);
+        nuevo.setContratados(contratos);
+        nuevo.setAsignaciones(asignaciones);
+
+        lineaDeServiciosRepository.save(nuevo);
+        return nuevo;
+    }
+
+    public Double getImporteTotalFactura(Long id_factura){
+        return lineaDeServiciosRepository.sumImporteByFacturaId(id_factura);
+    }
+
+    @Transactional
+    public LineaDeServiciosDTO asignarEspecialista(EspecialistaAsignacionDTO dto, Long idLineaServicios){
+        Usuario administrador = usuarioService.getAutenticado(dto.getIdUsuarioAdmin());
+        LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
+            idLineaServicios).orElseThrow();
+        Especialista especialista = especialistaRepo.findById(dto.getIdEspecialista())
+            .orElseThrow();
+        Optional<Trabaja> contrato = trabajaService.getByEspecialistaAndLineaServicios(
+            dto.getIdEspecialista(), idLineaServicios);
+        if(contrato.isPresent()){
+            trabajaService.update(new TrabajaModificacionDTO(
+                contrato.get().getId(),
+                especialista.getId(),
+                lineaDeServicios.getId(),
+                dto.getImporte()
+            ));
+        } else {
+            Trabaja nuevo_contrato = trabajaService.add_nodto(new TrabajaCreacionDTO(
+                dto.getIdEspecialista(),
+                dto.getImporte()
+            ), lineaDeServicios);
+            Administra nueva_asignacion = administraService.add(new AdministraCreacionDTO(
+                administrador.getId(),
+                especialista.getId(),
+                lineaDeServicios.getId(),
+                LocalDateTime.now()
+            ));
+            lineaDeServicios.getAsignaciones().add(nueva_asignacion);
+            lineaDeServicios.getContratados().add(nuevo_contrato);
+        }
+
+        // recalcularLinea(lineaDeServicios);
+        lineaDeServiciosRepository.save(lineaDeServicios);
+        // Long idFactura = lineaDeServicios.getFactura().getId();
+        // publisher.publishEvent(new FacturaModificadaEvent(
+        //     idFactura,
+        //     getImporteTotalFactura(idFactura)
+        // ));
+        return mapper.toDTO(lineaDeServicios);
+    }
+
+    // public void recalcularLinea(LineaDeServicios lineadDeServicios){
+    //     lineadDeServicios.setImporte(trabajaService.sumImporteByLineaServiciosId(lineadDeServicios.getId()));
+    // }
+
+    public List<LineaDeServiciosDTO> listar() {
+        return lineaDeServiciosRepository.findAll().stream().map(
+            (LineaDeServicios ls) -> mapper.toDTO(ls)).toList();
+    }
+
+    public LineaDeServicios getById(Long id){
+        return lineaDeServiciosRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "No se ha encontrado la linea de servicios con id " + id
+            ));
+    }
+
+    @Transactional
+    public void eliminarAsignacion(EspecialistaEliminarAsignacionDTO dto, Long idLineaServicios){
+        Usuario administrador = usuarioService.getAutenticado(dto.getIdUsuarioAdmin());
+        LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
+            idLineaServicios).orElseThrow();
+        Especialista especialista = especialistaRepo.findById(dto.getIdEspecialista())
+            .orElseThrow();
+        Optional<Trabaja> contrato = trabajaService.getByEspecialistaAndLineaServicios(
+            dto.getIdEspecialista(), idLineaServicios);
+        contrato.ifPresentOrElse(
+            (Trabaja t) -> {
+                Administra a = administraService.getByIds(
+                    administrador.getId(),
+                    especialista.getId(),
+                    idLineaServicios
+                );
+                trabajaService.delete(t);
+                administraService.delete(a);
+                // Eliminar entidades trabaja y administra de la linea de servicios
+                lineaDeServicios.getContratados().remove(t);
+                lineaDeServicios.getAsignaciones().remove(a);
+                // Si despues de la operacion la linea quedo vacia, eliminala
+                if(lineaDeServicios.getContratados().isEmpty()){
+                    lineaDeServiciosRepository.delete(lineaDeServicios);
+                }
+            },
+            () -> {
+                throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "No se ha encontrado el especialista con id: " + dto.getIdEspecialista()
+                );
+            }
+        );
+    }
+
+    public boolean validarLinea(Long idLineaServicios){
+        LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(idLineaServicios).orElseThrow();
+        Double importeTotal = trabajaService.sumImporteByLineaServiciosId(idLineaServicios);
+        return importeTotal <= lineaDeServicios.getImporte();
+    }
+}
