@@ -7,12 +7,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.satoshihans.practicalaboralsql.especialista.EspecialistaMapper;
+import com.satoshihans.practicalaboralsql.especialista.EspecialistaRepository;
+import com.satoshihans.practicalaboralsql.periodo.Plan;
+import com.satoshihans.practicalaboralsql.periodo.PlanRepository;
 
 @Service
 public class DepartamentoService {
 
     @Autowired
     private DepartamentoRepository departamentoRepository;
+
+    @Autowired
+    private PlanRepository planRepository;
+
+    @Autowired
+    private EspecialistaRepository especialistaRepository;
 
     @Autowired
     private EspecialistaMapper mapper;
@@ -62,5 +71,15 @@ public class DepartamentoService {
 
     public boolean existsById(Long id) {
         return departamentoRepository.existsById(id);
+    }
+
+    public Plan obtenerPlanDepartamento(Long departamentoId){
+        return planRepository.getPlanActualByDepartamentoId(departamentoId);
+    }
+
+    public Double obtenerFraccionPlanPorEspecialista(Long departamentoId){
+        Double planDepartamento = obtenerPlanDepartamento(departamentoId).getPlan();
+        Integer cantEspecialistas = especialistaRepository.countByDepartamento(departamentoId);
+        return planDepartamento / cantEspecialistas;
     }
 }

@@ -1,6 +1,6 @@
 package com.satoshihans.practicalaboralsql.asignacion;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import lombok.*;
 
@@ -11,5 +11,5 @@ public class AdministraCreacionDTO {
     private Long idUsuario;
     private Long idEspecialistaAsignado;
     private Long idLineaServicios;
-    private LocalDateTime fechaAsignacion;
+    private LocalDate fechaAsignacion;
 }

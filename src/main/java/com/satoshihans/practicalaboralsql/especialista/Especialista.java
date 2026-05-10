@@ -1,5 +1,8 @@
 package com.satoshihans.practicalaboralsql.especialista;
 
+import java.util.List;
+
+import com.satoshihans.practicalaboralsql.asignacion.Trabaja;
 import com.satoshihans.practicalaboralsql.departamento.Departamento;
 
 import jakarta.persistence.*;
@@ -27,6 +30,9 @@ public class Especialista {
     @ManyToOne
     @JoinColumn(name = "idDepartamento", referencedColumnName = "id")
     private Departamento departamento;
+
+    @OneToMany(mappedBy = "especialista", cascade = CascadeType.ALL)
+    private List<Trabaja> contratos;
 
     @Column(name = "especialidad")
     private String especialidad;

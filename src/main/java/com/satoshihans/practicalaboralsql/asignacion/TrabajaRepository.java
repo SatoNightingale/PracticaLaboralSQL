@@ -1,5 +1,6 @@
 package com.satoshihans.practicalaboralsql.asignacion;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,10 @@ public interface TrabajaRepository extends JpaRepository<Trabaja, Long> {
     Double sumImporteByLineaServiciosId(@Param("lineaId") Long id);
 
     void deleteByEspecialistaAndLineaServicios(Long idEspecialista, Long idLineaServicios);
+
+    @Query("SELECT COALESCE(SUM(t.importe), 0.0) FROM Trabaja t WHERE t.fechaContratacion BETWEEN :fechaInicio AND :fechaFin")
+    Double getIngresosTotalesPorPeriodo(LocalDate fechaInicio, LocalDate fechaFin);
+
+    @Query("SELECT COALESCE(SUM(t.importe), 0.0) FROM Trabaja t WHERE t.especialista = :idEspecialista AND t.fechaContratacion BETWEEN :fechaInicio AND :fechaFin")
+    Double getIngresosTotalesEspecialistaPorPeriodo(Long idEspecialista, LocalDate fechaInicio, LocalDate fechaFin);
 }

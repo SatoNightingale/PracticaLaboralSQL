@@ -1,4 +1,4 @@
-package com.satoshihans.practicalaboralsql.shared;
+package com.satoshihans.practicalaboralsql;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

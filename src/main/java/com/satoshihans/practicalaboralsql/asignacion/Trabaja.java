@@ -1,5 +1,7 @@
 package com.satoshihans.practicalaboralsql.asignacion;
 
+import java.time.LocalDate;
+
 import com.satoshihans.practicalaboralsql.especialista.Especialista;
 import com.satoshihans.practicalaboralsql.lineaservicio.LineaDeServicios;
 
@@ -31,4 +33,6 @@ public class Trabaja {
     // Cada especialista aporta a la linea de servicios su propio importe
     @Column(name = "importe")
     private Double importe;
+
+    private LocalDate fechaContratacion;
 }

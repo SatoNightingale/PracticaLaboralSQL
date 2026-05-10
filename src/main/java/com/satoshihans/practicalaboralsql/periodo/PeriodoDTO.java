@@ -10,7 +10,7 @@ import lombok.*;
 @Data
 public class PeriodoDTO {
     private boolean abierto;
-    private LocalDate inicio, fin;
+    private LocalDate fechaInicio, fechaFin;
     private Double ingresosTotales;
     private List<PlanPeriodoDTO> planes;
 }

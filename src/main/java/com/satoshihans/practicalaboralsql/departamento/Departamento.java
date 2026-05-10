@@ -28,9 +28,10 @@ public class Departamento {
     @Column(name = "direccion")
     private String direccion;
 
-    @OneToMany(mappedBy = "departamento")
+    @OneToMany(mappedBy = "departamento", cascade = CascadeType.ALL)
     // Cada departamento tiene varios especialistas
     private List<Especialista> especialistas;
 
-    private Plan planActual;
+    @OneToMany
+    private List<Plan> historialPlanes;
 }

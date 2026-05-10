@@ -24,23 +24,16 @@ public class EspecialistaService {
 
     public EspecialistaDTO add(EspecialistaCreacionDTO dto){
         Especialista nuevo = mapper.toNewEntity(dto, departamentoService);
-        // Especialista nuevo = new Especialista();
-        // nuevo.setNombre(dto.getNombre());
-        // nuevo.setEspecialidad(dto.getEspecialidad());
-        
-        // if(departamentoService.existsById(dto.getIdDepartamento())){
-        //     Departamento departamento = departamentoService.getById(dto.getIdDepartamento());
-        //     nuevo.setDepartamento(departamento);
-        // } else 
-        //     throw new RuntimeException("No existe el municipio con id " + dto.getIdDepartamento());
-        
-        especialistaRepository.save(nuevo);
-        return mapper.toDTO(nuevo);
+        Especialista guardado = especialistaRepository.save(nuevo);
+        return mapper.toDTO(guardado);
     }
 
     public List<EspecialistaDTO> list() {
-        return especialistaRepository.findAll().stream().map(
-            (Especialista c) -> mapper.toDTO(c)).toList();
+        return especialistaRepository
+            .findAll()
+            .stream()
+            .map((Especialista c) -> mapper.toDTO(c))
+            .toList();
     }
 
     public List<EspecialistaNombreDTO> list_nombres() {
@@ -55,8 +48,6 @@ public class EspecialistaService {
     public EspecialistaDTO update(Long id, EspecialistaModificacionDTO dto){
         Especialista especialista = getById(id);
         Especialista actualizado = mapper.updateEntity(dto, especialista);
-        // especialista.setNombre(dto.getNombre());
-        // especialista.setEspecialidad(dto.getEspecialidad());
         Especialista guardado = especialistaRepository.save(actualizado);
         return mapper.toDTO(guardado);
     }

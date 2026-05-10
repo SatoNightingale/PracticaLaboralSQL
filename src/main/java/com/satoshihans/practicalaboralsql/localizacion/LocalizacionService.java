@@ -23,11 +23,11 @@ public class LocalizacionService {
     public MunicipioDTO add_municipio(MunicipioCreacionDTO dto) {
         Municipio nuevo = mapper.toNewEntity(dto);
 
-        if(dto.getIdProvincia() == null || (
-            !provinciaRepository.existsById(dto.getIdProvincia()) &&
-            dto.getNombreProvincia() != null
-        )){
-            add_provincia(dto.getNombreProvincia());
+        if(dto.getIdProvincia() != null && provinciaRepository.existsById(dto.getIdProvincia())){
+            nuevo.setProvincia(provinciaRepository.findById(dto.getIdProvincia()).orElseThrow());
+        } else if(dto.getNombreProvincia() != null) {
+            Provincia provincia = add_provincia_noDto(dto.getNombreProvincia());
+            nuevo.setProvincia(provincia);
         } else
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Datos de provincia invalidos");
 
@@ -36,10 +36,14 @@ public class LocalizacionService {
     }
 
     public ProvinciaDTO add_provincia(@RequestBody String nombre) {
+        return mapper.toDTO(add_provincia_noDto(nombre));
+    }
+
+    public Provincia add_provincia_noDto(@RequestBody String nombre) {
         Provincia nuevo = new Provincia();
         nuevo.setNombre(nombre);
-        provinciaRepository.save(nuevo);
-        return mapper.toDTO(nuevo);
+        Provincia guardado = provinciaRepository.save(nuevo);
+        return guardado;
     }
 
     public List<MunicipioDTO> listar_municipios() {

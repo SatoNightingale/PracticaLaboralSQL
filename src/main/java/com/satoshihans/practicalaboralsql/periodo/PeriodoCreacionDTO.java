@@ -9,6 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 public class PeriodoCreacionDTO {
-    private LocalDate inicio, fin;
+    private LocalDate fechaInicio, fechaFin;
     private List<PlanPeriodoCreacionDTO> planes;
 }

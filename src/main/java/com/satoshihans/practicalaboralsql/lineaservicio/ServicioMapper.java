@@ -31,13 +31,14 @@ public abstract class ServicioMapper {
     public abstract TrabajaDTO toDTO(Trabaja entity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "especialista", source = "dto.id_especialista", qualifiedByName = "especialistaFromId")
+    @Mapping(target = "especialista", source = "dto.idEspecialista", qualifiedByName = "especialistaFromId")
     @Mapping(target = "importe", source = "dto.importe")
     public abstract Trabaja toNewEntity(TrabajaCreacionDTO dto, LineaDeServicios lineaServicios,
         @Context EspecialistaRepository repo
     );
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "fechaContratacion", ignore = true)
     @Mapping(target = "especialista", source = "idEspecialista", qualifiedByName = "especialistaFromId")
     @Mapping(target = "lineaServicios", source = "idLineaDeServicios", qualifiedByName = "lineaServiciosFromId")
     public abstract Trabaja updateEntity(TrabajaModificacionDTO dto, @MappingTarget Trabaja entity,

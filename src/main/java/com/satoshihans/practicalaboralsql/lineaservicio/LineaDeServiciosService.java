@@ -1,6 +1,6 @@
 package com.satoshihans.practicalaboralsql.lineaservicio;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +28,9 @@ public class LineaDeServiciosService {
     private ServicioRepository servicioRepo;
 
     @Autowired
+    private EspecialistaRepository especialistaRepo;
+
+    @Autowired
     private TrabajaService trabajaService;
 
     @Autowired
@@ -37,13 +40,7 @@ public class LineaDeServiciosService {
     private UsuarioService usuarioService;
 
     @Autowired
-    private EspecialistaRepository especialistaRepo;
-
-    @Autowired
     private ServicioMapper mapper;
-
-    // @Autowired
-    // private ApplicationEventPublisher publisher;
 
 
     public LineaDeServicios add(LineaDeServiciosCreacionDesdeFacturaDTO dto, Factura factura, Long idUsuarioAdmin) {
@@ -60,8 +57,8 @@ public class LineaDeServiciosService {
             asignaciones.add(administraService.add(
                 new AdministraCreacionDesdeLineaDeServiciosDTO(
                     idUsuarioAdmin,
-                    trabajaDto.getId_especialista(),
-                    LocalDateTime.now()
+                    trabajaDto.getIdEspecialista(),
+                    LocalDate.now()
                 ), nuevo
             ));
         }
@@ -72,7 +69,7 @@ public class LineaDeServiciosService {
         nuevo.setContratados(contratos);
         nuevo.setAsignaciones(asignaciones);
 
-        lineaDeServiciosRepository.save(nuevo);
+        // lineaDeServiciosRepository.save(nuevo);
         return nuevo;
     }
 
@@ -85,6 +82,10 @@ public class LineaDeServiciosService {
         Usuario administrador = usuarioService.getAutenticado(dto.getIdUsuarioAdmin());
         LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
             idLineaServicios).orElseThrow();
+        // Validar que se este modificando una factura perteneciente a un periodo no cerrado
+        if(!lineaDeServicios.getFactura().getPeriodo().isAbierto()){
+            throw new ResponseStatusException(HttpStatus.LOCKED, "La linea de servicios que quiere modificar pertenece a un periodo cerrado");
+        }
         Especialista especialista = especialistaRepo.findById(dto.getIdEspecialista())
             .orElseThrow();
         Optional<Trabaja> contrato = trabajaService.getByEspecialistaAndLineaServicios(
@@ -99,31 +100,23 @@ public class LineaDeServiciosService {
         } else {
             Trabaja nuevo_contrato = trabajaService.add_nodto(new TrabajaCreacionDTO(
                 dto.getIdEspecialista(),
-                dto.getImporte()
+                dto.getImporte(),
+                LocalDate.now()
             ), lineaDeServicios);
             Administra nueva_asignacion = administraService.add(new AdministraCreacionDTO(
                 administrador.getId(),
                 especialista.getId(),
                 lineaDeServicios.getId(),
-                LocalDateTime.now()
+                LocalDate.now()
             ));
             lineaDeServicios.getAsignaciones().add(nueva_asignacion);
             lineaDeServicios.getContratados().add(nuevo_contrato);
         }
 
-        // recalcularLinea(lineaDeServicios);
-        lineaDeServiciosRepository.save(lineaDeServicios);
-        // Long idFactura = lineaDeServicios.getFactura().getId();
-        // publisher.publishEvent(new FacturaModificadaEvent(
-        //     idFactura,
-        //     getImporteTotalFactura(idFactura)
-        // ));
-        return mapper.toDTO(lineaDeServicios);
+        LineaDeServicios guardado = lineaDeServiciosRepository.save(lineaDeServicios);
+        
+        return mapper.toDTO(guardado);
     }
-
-    // public void recalcularLinea(LineaDeServicios lineadDeServicios){
-    //     lineadDeServicios.setImporte(trabajaService.sumImporteByLineaServiciosId(lineadDeServicios.getId()));
-    // }
 
     public List<LineaDeServiciosDTO> listar() {
         return lineaDeServiciosRepository.findAll().stream().map(
@@ -142,6 +135,10 @@ public class LineaDeServiciosService {
         Usuario administrador = usuarioService.getAutenticado(dto.getIdUsuarioAdmin());
         LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
             idLineaServicios).orElseThrow();
+        // Validar que se este modificando una factura perteneciente a un periodo no cerrado
+        if(!lineaDeServicios.getFactura().getPeriodo().isAbierto()){
+            throw new ResponseStatusException(HttpStatus.LOCKED, "La linea de servicios que quiere modificar pertenece a un periodo cerrado");
+        }
         Especialista especialista = especialistaRepo.findById(dto.getIdEspecialista())
             .orElseThrow();
         Optional<Trabaja> contrato = trabajaService.getByEspecialistaAndLineaServicios(

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.satoshihans.practicalaboralsql.cliente.Cliente;
 import com.satoshihans.practicalaboralsql.lineaservicio.LineaDeServicios;
+import com.satoshihans.practicalaboralsql.periodo.Periodo;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,7 +35,11 @@ public class Factura {
     @JoinColumn(name = "idCliente", referencedColumnName = "id")
     private Cliente cliente;
 
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "idPeriodo", referencedColumnName = "id")
+    private Periodo periodo;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<LineaDeServicios> lineasDeServicio;
     
 }

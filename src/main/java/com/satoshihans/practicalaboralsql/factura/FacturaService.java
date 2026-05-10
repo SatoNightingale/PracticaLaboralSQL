@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.satoshihans.practicalaboralsql.cliente.ClienteRepository;
 import com.satoshihans.practicalaboralsql.lineaservicio.*;
+import com.satoshihans.practicalaboralsql.periodo.PeriodoRepository;
 import com.satoshihans.practicalaboralsql.usuario.UsuarioService;
 
 @Service
@@ -19,6 +20,9 @@ public class FacturaService {
 
     @Autowired
     private ClienteRepository clienteRepo;
+
+    @Autowired
+    private PeriodoRepository  periodoRepo;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -34,7 +38,7 @@ public class FacturaService {
 
     public FacturaDTO add(FacturaCreacionDTO dto) {
         usuarioService.checkAutenticado(dto.getIdUsuarioAdmin());
-        Factura nuevo = mapper.toNewEntity(dto, clienteRepo, lineaDeServiciosService);
+        Factura nuevo = mapper.toNewEntity(dto, clienteRepo, periodoRepo, lineaDeServiciosService);
         Factura guardado = facturaRepository.save(nuevo);
         return mapper.toDTO(guardado);
     }
@@ -42,8 +46,11 @@ public class FacturaService {
     public LineaDeServiciosDTO add_LineaDeServicios(LineaDeServiciosCreacionDTO dto){
         usuarioService.checkAutenticado(dto.getIdUsuarioAdmin());
         Factura factura = facturaRepository.findById(dto.getIdFactura()).orElseThrow();
+        // Validar que la factura modificada pertenezca a un periodo activo
+        if(!factura.getPeriodo().isAbierto())
+            throw new ResponseStatusException(HttpStatus.LOCKED, "La factura que quiere modificar pertenece a un periodo cerrado");
         LineaDeServicios nuevo = lineaDeServiciosService.add(
-            mapper.toCreacionDTO(dto), factura, dto.getIdUsuarioAdmin());
+            mapper.toCreacionDesdeFacturaDTO(dto), factura, dto.getIdUsuarioAdmin());
         // recalcularImporteFactura(factura);
         facturaRepository.save(factura);
         return servicioMapper.toDTO(nuevo);

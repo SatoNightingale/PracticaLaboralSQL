@@ -3,6 +3,8 @@ package com.satoshihans.practicalaboralsql.periodo;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.satoshihans.practicalaboralsql.factura.Factura;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,10 +20,13 @@ public class Periodo {
 
     private boolean abierto;
     
-    private LocalDate inicio, fin;
+    private LocalDate fechaInicio, fechaFin;
+
+    @OneToMany(mappedBy = "periodo", cascade = CascadeType.ALL)
+    private List<Plan> planes;
 
     @OneToMany(mappedBy = "periodo")
-    private List<Plan> planes;
+    private List<Factura> facturas;
 
     private Double ingresosTotales;
 }

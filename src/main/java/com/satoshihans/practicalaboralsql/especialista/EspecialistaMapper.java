@@ -41,11 +41,13 @@ public abstract class EspecialistaMapper {
 
     public abstract DepartamentoDTO toDTO(Departamento entity);
 
-    @Mapping(target = "especialistas", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "especialistas", ignore = true)
+    @Mapping(target = "historialPlanes", ignore = true)
     public abstract Departamento toNewEntity(DepartamentoCreacionDTO dto);
 
-    @Mapping(target = "especialistas", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "especialistas", ignore = true)
+    @Mapping(target = "historialPlanes", ignore = true)
     public abstract Departamento updateEntity(DepartamentoCreacionDTO dto, @MappingTarget Departamento entity);
 }

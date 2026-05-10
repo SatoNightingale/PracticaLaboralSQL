@@ -1,6 +1,6 @@
 package com.satoshihans.practicalaboralsql.asignacion;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.satoshihans.practicalaboralsql.especialista.Especialista;
 import com.satoshihans.practicalaboralsql.lineaservicio.LineaDeServicios;
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class Administra {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +30,6 @@ public class Administra {
 
     @ManyToOne
     private LineaDeServicios lineaServicios; // Linea a la que se asigno un especialista
-    
-    private LocalDateTime fechaAsignacion; // Fecha de la asignacion
+
+    private LocalDate fechaAsignacion; // Fecha de la asignacion
 }
