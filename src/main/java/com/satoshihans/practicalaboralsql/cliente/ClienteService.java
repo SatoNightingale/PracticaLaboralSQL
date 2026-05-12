@@ -23,17 +23,25 @@ public class ClienteService {
 
 
     public ClienteDTO add(ClienteCreacionDTO dto) {
-        Cliente nuevo;
-        if(dto.getIdMunicipio() == null || (
-            !localizacionService.municipioExistsById(dto.getIdMunicipio()) && 
-            dto.getMunicipioCreacion() != null
-        )){
-            localizacionService.add_municipio(dto.getMunicipioCreacion());
-        } else 
+        if(clienteRepository.existsById(dto.getId())){
             throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
-                "Datos de municipio invalidos"
-        );
+                HttpStatus.CONFLICT,
+                "Ya existe un cliente con ese id"
+            );
+        }
+        Cliente nuevo;
+        if(dto.getIdMunicipio() == null){
+            if(
+                !localizacionService.municipioExistsById(dto.getIdMunicipio()) && 
+                dto.getMunicipioCreacion() != null
+            ){
+                dto.setIdMunicipio(localizacionService.add_municipio(dto.getMunicipioCreacion()).getId());
+            } else 
+                throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Datos de municipio invalidos"
+                );
+        }
         nuevo = mapper.toNewEntity(dto);
         nuevo.setMunicipio(localizacionService.getById(dto.getIdMunicipio()));
         clienteRepository.save(nuevo);
