@@ -67,4 +67,8 @@ public class LocalizacionService {
     public boolean municipioExistsById(Long id){
         return municipioRepository.existsById(id);
     }
+
+    public MunicipioRepository getMunicipioRepository() {
+        return municipioRepository;
+    }
 }
