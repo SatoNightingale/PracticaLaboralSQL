@@ -1,4 +1,4 @@
-package com.satoshihans.practicalaboralsql.periodo;
+package com.satoshihans.practicalaboralsql.periodo.dto;
 
 import com.satoshihans.practicalaboralsql.departamento.DepartamentoDTO;
 

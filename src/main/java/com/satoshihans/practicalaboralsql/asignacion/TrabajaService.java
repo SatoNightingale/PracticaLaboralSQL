@@ -5,6 +5,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.satoshihans.practicalaboralsql.asignacion.dto.TrabajaCreacionDTO;
+import com.satoshihans.practicalaboralsql.asignacion.dto.TrabajaDTO;
+import com.satoshihans.practicalaboralsql.asignacion.dto.TrabajaModificacionDTO;
 import com.satoshihans.practicalaboralsql.especialista.EspecialistaRepository;
 import com.satoshihans.practicalaboralsql.lineaservicio.LineaDeServicios;
 import com.satoshihans.practicalaboralsql.lineaservicio.LineaDeServiciosRepository;

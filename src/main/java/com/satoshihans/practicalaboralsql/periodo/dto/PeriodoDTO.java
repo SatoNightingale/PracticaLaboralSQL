@@ -1,4 +1,4 @@
-package com.satoshihans.practicalaboralsql.periodo;
+package com.satoshihans.practicalaboralsql.periodo.dto;
 
 import java.time.LocalDate;
 import java.util.List;

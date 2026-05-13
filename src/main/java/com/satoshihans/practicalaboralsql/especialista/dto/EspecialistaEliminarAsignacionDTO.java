@@ -1,4 +1,4 @@
-package com.satoshihans.practicalaboralsql.especialista;
+package com.satoshihans.practicalaboralsql.especialista.dto;
 
 import lombok.*;
 

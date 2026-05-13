@@ -1,6 +1,6 @@
-package com.satoshihans.practicalaboralsql.asignacion;
+package com.satoshihans.practicalaboralsql.asignacion.dto;
 
-import com.satoshihans.practicalaboralsql.especialista.EspecialistaDTO;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaDTO;
 
 import lombok.*;
 

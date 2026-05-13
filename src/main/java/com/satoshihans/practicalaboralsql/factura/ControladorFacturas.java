@@ -1,5 +1,7 @@
 package com.satoshihans.practicalaboralsql.factura;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,12 @@ public class ControladorFacturas {
         );
     }
     
+    @Operation(summary = "Listar todas las facturas con sus lineas de servicio")
+    @GetMapping()
+    public List<FacturaDTO> list() {
+        return facturaService.listar();
+    }
+
     @Operation(summary = "Validar factura", description = "Validar que el importe total de todas las lineas de servicio de una factura sea igual al importe de la factura. Devuelve true si esta bien repartida y false si no lo esta")
     @GetMapping("/{id}/validar")
     public ResponseEntity<?> validarFactura(@PathVariable Long idFactura) {

@@ -8,9 +8,12 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.satoshihans.practicalaboralsql.cliente.ClienteRepository;
 import com.satoshihans.practicalaboralsql.lineaservicio.*;
+import com.satoshihans.practicalaboralsql.periodo.Periodo;
 import com.satoshihans.practicalaboralsql.periodo.PeriodoRepository;
 import com.satoshihans.practicalaboralsql.shared.RelationResolver;
 
@@ -49,7 +52,20 @@ public abstract class FacturaMapper {
 
         entity.setLineasDeServicio(lineasdeServicio);
         entity.setImporteTotal(importe);
-        entity.setPeriodo(periodoRepo.getPeriodoActual());
+
+        Periodo periodoActual = periodoRepo.getPeriodoActual();
+
+        if(periodoActual == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "No hay periodos en la base de datos a los que asignar la factura"
+            );
+        } else if(!periodoActual.isAbierto()){
+            throw new ResponseStatusException(HttpStatus.LOCKED,
+                "El periodo actual esta cerrado, no se pueden añadir facturas. Cree un nuevo periodo"
+            );
+        } else {
+            entity.setPeriodo(periodoActual);
+        }
     }
 
     public abstract LineaDeServiciosCreacionDesdeFacturaDTO toCreacionDesdeFacturaDTO(LineaDeServiciosCreacionDTO dto);

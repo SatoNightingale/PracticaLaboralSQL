@@ -11,6 +11,10 @@ import com.satoshihans.practicalaboralsql.departamento.Departamento;
 import com.satoshihans.practicalaboralsql.departamento.DepartamentoCreacionDTO;
 import com.satoshihans.practicalaboralsql.departamento.DepartamentoDTO;
 import com.satoshihans.practicalaboralsql.departamento.DepartamentoService;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaCreacionDTO;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaDTO;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaModificacionDTO;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaNombreDTO;
 import com.satoshihans.practicalaboralsql.shared.RelationResolver;
 
 @Mapper(componentModel = "spring", uses = {RelationResolver.class},
@@ -22,6 +26,7 @@ public abstract class EspecialistaMapper {
     public abstract EspecialistaNombreDTO toNombreDTO(Especialista entity);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "contratos", ignore = true)
     public abstract Especialista toNewEntity(EspecialistaCreacionDTO dto, @Context DepartamentoService service);
     @AfterMapping
     protected void resolverDepartamento(EspecialistaCreacionDTO dto, @MappingTarget Especialista entity, @Context DepartamentoService departamentoService){
@@ -37,6 +42,7 @@ public abstract class EspecialistaMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "departamento", ignore = true)
+    @Mapping(target = "contratos", ignore = true)
     public abstract Especialista updateEntity(EspecialistaModificacionDTO dto, @MappingTarget Especialista entity);
 
     public abstract DepartamentoDTO toDTO(Departamento entity);

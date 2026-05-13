@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import com.satoshihans.practicalaboralsql.especialista.EspecialistaAsignacionDTO;
-import com.satoshihans.practicalaboralsql.especialista.EspecialistaEliminarAsignacionDTO;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaAsignacionDTO;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaEliminarAsignacionDTO;
 import com.satoshihans.practicalaboralsql.factura.FacturaService;
 
 import io.swagger.v3.oas.annotations.Operation;

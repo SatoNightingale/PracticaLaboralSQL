@@ -3,6 +3,8 @@ package com.satoshihans.practicalaboralsql.asignacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.satoshihans.practicalaboralsql.asignacion.dto.AdministraCreacionDTO;
+import com.satoshihans.practicalaboralsql.asignacion.dto.AdministraCreacionDesdeLineaDeServiciosDTO;
 import com.satoshihans.practicalaboralsql.especialista.EspecialistaRepository;
 import com.satoshihans.practicalaboralsql.lineaservicio.*;
 import com.satoshihans.practicalaboralsql.usuario.UsuarioRepository;

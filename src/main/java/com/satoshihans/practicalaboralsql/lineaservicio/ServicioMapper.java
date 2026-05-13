@@ -3,10 +3,9 @@ package com.satoshihans.practicalaboralsql.lineaservicio;
 import org.mapstruct.*;
 
 import com.satoshihans.practicalaboralsql.asignacion.*;
+import com.satoshihans.practicalaboralsql.asignacion.dto.*;
 import com.satoshihans.practicalaboralsql.especialista.EspecialistaRepository;
-import com.satoshihans.practicalaboralsql.servicio.Servicio;
-import com.satoshihans.practicalaboralsql.servicio.ServicioCreacionDTO;
-import com.satoshihans.practicalaboralsql.servicio.ServicioDTO;
+import com.satoshihans.practicalaboralsql.servicio.*;
 import com.satoshihans.practicalaboralsql.shared.RelationResolver;
 import com.satoshihans.practicalaboralsql.usuario.UsuarioRepository;
 

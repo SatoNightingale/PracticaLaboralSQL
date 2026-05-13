@@ -13,7 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.satoshihans.practicalaboralsql.asignacion.*;
+import com.satoshihans.practicalaboralsql.asignacion.dto.AdministraCreacionDTO;
+import com.satoshihans.practicalaboralsql.asignacion.dto.AdministraCreacionDesdeLineaDeServiciosDTO;
+import com.satoshihans.practicalaboralsql.asignacion.dto.TrabajaCreacionDTO;
+import com.satoshihans.practicalaboralsql.asignacion.dto.TrabajaModificacionDTO;
 import com.satoshihans.practicalaboralsql.especialista.*;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaAsignacionDTO;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaEliminarAsignacionDTO;
 import com.satoshihans.practicalaboralsql.factura.Factura;
 import com.satoshihans.practicalaboralsql.servicio.*;
 import com.satoshihans.practicalaboralsql.usuario.*;

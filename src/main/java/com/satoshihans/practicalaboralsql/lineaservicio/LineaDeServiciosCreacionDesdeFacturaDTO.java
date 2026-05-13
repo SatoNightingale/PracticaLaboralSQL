@@ -2,7 +2,7 @@ package com.satoshihans.practicalaboralsql.lineaservicio;
 
 import java.util.List;
 
-import com.satoshihans.practicalaboralsql.asignacion.TrabajaCreacionDTO;
+import com.satoshihans.practicalaboralsql.asignacion.dto.TrabajaCreacionDTO;
 
 import lombok.*;
 

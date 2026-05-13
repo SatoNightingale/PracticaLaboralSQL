@@ -1,5 +1,6 @@
 package com.satoshihans.practicalaboralsql.periodo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.satoshihans.practicalaboralsql.asignacion.TrabajaRepository;
 import com.satoshihans.practicalaboralsql.departamento.DepartamentoRepository;
+import com.satoshihans.practicalaboralsql.periodo.dto.PeriodoCreacionDTO;
+import com.satoshihans.practicalaboralsql.periodo.dto.PeriodoDTO;
 
 @Service
 public class PeriodoService {
@@ -29,7 +32,6 @@ public class PeriodoService {
     public PeriodoDTO add(PeriodoCreacionDTO dto){
         Periodo periodo = mapper.toNewEntity(dto, departamentoRepository);
         Periodo guardado = periodoRepository.save(periodo);
-
         return mapper.toDTO(guardado);
     }
 
@@ -47,6 +49,14 @@ public class PeriodoService {
             .orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND)
             );
+    }
+
+    public PeriodoDTO getAsDto(Long id){
+        return mapper.toDTO(getById(id));
+    }
+
+    public PeriodoDTO getPeriodoByFecha(LocalDate fecha){
+        return mapper.toDTO(periodoRepository.getPeriodoByFecha(fecha));
     }
 
     public Double getIngresosTotalesPeriodo(Long id){

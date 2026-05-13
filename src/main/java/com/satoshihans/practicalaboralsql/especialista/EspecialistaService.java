@@ -9,6 +9,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.satoshihans.practicalaboralsql.departamento.Departamento;
 import com.satoshihans.practicalaboralsql.departamento.DepartamentoService;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaCreacionDTO;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaDTO;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaModificacionDTO;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaNombreDTO;
 
 @Service
 public class EspecialistaService {
