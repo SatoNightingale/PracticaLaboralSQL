@@ -6,8 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.satoshihans.practicalaboralsql.especialista.Especialista;
 import com.satoshihans.practicalaboralsql.especialista.EspecialistaMapper;
 import com.satoshihans.practicalaboralsql.especialista.EspecialistaRepository;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaCumplimientoPlanDTO;
+import com.satoshihans.practicalaboralsql.periodo.Periodo;
+import com.satoshihans.practicalaboralsql.periodo.PeriodoRepository;
 import com.satoshihans.practicalaboralsql.periodo.Plan;
 import com.satoshihans.practicalaboralsql.periodo.PlanRepository;
 
@@ -19,6 +23,9 @@ public class DepartamentoService {
 
     @Autowired
     private PlanRepository planRepository;
+
+    // @Autowired
+    // private PeriodoRepository periodoRepository;
 
     @Autowired
     private EspecialistaRepository especialistaRepository;
@@ -82,4 +89,20 @@ public class DepartamentoService {
         Integer cantEspecialistas = especialistaRepository.countByDepartamento(departamentoId);
         return planDepartamento / cantEspecialistas;
     }
+
+    // public EspecialistaCumplimientoPlanDTO porcentajeCumplimientoPlan(Long idEspecialista, Long idPeriodo){
+    //     Periodo periodo = periodoRepository.findById(idPeriodo).orElseThrow();
+    //     Double fraccionPlanDepartamento = obtenerFraccionPlanPorEspecialista(idPeriodo);
+    //     Double ingresos = trabajaRepository.getIngresosTotalesEspecialistaPorPeriodo(idEspecialista, periodo.getFechaInicio(), periodo.getFechaFin());
+    //     Double porcentajeCumplido = ingresos / fraccionPlanDepartamento;
+    //     return new EspecialistaCumplimientoPlanDTO(
+    //         idEspecialista,
+    //         ingresos,
+    //         porcentajeCumplido
+    //     );
+    // }
+
+    // public DepartamentoCumplimientoPlanDTO reporteIngresosDepartamento(Long idDepartamento, Long idPeriodo){
+
+    // }
 }

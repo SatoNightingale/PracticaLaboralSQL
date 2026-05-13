@@ -7,12 +7,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.satoshihans.practicalaboralsql.asignacion.TrabajaRepository;
 import com.satoshihans.practicalaboralsql.departamento.Departamento;
 import com.satoshihans.practicalaboralsql.departamento.DepartamentoService;
 import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaCreacionDTO;
+import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaCumplimientoPlanDTO;
 import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaDTO;
 import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaModificacionDTO;
 import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaNombreDTO;
+import com.satoshihans.practicalaboralsql.periodo.Periodo;
+import com.satoshihans.practicalaboralsql.periodo.PeriodoRepository;
 
 @Service
 public class EspecialistaService {
@@ -22,6 +26,12 @@ public class EspecialistaService {
 
     @Autowired
     private DepartamentoService departamentoService;
+
+    @Autowired
+    private TrabajaRepository trabajaRepository;
+
+    @Autowired
+    private PeriodoRepository periodoRepository;
 
     @Autowired
     private EspecialistaMapper mapper;
@@ -74,5 +84,17 @@ public class EspecialistaService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "No se ha encontrado el especialista con id " + id
             ));
+    }
+
+    public EspecialistaCumplimientoPlanDTO porcentajeCumplimientoPlan(Long idEspecialista, Long idPeriodo){
+        Periodo periodo = periodoRepository.findById(idPeriodo).orElseThrow();
+        Double fraccionPlanDepartamento = departamentoService.obtenerFraccionPlanPorEspecialista(idPeriodo);
+        Double ingresos = trabajaRepository.getIngresosTotalesEspecialistaPorPeriodo(idEspecialista, periodo.getFechaInicio(), periodo.getFechaFin());
+        Double porcentajeCumplido = ingresos / fraccionPlanDepartamento;
+        return new EspecialistaCumplimientoPlanDTO(
+            idEspecialista,
+            ingresos,
+            porcentajeCumplido
+        );
     }
 }

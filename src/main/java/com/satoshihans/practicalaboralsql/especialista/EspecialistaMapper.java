@@ -27,9 +27,16 @@ public abstract class EspecialistaMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "contratos", ignore = true)
-    public abstract Especialista toNewEntity(EspecialistaCreacionDTO dto, @Context DepartamentoService service);
+    public abstract Especialista toNewEntity(
+        EspecialistaCreacionDTO dto,
+        @Context DepartamentoService service
+    );
     @AfterMapping
-    protected void resolverDepartamento(EspecialistaCreacionDTO dto, @MappingTarget Especialista entity, @Context DepartamentoService departamentoService){
+    protected void resolverDepartamento(
+        EspecialistaCreacionDTO dto,
+        @MappingTarget Especialista entity,
+        @Context DepartamentoService departamentoService
+    ){
         if(dto.getIdDepartamento() != null && departamentoService.existsById(dto.getIdDepartamento())){
             Departamento departamento = departamentoService.getById(dto.getIdDepartamento());
             entity.setDepartamento(departamento);

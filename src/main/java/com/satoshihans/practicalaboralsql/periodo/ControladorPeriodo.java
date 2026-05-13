@@ -1,10 +1,8 @@
 package com.satoshihans.practicalaboralsql.periodo;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,25 +32,27 @@ public class ControladorPeriodo {
     }
 
 	@Operation(summary = "Mostrar los datos de un periodo dado su id")
-    @GetMapping()
+    @GetMapping("/{id}")
     public ResponseEntity<?> mostrar(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(
             periodoService.getAsDto(id)
         );
     }
 
-    @Operation(summary = "Mostrar que periodo estaba activo en una determinada fecha")
-    @GetMapping()
-    public ResponseEntity<?> mostrar(@Param(value = "") LocalDate fecha) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            periodoService.getPeriodoByFecha(fecha)
-        );
-    }
+    // @Operation(summary = "Mostrar que periodo estaba activo en una determinada fecha")
+    // @GetMapping()
+    // public ResponseEntity<?> mostrar(LocalDate fecha) {
+    //     return ResponseEntity.status(HttpStatus.OK).body(
+    //         periodoService.getPeriodoByFecha(fecha)
+    //     );
+    // }
     
     @Operation(summary = "Listar todos los periodos")
     @GetMapping()
-    public List<PeriodoDTO> list() {
-        return periodoService.listar();
+    public ResponseEntity<?> list() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            periodoService.listar()
+        );
     }
 
 	@Operation(summary = "Cerrar un periodo, bloqueando todas las asignaciones de facturas que tuvieron lugar en el")
