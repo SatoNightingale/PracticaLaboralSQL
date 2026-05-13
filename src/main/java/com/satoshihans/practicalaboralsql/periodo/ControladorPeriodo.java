@@ -1,6 +1,6 @@
 package com.satoshihans.practicalaboralsql.periodo;
 
-import java.util.List;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,14 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.satoshihans.practicalaboralsql.periodo.dto.PeriodoCreacionDTO;
-import com.satoshihans.practicalaboralsql.periodo.dto.PeriodoDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 
-@Tag(name = "Facturas", description = "Periodos de ingresos de la empresa")
+@Tag(name = "Periodo", description = "Periodos de ingresos de la empresa")
 @RestController
 @RequestMapping("/api/periodos")
 public class ControladorPeriodo {
@@ -39,13 +38,13 @@ public class ControladorPeriodo {
         );
     }
 
-    // @Operation(summary = "Mostrar que periodo estaba activo en una determinada fecha")
-    // @GetMapping()
-    // public ResponseEntity<?> mostrar(LocalDate fecha) {
-    //     return ResponseEntity.status(HttpStatus.OK).body(
-    //         periodoService.getPeriodoByFecha(fecha)
-    //     );
-    // }
+    @Operation(summary = "Obtener el periodo que estaba activo en una determinada fecha (no implementado aun)")
+    @GetMapping("/fecha")
+    public ResponseEntity<?> obtener_fecha(@RequestParam LocalDate fecha) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            periodoService.getPeriodoByFecha(fecha)
+        );
+    }
     
     @Operation(summary = "Listar todos los periodos")
     @GetMapping()
