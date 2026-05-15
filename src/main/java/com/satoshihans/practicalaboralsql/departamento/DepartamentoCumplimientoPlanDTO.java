@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 public class DepartamentoCumplimientoPlanDTO {
-	private Long idDepto;
+	private DepartamentoDTO departamento;
 	private Long idPeriodo;
 	private Double totalIngresado;
 	private Double plan;

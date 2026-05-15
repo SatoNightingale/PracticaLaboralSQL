@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PlanRepository extends JpaRepository<Plan, Long> {
 
-    @Query("SELECT p FROM Plan p WHERE p.departamento.id = :departamentoId ORDER BY p.periodo.fechaInicio DESC LIMIT 1")
-    Plan getPlanActualByDepartamentoId(Long departamentoId);
+    @Query("SELECT p.plan FROM Plan p WHERE p.idDepartamento = :idDepartamento AND p.idPeriodo = :idPeriodo")
+    Double getPlanByDepartamento(Long idDepartamento, Long idPeriodo);
 }

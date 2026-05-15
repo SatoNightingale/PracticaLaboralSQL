@@ -87,9 +87,14 @@ public class EspecialistaService {
     }
 
     public EspecialistaCumplimientoPlanDTO porcentajeCumplimientoPlan(Long idEspecialista, Long idPeriodo){
+        Especialista especialista = especialistaRepository.findById(idEspecialista).orElseThrow();
         Periodo periodo = periodoRepository.findById(idPeriodo).orElseThrow();
-        Double fraccionPlanDepartamento = departamentoService.obtenerFraccionPlanPorEspecialista(idPeriodo);
-        Double ingresos = trabajaRepository.getIngresosTotalesEspecialistaPorPeriodo(idEspecialista, periodo.getFechaInicio(), periodo.getFechaFin());
+        Double fraccionPlanDepartamento = departamentoService.obtenerFraccionPlanPorEspecialista(
+            especialista.getDepartamento().getId(), idPeriodo
+        );
+        Double ingresos = trabajaRepository.getIngresosTotalesEspecialistaPorPeriodo(
+            idEspecialista, periodo.getFechaInicio(), periodo.getFechaFin()
+        );
         Double porcentajeCumplido = ingresos / fraccionPlanDepartamento;
         return new EspecialistaCumplimientoPlanDTO(
             idEspecialista,

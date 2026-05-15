@@ -6,13 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.satoshihans.practicalaboralsql.especialista.Especialista;
+import com.satoshihans.practicalaboralsql.asignacion.TrabajaRepository;
 import com.satoshihans.practicalaboralsql.especialista.EspecialistaMapper;
 import com.satoshihans.practicalaboralsql.especialista.EspecialistaRepository;
 import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaCumplimientoPlanDTO;
 import com.satoshihans.practicalaboralsql.periodo.Periodo;
 import com.satoshihans.practicalaboralsql.periodo.PeriodoRepository;
-import com.satoshihans.practicalaboralsql.periodo.Plan;
 import com.satoshihans.practicalaboralsql.periodo.PlanRepository;
 
 @Service
@@ -24,8 +23,11 @@ public class DepartamentoService {
     @Autowired
     private PlanRepository planRepository;
 
-    // @Autowired
-    // private PeriodoRepository periodoRepository;
+    @Autowired
+    private PeriodoRepository periodoRepository;
+
+    @Autowired
+    private TrabajaRepository trabajaRepository;
 
     @Autowired
     private EspecialistaRepository especialistaRepository;
@@ -33,6 +35,7 @@ public class DepartamentoService {
     @Autowired
     private EspecialistaMapper mapper;
 
+    
     public Departamento add_NoDto(DepartamentoCreacionDTO dto) {
         if (departamentoRepository.count() < 5) {
             Departamento nuevo = mapper.toNewEntity(dto);
@@ -44,9 +47,11 @@ public class DepartamentoService {
         );
     }
 
+
     public DepartamentoDTO add(DepartamentoCreacionDTO dto) {
         return mapper.toDTO(add_NoDto(dto));
     }
+
 
     public List<DepartamentoDTO> listar() {
         return departamentoRepository
@@ -56,6 +61,7 @@ public class DepartamentoService {
             .toList();
     }
 
+
     public Departamento getById(Long id) {
         return departamentoRepository
             .findById(id)
@@ -64,6 +70,7 @@ public class DepartamentoService {
             );
     }
 
+
     public DepartamentoDTO update(Long id, DepartamentoCreacionDTO dto) {
         Departamento entity = getById(id);
         Departamento actualizado = mapper.updateEntity(dto, entity);
@@ -71,38 +78,70 @@ public class DepartamentoService {
         return mapper.toDTO(guardado);
     }
 
+
     public void delete(Long id) {
         getById(id);
         departamentoRepository.deleteById(id);
     }
 
+
     public boolean existsById(Long id) {
         return departamentoRepository.existsById(id);
     }
 
-    public Plan obtenerPlanDepartamento(Long departamentoId){
-        return planRepository.getPlanActualByDepartamentoId(departamentoId);
-    }
 
-    public Double obtenerFraccionPlanPorEspecialista(Long departamentoId){
-        Double planDepartamento = obtenerPlanDepartamento(departamentoId).getPlan();
-        Integer cantEspecialistas = especialistaRepository.countByDepartamento(departamentoId);
+    public Double obtenerFraccionPlanPorEspecialista(Long idDepartamento, Long idPeriodo){
+        Double planDepartamento = planRepository.getPlanByDepartamento(idDepartamento, idPeriodo);
+        Integer cantEspecialistas = especialistaRepository.countByDepartamento(idDepartamento);
         return planDepartamento / cantEspecialistas;
     }
 
-    // public EspecialistaCumplimientoPlanDTO porcentajeCumplimientoPlan(Long idEspecialista, Long idPeriodo){
-    //     Periodo periodo = periodoRepository.findById(idPeriodo).orElseThrow();
-    //     Double fraccionPlanDepartamento = obtenerFraccionPlanPorEspecialista(idPeriodo);
-    //     Double ingresos = trabajaRepository.getIngresosTotalesEspecialistaPorPeriodo(idEspecialista, periodo.getFechaInicio(), periodo.getFechaFin());
-    //     Double porcentajeCumplido = ingresos / fraccionPlanDepartamento;
-    //     return new EspecialistaCumplimientoPlanDTO(
-    //         idEspecialista,
-    //         ingresos,
-    //         porcentajeCumplido
-    //     );
-    // }
 
-    // public DepartamentoCumplimientoPlanDTO reporteIngresosDepartamento(Long idDepartamento, Long idPeriodo){
+    public EspecialistaCumplimientoPlanDTO porcentajeCumplimientoPlanEspecialista(
+        Long idEspecialista,
+        Periodo periodo,
+        Double fraccionEspecialista
+    ){
+        Double ingresos = trabajaRepository.getIngresosTotalesEspecialistaPorPeriodo(idEspecialista, periodo.getFechaInicio(), periodo.getFechaFin());
+        Double porcentajeCumplido = ingresos / fraccionEspecialista;
+        return new EspecialistaCumplimientoPlanDTO(
+            idEspecialista,
+            ingresos,
+            porcentajeCumplido
+        );
+    }
 
-    // }
+
+    public DepartamentoCumplimientoPlanDTO reporteIngresosDepartamento(Long idDepartamento, Long idPeriodo){
+        Departamento departamento = departamentoRepository.findById(idDepartamento).orElseThrow();
+        Periodo periodo = periodoRepository.findById(idPeriodo).orElseThrow();
+
+        Double planPeriodo = planRepository.getPlanByDepartamento(idDepartamento, idPeriodo);
+        Double fraccionEspecialista = planPeriodo / especialistaRepository.countByDepartamento(idDepartamento);
+        
+        List<EspecialistaCumplimientoPlanDTO> cumplimientosEspecialista = especialistaRepository
+            .findAllByDepartamento(idDepartamento)
+            .stream()
+            .map(id -> porcentajeCumplimientoPlanEspecialista(
+                    id,
+                    periodo,
+                    fraccionEspecialista
+                )
+            )
+            .toList();
+        
+        Double ingresosTotales = cumplimientosEspecialista
+            .stream()
+            .mapToDouble(dto -> dto.getIngresosTotales())
+            .sum();
+        
+        return new DepartamentoCumplimientoPlanDTO(
+            mapper.toDTO(departamento),
+            idPeriodo,
+            ingresosTotales,
+            planPeriodo,
+            ingresosTotales / planPeriodo,
+            cumplimientosEspecialista
+        );
+    }
 }
