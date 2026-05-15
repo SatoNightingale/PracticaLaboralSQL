@@ -24,19 +24,27 @@ public class ControladorDepartamentos {
         );
     }
 
-    @Operation(summary = "Actualizar un departamento dado su id")
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody DepartamentoCreacionDTO dto) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            departamentoService.update(id, dto)
-        );
-    }
-
     @Operation(summary = "Listar todos los departamentos registrados")
     @GetMapping
     public ResponseEntity<?> listar() {
         return ResponseEntity.status(HttpStatus.OK).body(
             departamentoService.listar()
+        );
+    }
+
+    @Operation(summary = "Generar reporte de ingresos del departamento")
+    @GetMapping("/{id}/reporte")
+    public ResponseEntity<?> reporte(@PathVariable Long idDepto, @RequestParam Long idPeriodo) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            departamentoService.reporteIngresosDepartamento(idDepto, idPeriodo)
+        );
+    }
+
+    @Operation(summary = "Actualizar un departamento dado su id")
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody DepartamentoCreacionDTO dto) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            departamentoService.update(id, dto)
         );
     }
     

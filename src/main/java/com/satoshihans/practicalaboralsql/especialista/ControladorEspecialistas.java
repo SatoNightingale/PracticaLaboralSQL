@@ -53,6 +53,14 @@ public class ControladorEspecialistas {
         );
     }
 
+    @Operation(summary = "Obtener el porcentaje de cumplimiento del plan de ingresos de un especialista")
+    @GetMapping("/{id}/cumplimiento")
+    public ResponseEntity<?> cumplimentoEspecialista(@PathVariable Long idEspecialista, @RequestParam Long idPeriodo) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            especialistaService.porcentajeCumplimientoPlan(idEspecialista, idPeriodo)
+        );
+    }
+
     @Operation(summary = "Actualizar los datos un especialista")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEspecialista(@PathVariable Long id, @RequestBody EspecialistaModificacionDTO dto) {
@@ -71,8 +79,10 @@ public class ControladorEspecialistas {
     @Operation(summary = "Cambiar un especialista de departamento")
     @PutMapping("/{id}/cambiar_depto")
     public ResponseEntity<?> cambiarDepartamento(
-        @Parameter(description = "El id del especialista al que se le va a cambiar el departamento") @PathVariable Long id,
-        @Parameter(description = "El id del nuevo departamento del especialista") @RequestBody Long idNuevoDepto
+        @Parameter(description = "El id del especialista al que se le va a cambiar el departamento")
+        @PathVariable Long id,
+        @Parameter(description = "El id del nuevo departamento del especialista")
+        @RequestBody Long idNuevoDepto
     ){
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
             especialistaService.cambiarDepartamento(id, idNuevoDepto)

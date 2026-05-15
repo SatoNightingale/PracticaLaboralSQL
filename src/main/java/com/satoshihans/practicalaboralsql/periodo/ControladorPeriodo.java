@@ -54,6 +54,14 @@ public class ControladorPeriodo {
         );
     }
 
+    @Operation(summary = "Obtener evolucion histórica de los ingresos en cada período")
+    @GetMapping("/historico")
+    public ResponseEntity<?> ingresosHistoricos() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            periodoService.listaIngresosHistoricos()
+        );
+    }
+
 	@Operation(summary = "Cerrar un periodo, bloqueando todas las asignaciones de facturas que tuvieron lugar en el")
 	@PutMapping("/{id}/cerrar")
 	public ResponseEntity<?> cerrarPeriodo(@PathVariable Long id) {

@@ -12,6 +12,7 @@ import com.satoshihans.practicalaboralsql.asignacion.TrabajaRepository;
 import com.satoshihans.practicalaboralsql.departamento.DepartamentoRepository;
 import com.satoshihans.practicalaboralsql.periodo.dto.PeriodoCreacionDTO;
 import com.satoshihans.practicalaboralsql.periodo.dto.PeriodoDTO;
+import com.satoshihans.practicalaboralsql.periodo.dto.PeriodoIngresosDTO;
 
 @Service
 public class PeriodoService {
@@ -77,5 +78,16 @@ public class PeriodoService {
         );
         Periodo actualizado = periodoRepository.save(periodo);
         return mapper.toDTO(actualizado);
+    }
+
+    List<PeriodoIngresosDTO> listaIngresosHistoricos(){
+        List<PeriodoIngresosDTO> ingresos = periodoRepository.findAllIngresosTotales();
+        // Calcular los ingresos del ultimo periodo, que aun esta activo y por tanto tiene el campo en null
+        for(PeriodoIngresosDTO periodo : ingresos){
+            if(periodo.getIngresos() == null){
+                periodo.setIngresos(getIngresosTotalesPeriodo(periodo.getId()));
+            }
+        }
+        return ingresos;
     }
 }
