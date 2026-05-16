@@ -9,6 +9,6 @@ public interface EspecialistaRepository extends JpaRepository<Especialista, Long
 
 	Integer countByDepartamento(Long idDepartamento);
 
-	@Query("SELECT e.id FROM Especialista e WHERE e.idDepartamento = :idDepartamento")
+	@Query("SELECT id FROM Especialista e WHERE e.departamento.id = :idDepartamento")
 	List<Long> findAllByDepartamento(Long idDepartamento);
 }

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PlanRepository extends JpaRepository<Plan, Long> {
 
-    @Query("SELECT p.plan FROM Plan p WHERE p.idDepartamento = :idDepartamento AND p.idPeriodo = :idPeriodo")
+    @Query("SELECT p.plan FROM Plan p WHERE p.departamento.id = :idDepartamento AND p.periodo.id = :idPeriodo")
     Double getPlanByDepartamento(Long idDepartamento, Long idPeriodo);
 }
