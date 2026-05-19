@@ -32,6 +32,8 @@ public abstract class ServicioMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "especialista", source = "dto.idEspecialista", qualifiedByName = "especialistaFromId")
     @Mapping(target = "importe", source = "dto.importe")
+    @Mapping(target = "lineaServicios", source = "lineaServicios")
+    @Mapping(target = "fechaContratacion", expression = "java(LocalDate.now())")
     public abstract Trabaja toNewEntity(TrabajaCreacionDTO dto, LineaDeServicios lineaServicios,
         @Context EspecialistaRepository repo
     );
@@ -55,6 +57,7 @@ public abstract class ServicioMapper {
     @Mapping(target = "asignado", source = "idEspecialistaAsignado", qualifiedByName = "especialistaFromId")
     @Mapping(target = "usuario", source = "idUsuario", qualifiedByName = "usuarioFromId")
     @Mapping(target = "lineaServicios", source = "idLineaServicios", qualifiedByName = "lineaServiciosFromId")
+    @Mapping(target = "fechaAsignacion", expression = "java(LocalDate.now())")
     public abstract Administra toNewEntity(AdministraCreacionDTO dto,
         @Context EspecialistaRepository especialistaRepo,
         @Context UsuarioRepository usuarioRepo,
@@ -64,6 +67,8 @@ public abstract class ServicioMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "asignado", source = "dto.idEspecialistaAsignado", qualifiedByName = "especialistaFromId")
     @Mapping(target = "usuario", source = "dto.idUsuario", qualifiedByName = "usuarioFromId")
+    @Mapping(target = "fechaAsignacion", expression = "java(LocalDate.now())")
+    @Mapping(target = "lineaServicios", source = "lineaServicios")
     public abstract Administra toNewEntity(AdministraCreacionDesdeLineaDeServiciosDTO dto, LineaDeServicios lineaServicios,
         @Context EspecialistaRepository especialistaRepo,
         @Context UsuarioRepository usuarioRepo

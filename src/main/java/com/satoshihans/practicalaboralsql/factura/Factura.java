@@ -39,7 +39,7 @@ public class Factura {
     @JoinColumn(name = "idPeriodo", referencedColumnName = "id")
     private Periodo periodo;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<LineaDeServicios> lineasDeServicio;
     
 }

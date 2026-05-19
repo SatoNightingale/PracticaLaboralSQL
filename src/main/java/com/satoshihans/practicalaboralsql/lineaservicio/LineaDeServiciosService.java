@@ -1,6 +1,5 @@
 package com.satoshihans.practicalaboralsql.lineaservicio;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +48,14 @@ public class LineaDeServiciosService {
     private ServicioMapper mapper;
 
 
-    public LineaDeServicios add(LineaDeServiciosCreacionDesdeFacturaDTO dto, Factura factura, Long idUsuarioAdmin) {
+    @Transactional
+    public LineaDeServicios addIndependiente(LineaDeServiciosCreacionDesdeFacturaDTO dto, Factura factura, Long idUsuarioAdmin) {
+        LineaDeServicios nuevo = add(dto, factura, idUsuarioAdmin);
+        LineaDeServicios guardado = lineaDeServiciosRepository.save(nuevo);
+        return guardado;
+    }
+
+    public LineaDeServicios add(LineaDeServiciosCreacionDesdeFacturaDTO dto, Factura factura, Long idUsuarioAdmin){
         LineaDeServicios nuevo = new LineaDeServicios();
 
         Servicio servicio = servicioRepo.findById(dto.getIdServicio()).orElseThrow();
@@ -59,12 +65,11 @@ public class LineaDeServiciosService {
 
         for (TrabajaCreacionDTO trabajaDto : dto.getContratos()) {
             importe += trabajaDto.getImporte();
-            contratos.add(trabajaService.add_nodto(trabajaDto, nuevo));
+            contratos.add(trabajaService.add(trabajaDto, nuevo));
             asignaciones.add(administraService.add(
                 new AdministraCreacionDesdeLineaDeServiciosDTO(
                     idUsuarioAdmin,
-                    trabajaDto.getIdEspecialista(),
-                    LocalDate.now()
+                    trabajaDto.getIdEspecialista()
                 ), nuevo
             ));
         }
@@ -74,8 +79,7 @@ public class LineaDeServiciosService {
         nuevo.setServicio(servicio);
         nuevo.setContratados(contratos);
         nuevo.setAsignaciones(asignaciones);
-
-        // lineaDeServiciosRepository.save(nuevo);
+        
         return nuevo;
     }
 
@@ -104,16 +108,14 @@ public class LineaDeServiciosService {
                 dto.getImporte()
             ));
         } else {
-            Trabaja nuevo_contrato = trabajaService.add_nodto(new TrabajaCreacionDTO(
+            Trabaja nuevo_contrato = trabajaService.add(new TrabajaCreacionDTO(
                 dto.getIdEspecialista(),
-                dto.getImporte(),
-                LocalDate.now()
+                dto.getImporte()
             ), lineaDeServicios);
             Administra nueva_asignacion = administraService.add(new AdministraCreacionDTO(
                 administrador.getId(),
                 especialista.getId(),
-                lineaDeServicios.getId(),
-                LocalDate.now()
+                lineaDeServicios.getId()
             ));
             lineaDeServicios.getAsignaciones().add(nueva_asignacion);
             lineaDeServicios.getContratados().add(nuevo_contrato);

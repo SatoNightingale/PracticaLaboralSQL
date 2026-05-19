@@ -28,14 +28,19 @@ public class TrabajaService {
     @Autowired
     private ServicioMapper mapper;
 
-    public TrabajaDTO add(TrabajaCreacionDTO dto, LineaDeServicios servicio){
-        return mapper.toDTO(add_nodto(dto, servicio));
+    // public TrabajaDTO add(TrabajaCreacionDTO dto, LineaDeServicios linea){
+    //     return mapper.toDTO(add_nodto(dto, linea));
+    // }
+
+    public TrabajaDTO addIndependiente(TrabajaCreacionDTO dto, LineaDeServicios linea){
+        Trabaja nuevo = add(dto, linea);
+        Trabaja guardado = trabajaRepository.save(nuevo);
+        return mapper.toDTO(guardado);
     }
 
-    public Trabaja add_nodto(TrabajaCreacionDTO dto, LineaDeServicios servicio){
-        Trabaja nuevo = mapper.toNewEntity(dto, servicio, especialistaRepo);
-        Trabaja guardado = trabajaRepository.save(nuevo);
-        return guardado;
+    public Trabaja add(TrabajaCreacionDTO dto, LineaDeServicios linea){
+        Trabaja nuevo = mapper.toNewEntity(dto, linea, especialistaRepo);
+        return nuevo;
     }
 
     public Optional<Trabaja> getByEspecialistaAndLineaServicios(Long idEspecialista, Long idLineaDeServicio){

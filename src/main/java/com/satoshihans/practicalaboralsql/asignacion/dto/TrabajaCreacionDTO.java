@@ -1,7 +1,5 @@
 package com.satoshihans.practicalaboralsql.asignacion.dto;
 
-import java.time.LocalDate;
-
 import lombok.*;
 
 @Data
@@ -9,5 +7,5 @@ import lombok.*;
 public class TrabajaCreacionDTO {
     private Long idEspecialista;
     private Double importe;
-    private LocalDate fechaContratacion;
+    // private LocalDate fechaContratacion;
 }

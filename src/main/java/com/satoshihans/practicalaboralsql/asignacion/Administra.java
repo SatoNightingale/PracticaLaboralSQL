@@ -22,10 +22,10 @@ public class Administra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private Usuario usuario; // Usuario que realiza la asignacion
 
-    @OneToOne
+    @ManyToOne
     private Especialista asignado; // Especialista asignado a la linea de servicios
 
     @ManyToOne

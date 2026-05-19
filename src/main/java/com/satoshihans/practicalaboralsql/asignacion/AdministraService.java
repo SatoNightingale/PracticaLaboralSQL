@@ -3,8 +3,7 @@ package com.satoshihans.practicalaboralsql.asignacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.satoshihans.practicalaboralsql.asignacion.dto.AdministraCreacionDTO;
-import com.satoshihans.practicalaboralsql.asignacion.dto.AdministraCreacionDesdeLineaDeServiciosDTO;
+import com.satoshihans.practicalaboralsql.asignacion.dto.*;
 import com.satoshihans.practicalaboralsql.especialista.EspecialistaRepository;
 import com.satoshihans.practicalaboralsql.lineaservicio.*;
 import com.satoshihans.practicalaboralsql.usuario.UsuarioRepository;
@@ -30,6 +29,11 @@ public class AdministraService {
 
     public Administra add(AdministraCreacionDesdeLineaDeServiciosDTO dto, LineaDeServicios lineaServicios){
         Administra nuevo = mapper.toNewEntity(dto, lineaServicios, especialistaRepository, usuarioRepository);
+        return nuevo;
+    }
+
+    public Administra addIndependiente(AdministraCreacionDesdeLineaDeServiciosDTO dto, LineaDeServicios lineaServicios){
+        Administra nuevo = add(dto, lineaServicios);
         Administra guardado = administraRepository.save(nuevo);
         return guardado;
     }

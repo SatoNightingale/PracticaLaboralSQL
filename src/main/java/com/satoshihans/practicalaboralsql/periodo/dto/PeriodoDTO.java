@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 public class PeriodoDTO {
+    private Long id;
     private boolean abierto;
     private LocalDate fechaInicio, fechaFin;
     private Double ingresosTotales;

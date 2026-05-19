@@ -52,7 +52,7 @@ public interface PeriodoMapper {
             else
                 throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "Plan duplicado para el mismo id de departamento"
+                    "Id de departamento especificado no existe en la base de datos"
                 );
         }
         if(!deptoIds.isEmpty())

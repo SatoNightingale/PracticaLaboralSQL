@@ -1,5 +1,6 @@
 package com.satoshihans.practicalaboralsql.factura;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.satoshihans.practicalaboralsql.cliente.ClienteRepository;
 import com.satoshihans.practicalaboralsql.lineaservicio.*;
+import com.satoshihans.practicalaboralsql.periodo.Periodo;
 import com.satoshihans.practicalaboralsql.periodo.PeriodoRepository;
 import com.satoshihans.practicalaboralsql.usuario.UsuarioService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class FacturaService {
@@ -36,11 +40,41 @@ public class FacturaService {
     @Autowired
     private ServicioMapper servicioMapper;
 
+    @Transactional
     public FacturaDTO add(FacturaCreacionDTO dto) {
         usuarioService.checkAutenticado(dto.getIdUsuarioAdmin());
-        Factura nuevo = mapper.toNewEntity(dto, clienteRepo, periodoRepo, lineaDeServiciosService);
-        Factura guardado = facturaRepository.save(nuevo);
-        return mapper.toDTO(guardado);
+
+        Factura nuevo = mapper.toNewEntity(dto, clienteRepo);
+        List<LineaDeServicios> lineasdeServicio = new ArrayList<>();
+        Double importe = 0.0;
+
+        for (LineaDeServiciosCreacionDesdeFacturaDTO lineaServiciosDTO : dto.getLineasDeServicios()) {
+            LineaDeServicios nuevaLineaServicios = lineaDeServiciosService.add(
+                lineaServiciosDTO, nuevo, dto.getIdUsuarioAdmin()
+            );
+            importe += nuevaLineaServicios.getImporte();
+            lineasdeServicio.add(nuevaLineaServicios);
+        }
+
+        nuevo.setLineasDeServicio(lineasdeServicio);
+        nuevo.setImporteTotal(importe);
+
+        Periodo periodoActual = periodoRepo.getPeriodoActual();
+
+        if(periodoActual == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "No hay periodos en la base de datos a los que asignar la factura"
+            );
+        } else if(!periodoActual.isAbierto()){
+            throw new ResponseStatusException(HttpStatus.LOCKED,
+                "El periodo actual esta cerrado, no se pueden añadir facturas. Cree un nuevo periodo"
+            );
+        } else {
+            nuevo.setPeriodo(periodoActual);
+        }
+
+        nuevo = facturaRepository.save(nuevo);
+        return mapper.toDTO(nuevo);
     }
 
     public LineaDeServiciosDTO add_LineaDeServicios(LineaDeServiciosCreacionDTO dto){
@@ -49,7 +83,7 @@ public class FacturaService {
         // Validar que la factura modificada pertenezca a un periodo activo
         if(!factura.getPeriodo().isAbierto())
             throw new ResponseStatusException(HttpStatus.LOCKED, "La factura que quiere modificar pertenece a un periodo cerrado");
-        LineaDeServicios nuevo = lineaDeServiciosService.add(
+        LineaDeServicios nuevo = lineaDeServiciosService.addIndependiente(
             mapper.toCreacionDesdeFacturaDTO(dto), factura, dto.getIdUsuarioAdmin());
         // recalcularImporteFactura(factura);
         facturaRepository.save(factura);
