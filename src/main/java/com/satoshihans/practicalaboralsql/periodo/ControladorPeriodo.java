@@ -32,7 +32,7 @@ public class ControladorPeriodo {
 
 	@Operation(summary = "Mostrar los datos de un periodo dado su id")
     @GetMapping("/{id}")
-    public ResponseEntity<?> mostrar(@PathVariable Long id) {
+    public ResponseEntity<?> mostrar(@PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(
             periodoService.getAsDto(id)
         );
@@ -64,7 +64,7 @@ public class ControladorPeriodo {
 
 	@Operation(summary = "Cerrar un periodo, bloqueando todas las asignaciones de facturas que tuvieron lugar en el")
 	@PutMapping("/{id}/cerrar")
-	public ResponseEntity<?> cerrarPeriodo(@PathVariable Long id) {
+	public ResponseEntity<?> cerrarPeriodo(@PathVariable("id") Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(
 			periodoService.cerrarPeriodo(id)
 		);

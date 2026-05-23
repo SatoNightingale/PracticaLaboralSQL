@@ -47,7 +47,7 @@ public class ControladorEspecialistas {
 
     @Operation(summary = "Obtener los datos de un especialista")
     @GetMapping("/{id}")
-    public ResponseEntity<?> get_especialista(@PathVariable Long id) {
+    public ResponseEntity<?> get_especialista(@PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(
             especialistaService.getAsDto(id)
         );
@@ -55,7 +55,7 @@ public class ControladorEspecialistas {
 
     @Operation(summary = "Obtener el porcentaje de cumplimiento del plan de ingresos de un especialista")
     @GetMapping("/{id}/cumplimiento")
-    public ResponseEntity<?> cumplimentoEspecialista(@PathVariable Long idEspecialista, @RequestParam Long idPeriodo) {
+    public ResponseEntity<?> cumplimentoEspecialista(@PathVariable("id") Long idEspecialista, @RequestParam Long idPeriodo) {
         return ResponseEntity.status(HttpStatus.OK).body(
             especialistaService.porcentajeCumplimientoPlan(idEspecialista, idPeriodo)
         );
@@ -63,7 +63,7 @@ public class ControladorEspecialistas {
 
     @Operation(summary = "Actualizar los datos un especialista")
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateEspecialista(@PathVariable Long id, @RequestBody EspecialistaModificacionDTO dto) {
+    public ResponseEntity<?> updateEspecialista(@PathVariable("id") Long id, @RequestBody EspecialistaModificacionDTO dto) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
             especialistaService.update(id, dto)
         );
@@ -71,7 +71,7 @@ public class ControladorEspecialistas {
 
     @Operation(summary = "Eliminar un especialista por su id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEspecialista(@PathVariable Long id){
+    public ResponseEntity<Void> deleteEspecialista(@PathVariable("id") Long id){
         especialistaService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -80,7 +80,7 @@ public class ControladorEspecialistas {
     @PutMapping("/{id}/cambiar_depto")
     public ResponseEntity<?> cambiarDepartamento(
         @Parameter(description = "El id del especialista al que se le va a cambiar el departamento")
-        @PathVariable Long id,
+        @PathVariable("id") Long id,
         @Parameter(description = "El id del nuevo departamento del especialista")
         @RequestBody Long idNuevoDepto
     ){

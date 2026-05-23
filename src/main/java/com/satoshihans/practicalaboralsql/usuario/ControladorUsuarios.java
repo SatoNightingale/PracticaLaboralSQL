@@ -31,7 +31,7 @@ public class ControladorUsuarios {
     
     @Operation(summary = "Obtener un usuario por su id")
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable Long id) {
+    public ResponseEntity<?> get(@PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(
             usuariosService.getAsDto(id)
         );
@@ -46,7 +46,7 @@ public class ControladorUsuarios {
     @Operation(summary = "Actualizar los datos de un usuario")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(
-        @Parameter(description = "El id del usuario a actualizar") @PathVariable Long id, @RequestBody UsuarioDTO dto
+        @Parameter(description = "El id del usuario a actualizar") @PathVariable("id") Long id, @RequestBody UsuarioDTO dto
     ){
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
             usuariosService.update(id, dto)
@@ -55,7 +55,7 @@ public class ControladorUsuarios {
 
     @Operation(summary = "Eliminar un usuario por su id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id){
         usuariosService.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -34,7 +34,7 @@ public class ControladorDepartamentos {
 
     @Operation(summary = "Generar reporte de ingresos del departamento")
     @GetMapping("/{id}/reporte")
-    public ResponseEntity<?> reporte(@PathVariable Long idDepto, @RequestParam Long idPeriodo) {
+    public ResponseEntity<?> reporte(@PathVariable("idDepto") Long idDepto, @RequestParam Long idPeriodo) {
         return ResponseEntity.status(HttpStatus.OK).body(
             departamentoService.reporteIngresosDepartamento(idDepto, idPeriodo)
         );
@@ -42,7 +42,7 @@ public class ControladorDepartamentos {
 
     @Operation(summary = "Actualizar un departamento dado su id")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody DepartamentoCreacionDTO dto) {
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody DepartamentoCreacionDTO dto) {
         return ResponseEntity.status(HttpStatus.OK).body(
             departamentoService.update(id, dto)
         );
@@ -50,7 +50,7 @@ public class ControladorDepartamentos {
     
     @Operation(summary = "Eliminar un departamento por su id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         departamentoService.delete(id);
         return ResponseEntity.noContent().build();
     }

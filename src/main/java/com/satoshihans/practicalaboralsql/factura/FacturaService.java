@@ -120,6 +120,8 @@ public class FacturaService {
     public boolean validarFactura(Long idFactura){
         Factura factura = facturaRepository.findById(idFactura).orElseThrow();
         Double importeTotal = lineaDeServiciosService.getImporteTotalFactura(idFactura);
-        return importeTotal == factura.getImporteTotal();
+        System.out.println(factura.getImporteTotal());
+        System.out.println(importeTotal);
+        return importeTotal.equals(factura.getImporteTotal());
     }
 }

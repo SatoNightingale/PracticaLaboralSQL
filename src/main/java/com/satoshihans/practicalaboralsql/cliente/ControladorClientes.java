@@ -26,7 +26,7 @@ public class ControladorClientes {
 
     @Operation(summary = "Obtener los datos de un cliente dado su id")
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable String id) {
+    public ResponseEntity<?> get(@PathVariable("id") String id) {
         return ResponseEntity.status(HttpStatus.OK).body(
             clienteService.getAsDto(id)
         );
@@ -41,7 +41,7 @@ public class ControladorClientes {
     @Operation(summary = "Actualizar los datos de un cliente")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(
-        @PathVariable String id,
+        @PathVariable("id") String id,
         @RequestBody ClienteDTO dto
     ) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
@@ -51,7 +51,7 @@ public class ControladorClientes {
 
     @Operation(summary = "Eliminar un cliente por su id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") String id) {
         clienteService.delete(id);
         return ResponseEntity.noContent().build();
     }

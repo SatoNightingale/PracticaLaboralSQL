@@ -29,7 +29,7 @@ public class ControladorServicios {
     @Operation(summary = "Obtener los datos de un servicio por su id")
     @GetMapping("/{id}")
     public ResponseEntity<?> get(
-        @Parameter(description = "El id del servicio a obtener") @PathVariable Long id
+        @Parameter(description = "El id del servicio a obtener") @PathVariable("id") Long id
     ){
         return ResponseEntity.status(HttpStatus.OK).body(
             servicioService.getAsDto(id)
@@ -44,7 +44,7 @@ public class ControladorServicios {
 
     @Operation(summary = "Actualizar los datos de un servicio")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ServicioCreacionDTO dto) {
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody ServicioCreacionDTO dto) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
             servicioService.update(id, dto)
         );
@@ -52,7 +52,7 @@ public class ControladorServicios {
 
     @Operation(summary = "Eliminar un servicio por su id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id){
         servicioService.delete(id);
         return ResponseEntity.noContent().build();
     }

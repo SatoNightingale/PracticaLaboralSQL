@@ -180,6 +180,6 @@ public class LineaDeServiciosService {
     public boolean validarLinea(Long idLineaServicios){
         LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(idLineaServicios).orElseThrow();
         Double importeTotal = trabajaService.sumImporteByLineaServiciosId(idLineaServicios);
-        return importeTotal <= lineaDeServicios.getImporte();
+        return importeTotal.doubleValue() <= lineaDeServicios.getImporte();
     }
 }

@@ -34,7 +34,7 @@ public class ControladorLineasDeServicio {
     @Operation(summary = "Asignar especialista", description = "Asignar un especialista a una linea de servicios determinada")
     @PutMapping("/{id}/asignar")
     public ResponseEntity<?> asignarEspecialista(
-        @Parameter(description = "El id de la linea de servicios a asignar") @PathVariable Long id,
+        @Parameter(description = "El id de la linea de servicios a asignar") @PathVariable("id") Long id,
         @RequestBody EspecialistaAsignacionDTO dto
     ){
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -44,7 +44,7 @@ public class ControladorLineasDeServicio {
 
     @Operation(summary = "Validar linea de servicios", description = "Verificar que la suma de los importes asignados a una linea de servicios no supere el importe total de la linea")
     @GetMapping("/{id}/validar")
-    public ResponseEntity<?> validarLinea(@PathVariable Long idLinea) {
+    public ResponseEntity<?> validarLinea(@PathVariable("id") Long idLinea) {
         return ResponseEntity.status(HttpStatus.OK).body(
             lineaDeServiciosService.validarLinea(idLinea)
         );
@@ -53,7 +53,7 @@ public class ControladorLineasDeServicio {
     @Operation(summary = "Eliminar una asignacion", description = "Deshacer la asignacion de un especialista a una linea de servicios")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarAsignacion(
-        @Parameter(description = "El id de la linea de servicios asignada") @PathVariable Long id,
+        @Parameter(description = "El id de la linea de servicios asignada") @PathVariable("id") Long id,
         @RequestBody EspecialistaEliminarAsignacionDTO dto
     ){
         lineaDeServiciosService.eliminarAsignacion(dto, id);

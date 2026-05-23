@@ -29,7 +29,7 @@ public class ControladorFacturas {
 
     @Operation(summary = "Mostrar los datos de una factura segun su id")
     @GetMapping("/{id}")
-    public ResponseEntity<?> mostrarFactura(@PathVariable Long idFactura) {
+    public ResponseEntity<?> mostrarFactura(@PathVariable("id") Long idFactura) {
         return ResponseEntity.status(HttpStatus.OK).body(
             facturaService.getAsDto(idFactura)
         );
@@ -43,7 +43,7 @@ public class ControladorFacturas {
 
     @Operation(summary = "Validar factura", description = "Validar que el importe total de todas las lineas de servicio de una factura sea igual al importe de la factura. Devuelve true si esta bien repartida y false si no lo esta")
     @GetMapping("/{id}/validar")
-    public ResponseEntity<?> validarFactura(@PathVariable Long idFactura) {
+    public ResponseEntity<?> validarFactura(@PathVariable("id") Long idFactura) {
         return ResponseEntity.status(HttpStatus.OK).body(
             facturaService.validarFactura(idFactura)
         );
