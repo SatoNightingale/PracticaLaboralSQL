@@ -120,8 +120,8 @@ public class FacturaService {
     public boolean validarFactura(Long idFactura){
         Factura factura = facturaRepository.findById(idFactura).orElseThrow();
         Double importeTotal = lineaDeServiciosService.getImporteTotalFactura(idFactura);
-        System.out.println(factura.getImporteTotal());
-        System.out.println(importeTotal);
+        // Double (tipo wrapper) debe ser comparado con equals, justo como String
+        // También se puede usar compareTo, to esta gente implementa Comparable
         return importeTotal.equals(factura.getImporteTotal());
     }
 }

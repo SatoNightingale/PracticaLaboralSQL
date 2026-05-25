@@ -70,6 +70,10 @@ public class DepartamentoService {
             );
     }
 
+    public DepartamentoDTO getAsDTO(Long id){
+        return mapper.toDTO(getById(id));
+    }
+
 
     public DepartamentoDTO update(Long id, DepartamentoCreacionDTO dto) {
         Departamento entity = getById(id);

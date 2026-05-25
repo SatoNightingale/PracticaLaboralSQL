@@ -5,10 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.*;
 
 
+@Tag(name = "Departamentos", description = "Departamentos de la empresa")
 @RestController
 @RequestMapping("/api/departamento")
 public class ControladorDepartamentos {
@@ -32,9 +35,22 @@ public class ControladorDepartamentos {
         );
     }
 
+    @Operation(summary = "Obtener los datos de un departamento por su id")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            departamentoService.getAsDTO(id)
+        );
+    }
+
     @Operation(summary = "Generar reporte de ingresos del departamento")
     @GetMapping("/{id}/reporte")
-    public ResponseEntity<?> reporte(@PathVariable("idDepto") Long idDepto, @RequestParam Long idPeriodo) {
+    public ResponseEntity<?> reporte(
+        @Parameter(description = "ID del departamento", required = true)
+        @PathVariable("id") Long idDepto,
+        @Parameter(description = "ID del periodo", required = true)
+        @RequestParam("idPeriodo") Long idPeriodo
+    ) {
         return ResponseEntity.status(HttpStatus.OK).body(
             departamentoService.reporteIngresosDepartamento(idDepto, idPeriodo)
         );
