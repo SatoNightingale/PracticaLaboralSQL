@@ -74,6 +74,7 @@ public class FacturaService {
         }
 
         nuevo = facturaRepository.save(nuevo);
+        
         return mapper.toDTO(nuevo);
     }
 
@@ -107,7 +108,9 @@ public class FacturaService {
     }
 
     public FacturaDTO getAsDto(Long id){
-        return mapper.toDTO(getById(id));
+        Factura f = getById(id);
+        System.out.println("cantidad de especialistas en la primera linea de servicios: " + f.getLineasDeServicio().get(0).getContratados().size());
+        return mapper.toDTO(f);
     }
 
     public Factura getById(Long id){

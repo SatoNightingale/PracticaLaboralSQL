@@ -39,10 +39,10 @@ public class LineaDeServicios {
     private Servicio servicio;
 
     // Una linea de servicios tiene varios especialistas contratados (y cada especialista tiene asignado su propio importe)
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "lineaServicios", cascade = CascadeType.ALL)
     private List<Trabaja> contratados;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "lineaServicios", cascade = CascadeType.ALL)
     // Una linea de servicios tiene varias asignaciones
     private List<Administra> asignaciones;
 }

@@ -29,11 +29,13 @@ public class AdministraService {
 
     public Administra add(AdministraCreacionDesdeLineaDeServiciosDTO dto, LineaDeServicios lineaServicios){
         Administra nuevo = mapper.toNewEntity(dto, lineaServicios, especialistaRepository, usuarioRepository);
+        nuevo.setLineaServicios(lineaServicios);
         return nuevo;
     }
 
     public Administra addIndependiente(AdministraCreacionDesdeLineaDeServiciosDTO dto, LineaDeServicios lineaServicios){
         Administra nuevo = add(dto, lineaServicios);
+        nuevo.setLineaServicios(lineaServicios);
         Administra guardado = administraRepository.save(nuevo);
         return guardado;
     }

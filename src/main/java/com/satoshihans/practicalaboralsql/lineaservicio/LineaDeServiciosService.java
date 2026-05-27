@@ -79,7 +79,7 @@ public class LineaDeServiciosService {
         nuevo.setServicio(servicio);
         nuevo.setContratados(contratos);
         nuevo.setAsignaciones(asignaciones);
-        
+
         return nuevo;
     }
 

@@ -20,6 +20,6 @@ public class Provincia {
     @Column(name = "nombre")
     private String nombre;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "provincia")
     private List<Municipio> municipios;
 }

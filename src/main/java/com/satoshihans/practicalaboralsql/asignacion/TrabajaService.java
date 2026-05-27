@@ -34,6 +34,7 @@ public class TrabajaService {
 
     public TrabajaDTO addIndependiente(TrabajaCreacionDTO dto, LineaDeServicios linea){
         Trabaja nuevo = add(dto, linea);
+        nuevo.setLineaServicios(linea);
         Trabaja guardado = trabajaRepository.save(nuevo);
         return mapper.toDTO(guardado);
     }

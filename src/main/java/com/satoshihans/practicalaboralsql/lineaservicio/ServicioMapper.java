@@ -34,7 +34,7 @@ public abstract class ServicioMapper {
     @Mapping(target = "importe", source = "dto.importe")
     @Mapping(target = "lineaServicios", source = "lineaServicios")
     @Mapping(target = "fechaContratacion", expression = "java(LocalDate.now())")
-    public abstract Trabaja toNewEntity(TrabajaCreacionDTO dto, LineaDeServicios lineaServicios,
+    public abstract Trabaja toNewEntity(TrabajaCreacionDTO dto, LineaDeServicios lineaServicios, 
         @Context EspecialistaRepository repo
     );
 
