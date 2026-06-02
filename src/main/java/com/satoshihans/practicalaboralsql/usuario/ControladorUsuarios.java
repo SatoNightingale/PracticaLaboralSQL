@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @Tag(name = "Usuarios", description = "Operaciones para gestionar usuarios")
-
 @RestController
 @RequestMapping("/api/usuarios")
 public class ControladorUsuarios {
@@ -60,19 +59,19 @@ public class ControladorUsuarios {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Autenticar un usuario en el sistema")
-    @PutMapping("/autenticar")
-    public ResponseEntity<?> autenticarUsuario(@RequestBody UsuarioAutenticacionDTO dto) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            usuariosService.autenticar(dto)
-        );
-    }
+    // @Operation(summary = "Autenticar un usuario en el sistema")
+    // @PostMapping("/login")
+    // public ResponseEntity<?> autenticarUsuario(@RequestBody UsuarioAutenticacionDTO dto) {
+    //     return ResponseEntity.status(HttpStatus.OK).body(
+    //         usuariosService.autenticar(dto)
+    //     );
+    // }
 
-    @Operation(summary = "Desautenticar un usuario")
-    @PutMapping("/desautenticar")
-    public ResponseEntity<Void> autenticarUsuario(@RequestParam Long usuario_id) {
-        usuariosService.desautenticar(usuario_id);
-        return ResponseEntity.accepted().build();
-    }
+    // @Operation(summary = "Desautenticar un usuario")
+    // @PutMapping("/logout")
+    // public ResponseEntity<Void> autenticarUsuario(@RequestParam Long usuario_id) {
+    //     usuariosService.desautenticar(usuario_id);
+    //     return ResponseEntity.accepted().build();
+    // }
     
 }

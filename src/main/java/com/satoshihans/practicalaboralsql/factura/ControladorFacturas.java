@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import com.satoshihans.practicalaboralsql.autenticacion.UsuarioSecurity;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,9 +24,12 @@ public class ControladorFacturas {
 
     @Operation(summary = "Agregar una nueva factura", description = "Se agregaran tambien, como parte de la factura, todas las lineas de servicio definidas en el cuerpo de la peticion")
     @PostMapping()
-    public ResponseEntity<?> add_factura(@RequestBody FacturaCreacionDTO dto) {
+    public ResponseEntity<?> add_factura(
+        @AuthenticationPrincipal UsuarioSecurity usuarioAdmin,
+        @RequestBody FacturaCreacionDTO dto
+    ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-            facturaService.add(dto)
+            facturaService.add(dto, usuarioAdmin.getId())
         );
     }
 

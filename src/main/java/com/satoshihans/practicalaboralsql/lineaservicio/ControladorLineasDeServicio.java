@@ -2,8 +2,10 @@ package com.satoshihans.practicalaboralsql.lineaservicio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import com.satoshihans.practicalaboralsql.autenticacion.UsuarioSecurity;
 import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaAsignacionDTO;
 import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaEliminarAsignacionDTO;
 import com.satoshihans.practicalaboralsql.factura.FacturaService;
@@ -25,9 +27,12 @@ public class ControladorLineasDeServicio {
 
     @Operation(summary = "Agregar una linea de servicios")
     @PostMapping("/")
-    public ResponseEntity<?> add_linea(@RequestBody LineaDeServiciosCreacionDTO dto) {
+    public ResponseEntity<?> add_linea(
+        @AuthenticationPrincipal UsuarioSecurity usuarioAdmin,
+        @RequestBody LineaDeServiciosCreacionDTO dto
+    ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-            facturaService.add_LineaDeServicios(dto)
+            facturaService.add_LineaDeServicios(dto, usuarioAdmin.getId())
         );
     }
 

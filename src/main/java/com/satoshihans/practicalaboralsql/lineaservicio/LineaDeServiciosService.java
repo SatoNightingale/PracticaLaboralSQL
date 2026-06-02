@@ -55,7 +55,7 @@ public class LineaDeServiciosService {
         return guardado;
     }
 
-    public LineaDeServicios add(LineaDeServiciosCreacionDesdeFacturaDTO dto, Factura factura, Long idUsuarioAdmin){
+    public LineaDeServicios add(LineaDeServiciosCreacionDesdeFacturaDTO dto, Factura factura, Long idAdmin){
         LineaDeServicios nuevo = new LineaDeServicios();
 
         Servicio servicio = servicioRepo.findById(dto.getIdServicio()).orElseThrow();
@@ -68,7 +68,7 @@ public class LineaDeServiciosService {
             contratos.add(trabajaService.add(trabajaDto, nuevo));
             asignaciones.add(administraService.add(
                 new AdministraCreacionDesdeLineaDeServiciosDTO(
-                    idUsuarioAdmin,
+                    idAdmin,
                     trabajaDto.getIdEspecialista()
                 ), nuevo
             ));
@@ -89,7 +89,7 @@ public class LineaDeServiciosService {
 
     @Transactional
     public LineaDeServiciosDTO asignarEspecialista(EspecialistaAsignacionDTO dto, Long idLineaServicios){
-        Usuario administrador = usuarioService.getAutenticado(dto.getIdUsuarioAdmin());
+        Usuario administrador = usuarioService.getById(dto.getIdUsuarioAdmin());
         LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
             idLineaServicios).orElseThrow();
         // Validar que se este modificando una factura perteneciente a un periodo no cerrado
@@ -140,7 +140,7 @@ public class LineaDeServiciosService {
 
     @Transactional
     public void eliminarAsignacion(EspecialistaEliminarAsignacionDTO dto, Long idLineaServicios){
-        Usuario administrador = usuarioService.getAutenticado(dto.getIdUsuarioAdmin());
+        Usuario administrador = usuarioService.getById(dto.getIdUsuarioAdmin());
         LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
             idLineaServicios).orElseThrow();
         // Validar que se este modificando una factura perteneciente a un periodo no cerrado
