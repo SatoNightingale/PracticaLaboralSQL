@@ -12,7 +12,6 @@ import com.satoshihans.practicalaboralsql.cliente.ClienteRepository;
 import com.satoshihans.practicalaboralsql.lineaservicio.*;
 import com.satoshihans.practicalaboralsql.periodo.Periodo;
 import com.satoshihans.practicalaboralsql.periodo.PeriodoRepository;
-import com.satoshihans.practicalaboralsql.usuario.UsuarioService;
 
 import jakarta.transaction.Transactional;
 
@@ -29,9 +28,6 @@ public class FacturaService {
     private PeriodoRepository  periodoRepo;
 
     @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
     private LineaDeServiciosService lineaDeServiciosService;
 
     @Autowired
@@ -41,16 +37,14 @@ public class FacturaService {
     private ServicioMapper servicioMapper;
 
     @Transactional
-    public FacturaDTO add(FacturaCreacionDTO dto) {
-        usuarioService.checkAutenticado(dto.getIdUsuarioAdmin());
-
+    public FacturaDTO add(FacturaCreacionDTO dto, Long idAdmin) {
         Factura nuevo = mapper.toNewEntity(dto, clienteRepo);
         List<LineaDeServicios> lineasdeServicio = new ArrayList<>();
         Double importe = 0.0;
 
         for (LineaDeServiciosCreacionDesdeFacturaDTO lineaServiciosDTO : dto.getLineasDeServicios()) {
             LineaDeServicios nuevaLineaServicios = lineaDeServiciosService.add(
-                lineaServiciosDTO, nuevo, dto.getIdUsuarioAdmin()
+                lineaServiciosDTO, nuevo, idAdmin
             );
             importe += nuevaLineaServicios.getImporte();
             lineasdeServicio.add(nuevaLineaServicios);
@@ -78,14 +72,14 @@ public class FacturaService {
         return mapper.toDTO(nuevo);
     }
 
-    public LineaDeServiciosDTO add_LineaDeServicios(LineaDeServiciosCreacionDTO dto){
-        usuarioService.checkAutenticado(dto.getIdUsuarioAdmin());
+    public LineaDeServiciosDTO add_LineaDeServicios(LineaDeServiciosCreacionDTO dto, Long idAdmin){
+        // usuarioService.checkAutenticado(dto.getIdUsuarioAdmin());
         Factura factura = facturaRepository.findById(dto.getIdFactura()).orElseThrow();
         // Validar que la factura modificada pertenezca a un periodo activo
         if(!factura.getPeriodo().isAbierto())
             throw new ResponseStatusException(HttpStatus.LOCKED, "La factura que quiere modificar pertenece a un periodo cerrado");
         LineaDeServicios nuevo = lineaDeServiciosService.addIndependiente(
-            mapper.toCreacionDesdeFacturaDTO(dto), factura, dto.getIdUsuarioAdmin());
+            mapper.toCreacionDesdeFacturaDTO(dto), factura, idAdmin);
         // recalcularImporteFactura(factura);
         facturaRepository.save(factura);
         return servicioMapper.toDTO(nuevo);

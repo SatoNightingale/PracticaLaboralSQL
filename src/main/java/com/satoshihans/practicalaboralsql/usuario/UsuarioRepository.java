@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
+    Optional<Usuario> findByNombre(String nombre);
+
     Optional<Usuario> findByNombreAndContrasena(String nombre, String contrasena);
 
     boolean existsByNombre(String nombre);
 
-    boolean existsByIdAndAutenticadoTrue(Long id);
+    // boolean existsByIdAndAutenticadoTrue(Long id);
 }

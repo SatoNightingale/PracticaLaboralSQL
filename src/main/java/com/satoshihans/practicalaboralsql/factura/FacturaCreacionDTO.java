@@ -11,6 +11,5 @@ import lombok.*;
 @Data
 public class FacturaCreacionDTO {
     private String idCliente;
-    private Long idUsuarioAdmin;
     private List<LineaDeServiciosCreacionDesdeFacturaDTO> lineasDeServicios;
 }
