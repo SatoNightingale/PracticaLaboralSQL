@@ -8,6 +8,6 @@ import lombok.*;
 public class EspecialistaAsignacionDTO {
     private Long idEspecialista;
     // private Long idLineaServicio;
-    private Long idUsuarioAdmin;
+    // private Long idUsuarioAdmin;
     private Double importe;
 }

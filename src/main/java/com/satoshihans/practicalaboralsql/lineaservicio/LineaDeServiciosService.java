@@ -18,10 +18,8 @@ import com.satoshihans.practicalaboralsql.asignacion.dto.TrabajaCreacionDTO;
 import com.satoshihans.practicalaboralsql.asignacion.dto.TrabajaModificacionDTO;
 import com.satoshihans.practicalaboralsql.especialista.*;
 import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaAsignacionDTO;
-import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaEliminarAsignacionDTO;
 import com.satoshihans.practicalaboralsql.factura.Factura;
 import com.satoshihans.practicalaboralsql.servicio.*;
-import com.satoshihans.practicalaboralsql.usuario.*;
 
 @Service
 public class LineaDeServiciosService {
@@ -41,8 +39,8 @@ public class LineaDeServiciosService {
     @Autowired
     private AdministraService administraService;
     
-    @Autowired
-    private UsuarioService usuarioService;
+    // @Autowired
+    // private UsuarioService usuarioService;
 
     @Autowired
     private ServicioMapper mapper;
@@ -88,8 +86,8 @@ public class LineaDeServiciosService {
     }
 
     @Transactional
-    public LineaDeServiciosDTO asignarEspecialista(EspecialistaAsignacionDTO dto, Long idLineaServicios){
-        Usuario administrador = usuarioService.getById(dto.getIdUsuarioAdmin());
+    public LineaDeServiciosDTO asignarEspecialista(EspecialistaAsignacionDTO dto, Long idLineaServicios, Long idUsuarioAdmin){
+        // Usuario administrador = usuarioService.getById(dto.getIdUsuarioAdmin());
         LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
             idLineaServicios).orElseThrow();
         // Validar que se este modificando una factura perteneciente a un periodo no cerrado
@@ -113,7 +111,7 @@ public class LineaDeServiciosService {
                 dto.getImporte()
             ), lineaDeServicios);
             Administra nueva_asignacion = administraService.add(new AdministraCreacionDTO(
-                administrador.getId(),
+                idUsuarioAdmin,
                 especialista.getId(),
                 lineaDeServicios.getId()
             ));
@@ -139,22 +137,23 @@ public class LineaDeServiciosService {
     }
 
     @Transactional
-    public void eliminarAsignacion(EspecialistaEliminarAsignacionDTO dto, Long idLineaServicios){
-        Usuario administrador = usuarioService.getById(dto.getIdUsuarioAdmin());
+    public void eliminarAsignacion(Long idEspecialista, Long idLineaServicios, Long idUsuarioAdmin){
+        // Usuario administrador = usuarioService.getById(dto.getIdUsuarioAdmin());
         LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
             idLineaServicios).orElseThrow();
         // Validar que se este modificando una factura perteneciente a un periodo no cerrado
         if(!lineaDeServicios.getFactura().getPeriodo().isAbierto()){
             throw new ResponseStatusException(HttpStatus.LOCKED, "La linea de servicios que quiere modificar pertenece a un periodo cerrado");
         }
-        Especialista especialista = especialistaRepo.findById(dto.getIdEspecialista())
+        // Para verificar si este men existe
+        Especialista especialista = especialistaRepo.findById(idEspecialista)
             .orElseThrow();
         Optional<Trabaja> contrato = trabajaService.getByEspecialistaAndLineaServicios(
-            dto.getIdEspecialista(), idLineaServicios);
+            idEspecialista, idLineaServicios);
         contrato.ifPresentOrElse(
             (Trabaja t) -> {
                 Administra a = administraService.getByIds(
-                    administrador.getId(),
+                    idUsuarioAdmin,
                     especialista.getId(),
                     idLineaServicios
                 );
@@ -171,7 +170,7 @@ public class LineaDeServiciosService {
             () -> {
                 throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "No se ha encontrado el especialista con id: " + dto.getIdEspecialista()
+                    "No se ha encontrado el especialista con id: " + idEspecialista
                 );
             }
         );

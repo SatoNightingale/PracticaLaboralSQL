@@ -37,14 +37,14 @@ public class FacturaService {
     private ServicioMapper servicioMapper;
 
     @Transactional
-    public FacturaDTO add(FacturaCreacionDTO dto, Long idAdmin) {
+    public FacturaDTO add(FacturaCreacionDTO dto, Long idUsuarioAdmin) {
         Factura nuevo = mapper.toNewEntity(dto, clienteRepo);
         List<LineaDeServicios> lineasdeServicio = new ArrayList<>();
         Double importe = 0.0;
 
         for (LineaDeServiciosCreacionDesdeFacturaDTO lineaServiciosDTO : dto.getLineasDeServicios()) {
             LineaDeServicios nuevaLineaServicios = lineaDeServiciosService.add(
-                lineaServiciosDTO, nuevo, idAdmin
+                lineaServiciosDTO, nuevo, idUsuarioAdmin
             );
             importe += nuevaLineaServicios.getImporte();
             lineasdeServicio.add(nuevaLineaServicios);
@@ -72,14 +72,13 @@ public class FacturaService {
         return mapper.toDTO(nuevo);
     }
 
-    public LineaDeServiciosDTO add_LineaDeServicios(LineaDeServiciosCreacionDTO dto, Long idAdmin){
-        // usuarioService.checkAutenticado(dto.getIdUsuarioAdmin());
+    public LineaDeServiciosDTO add_LineaDeServicios(LineaDeServiciosCreacionDTO dto, Long idUsuarioAdmin){
         Factura factura = facturaRepository.findById(dto.getIdFactura()).orElseThrow();
         // Validar que la factura modificada pertenezca a un periodo activo
         if(!factura.getPeriodo().isAbierto())
             throw new ResponseStatusException(HttpStatus.LOCKED, "La factura que quiere modificar pertenece a un periodo cerrado");
         LineaDeServicios nuevo = lineaDeServiciosService.addIndependiente(
-            mapper.toCreacionDesdeFacturaDTO(dto), factura, idAdmin);
+            mapper.toCreacionDesdeFacturaDTO(dto), factura, idUsuarioAdmin);
         // recalcularImporteFactura(factura);
         facturaRepository.save(factura);
         return servicioMapper.toDTO(nuevo);

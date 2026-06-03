@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.satoshihans.practicalaboralsql.autenticacion.UsuarioSecurity;
 import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaAsignacionDTO;
-import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaEliminarAsignacionDTO;
 import com.satoshihans.practicalaboralsql.factura.FacturaService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,10 +39,11 @@ public class ControladorLineasDeServicio {
     @PutMapping("/{id}/asignar")
     public ResponseEntity<?> asignarEspecialista(
         @Parameter(description = "El id de la linea de servicios a asignar") @PathVariable("id") Long id,
+        @AuthenticationPrincipal UsuarioSecurity usuarioAdmin,
         @RequestBody EspecialistaAsignacionDTO dto
     ){
         return ResponseEntity.status(HttpStatus.OK).body(
-            lineaDeServiciosService.asignarEspecialista(dto, id)
+            lineaDeServiciosService.asignarEspecialista(dto, id, usuarioAdmin.getId())
         );
     }
 
@@ -59,9 +59,10 @@ public class ControladorLineasDeServicio {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarAsignacion(
         @Parameter(description = "El id de la linea de servicios asignada") @PathVariable("id") Long id,
-        @RequestBody EspecialistaEliminarAsignacionDTO dto
+        @AuthenticationPrincipal UsuarioSecurity usuarioAdmin,
+        @RequestParam Long idESpecialista
     ){
-        lineaDeServiciosService.eliminarAsignacion(dto, id);
+        lineaDeServiciosService.eliminarAsignacion(idESpecialista, id, usuarioAdmin.getId());
         return ResponseEntity.accepted().build();
     }
 }
