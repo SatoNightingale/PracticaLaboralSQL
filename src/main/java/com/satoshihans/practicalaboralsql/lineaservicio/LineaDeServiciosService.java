@@ -38,9 +38,6 @@ public class LineaDeServiciosService {
 
     @Autowired
     private AdministraService administraService;
-    
-    // @Autowired
-    // private UsuarioService usuarioService;
 
     @Autowired
     private ServicioMapper mapper;
@@ -57,12 +54,23 @@ public class LineaDeServiciosService {
         LineaDeServicios nuevo = new LineaDeServicios();
 
         Servicio servicio = servicioRepo.findById(dto.getIdServicio()).orElseThrow();
-        List<Trabaja> contratos = new ArrayList<>();
-        List<Administra> asignaciones = new ArrayList<>();
-        Double importe = 0.0;
 
+        // Validar que el importe de todos los contratos no sobrepase el importe de la linea
+        double importe = 0.0;
         for (TrabajaCreacionDTO trabajaDto : dto.getContratos()) {
             importe += trabajaDto.getImporte();
+        }
+        if(importe > dto.getImporte()){
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Las asignaciones a especialistas suman mas que el importe total de la linea de servicios"
+            );
+        }
+
+        List<Trabaja> contratos = new ArrayList<>();
+        List<Administra> asignaciones = new ArrayList<>();
+
+        for (TrabajaCreacionDTO trabajaDto : dto.getContratos()) {
             contratos.add(trabajaService.add(trabajaDto, nuevo));
             asignaciones.add(administraService.add(
                 new AdministraCreacionDesdeLineaDeServiciosDTO(
@@ -73,8 +81,8 @@ public class LineaDeServiciosService {
         }
         
         nuevo.setFactura(factura);
-        nuevo.setImporte(importe);
         nuevo.setServicio(servicio);
+        nuevo.setImporte(dto.getImporte());
         nuevo.setContratados(contratos);
         nuevo.setAsignaciones(asignaciones);
 
@@ -87,17 +95,29 @@ public class LineaDeServiciosService {
 
     @Transactional
     public LineaDeServiciosDTO asignarEspecialista(EspecialistaAsignacionDTO dto, Long idLineaServicios, Long idUsuarioAdmin){
-        // Usuario administrador = usuarioService.getById(dto.getIdUsuarioAdmin());
         LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
             idLineaServicios).orElseThrow();
+
         // Validar que se este modificando una factura perteneciente a un periodo no cerrado
         if(!lineaDeServicios.getFactura().getPeriodo().isAbierto()){
             throw new ResponseStatusException(HttpStatus.LOCKED, "La linea de servicios que quiere modificar pertenece a un periodo cerrado");
         }
+
+        // Validar que el nuevo importe no sobrepase el importe total de la linea
+        double importe = trabajaService.sumImporteByLineaServiciosId(idLineaServicios);
+        if(importe + dto.getImporte() > lineaDeServicios.getImporte()){
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "La asignacion de importe supera el importe total de la linea de servicios"
+            );
+        }
+
         Especialista especialista = especialistaRepo.findById(dto.getIdEspecialista())
             .orElseThrow();
         Optional<Trabaja> contrato = trabajaService.getByEspecialistaAndLineaServicios(
             dto.getIdEspecialista(), idLineaServicios);
+        
+        // Si ya especialista trabaja en esta linea de servicios, modificar su importe
         if(contrato.isPresent()){
             trabajaService.update(new TrabajaModificacionDTO(
                 contrato.get().getId(),
@@ -106,6 +126,7 @@ public class LineaDeServiciosService {
                 dto.getImporte()
             ));
         } else {
+            // Si especialista no trabaja en esta linea de servicios, añadirlo
             Trabaja nuevo_contrato = trabajaService.add(new TrabajaCreacionDTO(
                 dto.getIdEspecialista(),
                 dto.getImporte()
@@ -124,10 +145,12 @@ public class LineaDeServiciosService {
         return mapper.toDTO(guardado);
     }
 
+
     public List<LineaDeServiciosDTO> listar() {
         return lineaDeServiciosRepository.findAll().stream().map(
             (LineaDeServicios ls) -> mapper.toDTO(ls)).toList();
     }
+
 
     public LineaDeServicios getById(Long id){
         return lineaDeServiciosRepository.findById(id)
@@ -136,20 +159,23 @@ public class LineaDeServiciosService {
             ));
     }
 
+
     @Transactional
     public void eliminarAsignacion(Long idEspecialista, Long idLineaServicios, Long idUsuarioAdmin){
-        // Usuario administrador = usuarioService.getById(dto.getIdUsuarioAdmin());
         LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(
             idLineaServicios).orElseThrow();
+
         // Validar que se este modificando una factura perteneciente a un periodo no cerrado
         if(!lineaDeServicios.getFactura().getPeriodo().isAbierto()){
             throw new ResponseStatusException(HttpStatus.LOCKED, "La linea de servicios que quiere modificar pertenece a un periodo cerrado");
         }
+
         // Para verificar si este men existe
         Especialista especialista = especialistaRepo.findById(idEspecialista)
             .orElseThrow();
         Optional<Trabaja> contrato = trabajaService.getByEspecialistaAndLineaServicios(
             idEspecialista, idLineaServicios);
+        
         contrato.ifPresentOrElse(
             (Trabaja t) -> {
                 Administra a = administraService.getByIds(
@@ -162,19 +188,20 @@ public class LineaDeServiciosService {
                 // Eliminar entidades trabaja y administra de la linea de servicios
                 lineaDeServicios.getContratados().remove(t);
                 lineaDeServicios.getAsignaciones().remove(a);
-                // Si despues de la operacion la linea quedo vacia, eliminala
-                if(lineaDeServicios.getContratados().isEmpty()){
-                    lineaDeServiciosRepository.delete(lineaDeServicios);
-                }
+                // // Si despues de la operacion la linea quedo vacia, eliminala
+                // if(lineaDeServicios.getContratados().isEmpty()){
+                //     lineaDeServiciosRepository.delete(lineaDeServicios);
+                // }
             },
             () -> {
                 throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "No se ha encontrado el especialista con id: " + idEspecialista
+                    "No se ha encontrado el especialista con id: " + idEspecialista + " o no trabaja en la linea de servicios"
                 );
             }
         );
     }
+
 
     public boolean validarLinea(Long idLineaServicios){
         LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(idLineaServicios).orElseThrow();

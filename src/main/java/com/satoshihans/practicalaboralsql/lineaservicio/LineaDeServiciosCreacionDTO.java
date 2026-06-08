@@ -13,5 +13,6 @@ public class LineaDeServiciosCreacionDTO {
     private Long idFactura;
     private Long idUsuarioAdmin;
     private Long idServicio;
+    private Double importe;
     private List<TrabajaCreacionDTO> contratos;
 }

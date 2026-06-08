@@ -11,5 +11,6 @@ import lombok.*;
 @Data
 public class LineaDeServiciosCreacionDesdeFacturaDTO {
     private Long idServicio;
+    private Double importe;
     private List<TrabajaCreacionDTO> contratos;
 }
