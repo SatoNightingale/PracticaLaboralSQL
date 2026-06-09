@@ -10,9 +10,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.satoshihans.practicalaboralsql.asignacion.TrabajaRepository;
 import com.satoshihans.practicalaboralsql.departamento.DepartamentoRepository;
-import com.satoshihans.practicalaboralsql.periodo.dto.PeriodoCreacionDTO;
-import com.satoshihans.practicalaboralsql.periodo.dto.PeriodoDTO;
-import com.satoshihans.practicalaboralsql.periodo.dto.PeriodoIngresosDTO;
+import com.satoshihans.practicalaboralsql.factura.*;
+import com.satoshihans.practicalaboralsql.periodo.dto.*;
 
 @Service
 public class PeriodoService {
@@ -25,6 +24,15 @@ public class PeriodoService {
 
     @Autowired
     private TrabajaRepository trabajaRepository;
+
+    @Autowired
+    private FacturaRepository facturaRepository;
+
+    @Autowired
+    private PlanRepository planRepository;
+
+    @Autowired
+    private FacturaService facturaService;
 
     @Autowired
     private PeriodoMapper mapper;
@@ -89,5 +97,32 @@ public class PeriodoService {
             }
         }
         return ingresos;
+    }
+
+    public Double totalFacturadoPeriodo(Long idPeriodo){
+        periodoRepository.findById(idPeriodo).orElseThrow();
+        List<Factura> facturasPeriodo = facturaRepository.findByPeriodoId(idPeriodo);
+        double total = 0.0;
+        for (Factura factura : facturasPeriodo) {
+            total += factura.getImporteTotal();
+        }
+        return total;
+    }
+
+    public Double pendienteDeRepartoPeriodo(Long idPeriodo){
+        periodoRepository.findById(idPeriodo).orElseThrow();
+        List<Factura> facturasPeriodo = facturaRepository.findByPeriodoId(idPeriodo);
+        double pendiente = 0.0;
+        for (Factura factura : facturasPeriodo) {
+            pendiente += facturaService.pendienteDeReparto(factura.getId());
+        }
+        return pendiente;
+    }
+
+    public Double cumplimientoPlan(Long idPeriodo){
+        periodoRepository.findById(idPeriodo).orElseThrow();
+        double totalFacturado = totalFacturadoPeriodo(idPeriodo);
+        double planTotal = planRepository.getPlanPeriodo(idPeriodo);
+        return totalFacturado / planTotal;
     }
 }

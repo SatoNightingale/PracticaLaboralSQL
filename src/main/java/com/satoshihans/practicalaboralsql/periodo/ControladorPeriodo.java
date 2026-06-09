@@ -38,7 +38,7 @@ public class ControladorPeriodo {
         );
     }
 
-    @Operation(summary = "Obtener el periodo que estaba activo en una determinada fecha (no implementado aun)")
+    @Operation(summary = "Obtener el periodo que estaba activo en una determinada fecha (prueba a ver si esto funca)")
     @GetMapping("/fecha")
     public ResponseEntity<?> obtener_fecha(@RequestParam LocalDate fecha) {
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -67,6 +67,39 @@ public class ControladorPeriodo {
 	public ResponseEntity<?> cerrarPeriodo(@PathVariable("id") Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(
 			periodoService.cerrarPeriodo(id)
+		);
+	}
+
+    @Operation(
+        summary = "Total facturado",
+        description = "Muestra el monto total de todas de las facturas del periodo (aunque no esten repartidas)"
+    )
+	@GetMapping("/{id}/total_facturado")
+	public ResponseEntity<?> totalFacturado(@PathVariable("id") Long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(
+			periodoService.totalFacturadoPeriodo(id)
+		);
+	}
+
+    @Operation(
+        summary = "Pendiente de reparto",
+        description = "Cuanto falta por repartir de entre todas las facturas del periodo"
+    )
+	@GetMapping("/{id}/pendiente_reparto")
+	public ResponseEntity<?> pendienteDeReparto(@PathVariable("id") Long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(
+			periodoService.pendienteDeRepartoPeriodo(id)
+		);
+	}
+
+    @Operation(
+        summary = "Porcentaje de cumplimiento del plan del periodo",
+        description = "Porcentaje con respecto al total de las facturas, independientemente de si estan repartidas o no"
+    )
+	@GetMapping("/{id}/cumplimiento")
+	public ResponseEntity<?> cumplimientoGlobal(@PathVariable("id") Long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(
+			periodoService.cumplimientoPlan(id)
 		);
 	}
 }

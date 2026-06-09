@@ -30,8 +30,17 @@ public class LineaDeServicios {
     @JoinColumn(name = "idFactura", referencedColumnName = "id")
     private Factura factura;
 
+    /**
+     * El importe de la linea de servicios. Fijo, no se modifica despues de entrar en el sistema
+     */
     @Column(name = "importe")
-    private double importe;
+    private Double importe;
+
+    /**
+     * La parte del importe de esta linea que se ha repartido entre los especialistas
+     */
+    @Column(name = "repartido")
+    private Double repartido;
 
     // Una linea de servicio tiene un servicio asignado, pero un mismo servicio puede estar asignado a varias lineas
     @ManyToOne

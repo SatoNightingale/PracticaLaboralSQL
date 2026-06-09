@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-// import com.satoshihans.practicalaboralsql.autenticacion.LoginDTO;
 
 @Service
 public class UsuarioService {
@@ -46,7 +45,7 @@ public class UsuarioService {
     public Usuario getById(Long id){
         return usuarioRepository.findById(id).orElseThrow();
     }
-    
+
     public UsuarioDTO update(Long id, UsuarioDTO dto){
         Usuario usuario = usuarioRepository.findById(id).orElseThrow();
         Usuario actualizado = mapper.updateEntity(dto, usuario);

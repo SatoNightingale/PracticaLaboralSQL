@@ -33,6 +33,9 @@ public class LineaDeServiciosService {
     @Autowired
     private EspecialistaRepository especialistaRepo;
 
+    // @Autowired
+    // private TrabajaRepository trabajaRepo;
+
     @Autowired
     private TrabajaService trabajaService;
 
@@ -55,43 +58,44 @@ public class LineaDeServiciosService {
 
         Servicio servicio = servicioRepo.findById(dto.getIdServicio()).orElseThrow();
 
-        // Validar que el importe de todos los contratos no sobrepase el importe de la linea
-        double importe = 0.0;
-        for (TrabajaCreacionDTO trabajaDto : dto.getContratos()) {
-            importe += trabajaDto.getImporte();
-        }
-        if(importe > dto.getImporte()){
-            throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
-                "Las asignaciones a especialistas suman mas que el importe total de la linea de servicios"
-            );
-        }
-
         List<Trabaja> contratos = new ArrayList<>();
         List<Administra> asignaciones = new ArrayList<>();
+        double repartido = 0.0;
+        
+        if(dto.getContratos() != null){
+            // Validar que el importe de todos los contratos no sobrepase el importe de la linea
+            for (TrabajaCreacionDTO trabajaDto : dto.getContratos()) {
+                repartido += trabajaDto.getImporte();
+            }
+            if(repartido > dto.getImporte()){
+                throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Las asignaciones a especialistas suman mas que el importe total de la linea de servicios"
+                );
+            }
 
-        for (TrabajaCreacionDTO trabajaDto : dto.getContratos()) {
-            contratos.add(trabajaService.add(trabajaDto, nuevo));
-            asignaciones.add(administraService.add(
-                new AdministraCreacionDesdeLineaDeServiciosDTO(
-                    idAdmin,
-                    trabajaDto.getIdEspecialista()
-                ), nuevo
-            ));
+            // Añadir contratos y asignaciones
+            for (TrabajaCreacionDTO trabajaDto : dto.getContratos()) {
+                contratos.add(trabajaService.add(trabajaDto, nuevo));
+                asignaciones.add(administraService.add(
+                    new AdministraCreacionDesdeLineaDeServiciosDTO(
+                        idAdmin,
+                        trabajaDto.getIdEspecialista()
+                    ), nuevo
+                ));
+            }
         }
         
         nuevo.setFactura(factura);
         nuevo.setServicio(servicio);
         nuevo.setImporte(dto.getImporte());
+        nuevo.setRepartido(repartido);
         nuevo.setContratados(contratos);
         nuevo.setAsignaciones(asignaciones);
 
         return nuevo;
     }
 
-    public Double getImporteTotalFactura(Long id_factura){
-        return lineaDeServiciosRepository.sumImporteByFacturaId(id_factura);
-    }
 
     @Transactional
     public LineaDeServiciosDTO asignarEspecialista(EspecialistaAsignacionDTO dto, Long idLineaServicios, Long idUsuarioAdmin){
@@ -104,13 +108,15 @@ public class LineaDeServiciosService {
         }
 
         // Validar que el nuevo importe no sobrepase el importe total de la linea
-        double importe = trabajaService.sumImporteByLineaServiciosId(idLineaServicios);
-        if(importe + dto.getImporte() > lineaDeServicios.getImporte()){
+        // double importe = trabajaRepo.sumImporteByLineaServiciosId(idLineaServicios);
+        if(lineaDeServicios.getRepartido() + dto.getImporte() > lineaDeServicios.getImporte()){
             throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST,
                 "La asignacion de importe supera el importe total de la linea de servicios"
             );
         }
+
+        lineaDeServicios.setRepartido(lineaDeServicios.getRepartido() + dto.getImporte());
 
         Especialista especialista = especialistaRepo.findById(dto.getIdEspecialista())
             .orElseThrow();
@@ -139,6 +145,13 @@ public class LineaDeServiciosService {
             lineaDeServicios.getAsignaciones().add(nueva_asignacion);
             lineaDeServicios.getContratados().add(nuevo_contrato);
         }
+
+        // Administra nueva_asignacion = administraService.add(new AdministraCreacionDTO(
+        //     idUsuarioAdmin,
+        //     especialista.getId(),
+        //     lineaDeServicios.getId()
+        // ));
+        // lineaDeServicios.getAsignaciones().add(nueva_asignacion);
 
         LineaDeServicios guardado = lineaDeServiciosRepository.save(lineaDeServicios);
         
@@ -183,6 +196,7 @@ public class LineaDeServiciosService {
                     especialista.getId(),
                     idLineaServicios
                 );
+                lineaDeServicios.setRepartido(lineaDeServicios.getRepartido() - t.getImporte());
                 trabajaService.delete(t);
                 administraService.delete(a);
                 // Eliminar entidades trabaja y administra de la linea de servicios
@@ -193,19 +207,18 @@ public class LineaDeServiciosService {
                 //     lineaDeServiciosRepository.delete(lineaDeServicios);
                 // }
             },
-            () -> {
-                throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "No se ha encontrado el especialista con id: " + idEspecialista + " o no trabaja en la linea de servicios"
-                );
-            }
-        );
+        () -> {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "No se ha encontrado el especialista con id: " + idEspecialista + " o no trabaja en la linea de servicios"
+            );
+        });
     }
 
 
     public boolean validarLinea(Long idLineaServicios){
         LineaDeServicios lineaDeServicios = lineaDeServiciosRepository.findById(idLineaServicios).orElseThrow();
-        Double importeTotal = trabajaService.sumImporteByLineaServiciosId(idLineaServicios);
-        return importeTotal.compareTo(lineaDeServicios.getImporte()) <= 0;
+        // Double importeTotal = trabajaRepo.sumImporteByLineaServiciosId(idLineaServicios);
+        return lineaDeServicios.getImporte() <= lineaDeServicios.getRepartido();
     }
 }

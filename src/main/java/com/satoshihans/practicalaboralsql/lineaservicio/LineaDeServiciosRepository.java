@@ -1,12 +1,14 @@
 package com.satoshihans.practicalaboralsql.lineaservicio;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface LineaDeServiciosRepository extends JpaRepository<LineaDeServicios, Long> {
-
-    @Query("SELECT COALESCE(SUM(ls.importe), 0) FROM LineaDeServicios ls WHERE ls.factura.id = :facturaId")
-    Double sumImporteByFacturaId(@Param("facturaId") Long facturaId);
     
+    List<LineaDeServicios> findAllByFacturaId(Long facturaId);
+
+    @Query("SELECT COALESCE(SUM(ls.repartido), 0) FROM LineaDeServicios ls WHERE ls.factura.id = :facturaId")
+    Double totalRepartidoPorFactura(Long facturaId);
 }

@@ -28,6 +28,9 @@ public class FacturaService {
     private PeriodoRepository  periodoRepo;
 
     @Autowired
+    private LineaDeServiciosRepository  lineaDeServiciosRepo;
+
+    @Autowired
     private LineaDeServiciosService lineaDeServiciosService;
 
     @Autowired
@@ -76,17 +79,19 @@ public class FacturaService {
         Factura factura = facturaRepository.findById(dto.getIdFactura()).orElseThrow();
         // Validar que la factura modificada pertenezca a un periodo activo
         if(!factura.getPeriodo().isAbierto())
-            throw new ResponseStatusException(HttpStatus.LOCKED, "La factura que quiere modificar pertenece a un periodo cerrado");
+            throw new ResponseStatusException(
+                HttpStatus.LOCKED,
+                "La factura que quiere modificar pertenece a un periodo cerrado"
+            );
         LineaDeServicios nuevo = lineaDeServiciosService.addIndependiente(
-            mapper.toCreacionDesdeFacturaDTO(dto), factura, idUsuarioAdmin);
-        // recalcularImporteFactura(factura);
+            mapper.toCreacionDesdeFacturaDTO(dto),
+            factura,
+            idUsuarioAdmin
+        );
+        factura.setImporteTotal(factura.getImporteTotal() + nuevo.getImporte());
         facturaRepository.save(factura);
         return servicioMapper.toDTO(nuevo);
     }
-
-    // public void recalcularImporteFactura(Factura factura){
-    //     factura.setImporteTotal(lineaDeServiciosService.getImporteTotalFactura(factura.getId()));
-    // }
 
     // @EventListener
     // public void recalcularImporteFactura(FacturaModificadaEvent event){
@@ -114,10 +119,53 @@ public class FacturaService {
     }
 
     public boolean validarFactura(Long idFactura){
+        facturaRepository.findById(idFactura).orElseThrow();
+        boolean band = true;
+        for(LineaDeServicios lds : lineaDeServiciosRepo.findAllByFacturaId(idFactura)){
+            if(lds.getRepartido() != lds.getImporte()){
+                band = false;
+                break;
+            }
+        }
+        return band;
+    }
+
+    private Double pendienteDeReparto(Factura factura){
+        double pendiente = 0.0;
+        for(LineaDeServicios lds : lineaDeServiciosRepo.findAllByFacturaId(factura.getId())){
+            pendiente += lds.getImporte() - lds.getRepartido();
+        }
+        return pendiente;
+    }
+
+    public Double pendienteDeReparto(Long idFactura){
         Factura factura = facturaRepository.findById(idFactura).orElseThrow();
-        Double importeTotal = lineaDeServiciosService.getImporteTotalFactura(idFactura);
-        // Double (tipo wrapper) debe ser comparado con equals, justo como String
-        // También se puede usar compareTo, to esta gente implementa Comparable
-        return importeTotal.equals(factura.getImporteTotal());
+        return pendienteDeReparto(factura.getId());
+    }
+
+    public Double totalFacturadoGlobal(){
+        return facturaRepository.totalFacturadoGlobal();
+    }
+
+    public List<FacturaDTO> mayorImportePendiente(){
+        List<Factura> allFacturas = facturaRepository.findAll(); // lento
+        return allFacturas.stream()
+            .filter((Factura f) -> pendienteDeReparto(f) != 0.0)
+            .sorted((Factura f1, Factura f2) -> 
+                pendienteDeReparto(f2).compareTo(pendienteDeReparto(f1))
+            )
+            .map((Factura f) -> mapper.toDTO(f))
+            .toList();
+    }
+
+    public List<FacturaDTO> masAntiguas(){
+        List<Factura> allFacturas = facturaRepository.findAllByOrderByFechaEmisionDesc(); // lento
+        return allFacturas.stream()
+            .filter((Factura f) -> pendienteDeReparto(f) != 0.0)
+            // .sorted((Factura f1, Factura f2) -> 
+            //     f1.getFechaEmision().compareTo(f2.getFechaEmision())
+            // )
+            .map((Factura f) -> mapper.toDTO(f))
+            .toList();
     }
 }

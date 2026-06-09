@@ -47,11 +47,21 @@ public class ControladorFacturas {
         return facturaService.listar();
     }
 
-    @Operation(summary = "Validar factura", description = "Validar que el importe total de todas las lineas de servicio de una factura sea igual al importe de la factura. Devuelve true si esta bien repartida y false si no lo esta")
+    @Operation(summary = "Validar factura",
+        description = "Validar que el importe total de todas las lineas de servicio de una factura sea igual al importe de la factura. Devuelve true si esta bien repartida y false si no lo esta"
+    )
     @GetMapping("/{id}/validar")
     public ResponseEntity<?> validarFactura(@PathVariable("id") Long idFactura) {
         return ResponseEntity.status(HttpStatus.OK).body(
             facturaService.validarFactura(idFactura)
+        );
+    }
+
+    @Operation(summary = "Total facturado global", description = "Validar que el importe total de todas las lineas de servicio de una factura sea igual al importe de la factura. Devuelve true si esta bien repartida y false si no lo esta")
+    @GetMapping("/total_facturado")
+    public ResponseEntity<?> totalFacturadoGlobal() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            facturaService.totalFacturadoGlobal()
         );
     }
 }
