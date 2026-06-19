@@ -22,12 +22,12 @@ public class Trabaja {
 
     // Un especialista puede tener varios contratos
     @ManyToOne
-    @JoinColumn(name = "idEspecialista", referencedColumnName = "id")
+    @JoinColumn(name = "idEspecialista", referencedColumnName = "id", nullable = false)
     private Especialista especialista;
 
     // Una linea de servicios consta de varios contratos
     @ManyToOne
-    @JoinColumn(name = "idServicio", referencedColumnName = "id")
+    @JoinColumn(name = "idServicio", referencedColumnName = "id", nullable = false)
     private LineaDeServicios lineaServicios;
 
     // Cada especialista aporta a la linea de servicios su propio importe

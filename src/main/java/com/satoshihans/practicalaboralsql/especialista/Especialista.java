@@ -26,9 +26,9 @@ public class Especialista {
     @Column(name = "nombre")
     private String nombre;
 
-    // Cada especialista va en un solo departamento
+    // Cada especialista va en un solo departamento. Un especialista siempre pertenece a un departamento existente.
     @ManyToOne
-    @JoinColumn(name = "idDepartamento", referencedColumnName = "id")
+    @JoinColumn(name = "idDepartamento", referencedColumnName = "id", nullable = false)
     private Departamento departamento;
 
     @OneToMany(mappedBy = "especialista", cascade = CascadeType.ALL)

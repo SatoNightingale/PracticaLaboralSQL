@@ -19,15 +19,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private TokenProvider jwtTokenProvider;
+    private final TokenProvider jwtTokenProvider;
 
     @SuppressWarnings("unused")
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
-    @Autowired
-    private AuthenticationFilter authenticationFilter;
+    private final AuthenticationFilter authenticationFilter;
+
+    SecurityConfig(TokenProvider jwtTokenProvider, CustomUserDetailsService userDetailsService, AuthenticationFilter authenticationFilter) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.userDetailsService = userDetailsService;
+        this.authenticationFilter = authenticationFilter;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -36,12 +39,12 @@ public class SecurityConfig {
                 // endpoints publicos
                 .requestMatchers(
                     "/api/auth/**",
+                    "/api/usuarios/add",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
                     "/v3/api-docs/**",
                     "/swagger-resources/**",
-                    "/webjars/**",
-                    "/api/usuarios/add"
+                    "/webjars/**"
                 ).permitAll()
                 // cualquier otro endpoint necesita autenticacion
                 .anyRequest().authenticated()

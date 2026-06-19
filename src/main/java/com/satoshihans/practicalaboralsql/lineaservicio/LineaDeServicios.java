@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "LineaDeServicio")
+@Table(name = "linea_de_servicios")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,9 +25,9 @@ public class LineaDeServicios {
     @Column(name = "id")
     private Long id;
 
-    // A una factura le corresponden varias lineas de servicio
+    // A una factura le corresponden varias lineas de servicio. Una línea de servicio siempre pertenece a una factura existente.
     @ManyToOne
-    @JoinColumn(name = "idFactura", referencedColumnName = "id")
+    @JoinColumn(name = "idFactura", referencedColumnName = "id", nullable = false)
     private Factura factura;
 
     /**

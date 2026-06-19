@@ -48,7 +48,7 @@ public class ControladorFacturas {
     }
 
     @Operation(summary = "Validar factura",
-        description = "Validar que el importe total de todas las lineas de servicio de una factura sea igual al importe de la factura. Devuelve true si esta bien repartida y false si no lo esta"
+        description = "Validar que la factura no tenga lineas de servicio que no esten completamente repartidas"
     )
     @GetMapping("/{id}/validar")
     public ResponseEntity<?> validarFactura(@PathVariable("id") Long idFactura) {
@@ -57,11 +57,27 @@ public class ControladorFacturas {
         );
     }
 
-    @Operation(summary = "Total facturado global", description = "Validar que el importe total de todas las lineas de servicio de una factura sea igual al importe de la factura. Devuelve true si esta bien repartida y false si no lo esta")
+    @Operation(summary = "Total facturado global", description = "Total recaudado en todas las facturas registradas en el sistema hasta la fecha, independientemente de que sus lineas de servicio esten completamente repartidas")
     @GetMapping("/total_facturado")
     public ResponseEntity<?> totalFacturadoGlobal() {
         return ResponseEntity.status(HttpStatus.OK).body(
             facturaService.totalFacturadoGlobal()
+        );
+    }
+
+    @Operation(summary = "Facturas mas antiguas con importe pendiente")
+    @GetMapping("/antiguas")
+    public ResponseEntity<?> masAntiguas() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            facturaService.masAntiguas()
+        );
+    }
+
+    @Operation(summary = "Facturas con mayor importe pendiente")
+    @GetMapping("/importe_pendiente")
+    public ResponseEntity<?> mayorImportePendiente() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            facturaService.mayorImportePendiente()
         );
     }
 }

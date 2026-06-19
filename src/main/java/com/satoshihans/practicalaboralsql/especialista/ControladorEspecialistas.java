@@ -77,15 +77,15 @@ public class ControladorEspecialistas {
     }
 
     @Operation(summary = "Cambiar un especialista de departamento")
-    @PutMapping("/{id}/cambiar_depto")
+    @PutMapping("/cambiar_depto")
     public ResponseEntity<?> cambiarDepartamento(
         @Parameter(description = "El id del especialista al que se le va a cambiar el departamento")
-        @PathVariable("id") Long id,
+        @RequestParam("especid") Long id,
         @Parameter(description = "El id del nuevo departamento del especialista")
-        @RequestBody Long idNuevoDepto
+        @RequestParam("deptoid") Long deptoid
     ){
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
-            especialistaService.cambiarDepartamento(id, idNuevoDepto)
+            especialistaService.cambiarDepartamento(id, deptoid)
         );
     }
 }
