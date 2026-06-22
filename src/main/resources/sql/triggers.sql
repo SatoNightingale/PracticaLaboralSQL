@@ -8,10 +8,10 @@
 -- END;
 -- $$;
 
-CREATE TRIGGER IF NOT EXISTS lds_validar_importe_trigger
-BEFORE UPDATE ON linea_de_servicios
-FOR EACH ROW
-CALL "com.satoshihans.practicalaboralsql.lineaservicio.ValidarImporteTrigger";
+-- CREATE TRIGGER IF NOT EXISTS lds_validar_importe_trigger
+-- BEFORE UPDATE ON linea_de_servicios
+-- FOR EACH ROW
+-- CALL "com.satoshihans.practicalaboralsql.lineaservicio.ValidarImporteTrigger";
 -- EXECUTE FUNCTION validar_importe_lds
 
 

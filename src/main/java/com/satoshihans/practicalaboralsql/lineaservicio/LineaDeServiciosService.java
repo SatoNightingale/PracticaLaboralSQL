@@ -33,9 +33,6 @@ public class LineaDeServiciosService {
     @Autowired
     private EspecialistaRepository especialistaRepo;
 
-    // @Autowired
-    // private TrabajaRepository trabajaRepo;
-
     @Autowired
     private TrabajaService trabajaService;
 
