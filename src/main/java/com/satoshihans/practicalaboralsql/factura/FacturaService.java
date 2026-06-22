@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -44,6 +45,10 @@ public class FacturaService {
         Factura nuevo = mapper.toNewEntity(dto, clienteRepo);
         List<LineaDeServicios> lineasdeServicio = new ArrayList<>();
         Double importe = 0.0;
+
+        if(dto.getLineasDeServicios().size() == 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+        "La factura debe crearse con al menos una linea de servicios");
 
         for (LineaDeServiciosCreacionDesdeFacturaDTO lineaServiciosDTO : dto.getLineasDeServicios()) {
             LineaDeServicios nuevaLineaServicios = lineaDeServiciosService.add(
@@ -107,7 +112,6 @@ public class FacturaService {
 
     public FacturaDTO getAsDto(Long id){
         Factura f = getById(id);
-        System.out.println("cantidad de especialistas en la primera linea de servicios: " + f.getLineasDeServicio().get(0).getContratados().size());
         return mapper.toDTO(f);
     }
 
