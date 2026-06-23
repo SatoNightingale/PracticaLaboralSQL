@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import com.satoshihans.practicalaboralsql.periodo.dto.PeriodoIngresosDTO;
 
-@Repository
 public interface PeriodoRepository extends JpaRepository<Periodo, Long> {
 
     @Query("SELECT p FROM Periodo p ORDER BY p.fechaInicio DESC LIMIT 1")

@@ -4,43 +4,51 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.satoshihans.practicalaboralsql.asignacion.*;
+import com.satoshihans.practicalaboralsql.asignacion.Administra;
+import com.satoshihans.practicalaboralsql.asignacion.AdministraService;
+import com.satoshihans.practicalaboralsql.asignacion.Trabaja;
+import com.satoshihans.practicalaboralsql.asignacion.TrabajaService;
 import com.satoshihans.practicalaboralsql.asignacion.dto.AdministraCreacionDTO;
 import com.satoshihans.practicalaboralsql.asignacion.dto.AdministraCreacionDesdeLineaDeServiciosDTO;
 import com.satoshihans.practicalaboralsql.asignacion.dto.TrabajaCreacionDTO;
 import com.satoshihans.practicalaboralsql.asignacion.dto.TrabajaModificacionDTO;
-import com.satoshihans.practicalaboralsql.especialista.*;
+import com.satoshihans.practicalaboralsql.especialista.Especialista;
+import com.satoshihans.practicalaboralsql.especialista.EspecialistaRepository;
 import com.satoshihans.practicalaboralsql.especialista.dto.EspecialistaAsignacionDTO;
 import com.satoshihans.practicalaboralsql.factura.Factura;
-import com.satoshihans.practicalaboralsql.servicio.*;
+import com.satoshihans.practicalaboralsql.servicio.Servicio;
+import com.satoshihans.practicalaboralsql.servicio.ServicioRepository;
 
 @Service
 public class LineaDeServiciosService {
 
-    @Autowired
-    private LineaDeServiciosRepository lineaDeServiciosRepository;
+    private final LineaDeServiciosRepository lineaDeServiciosRepository;
 
-    @Autowired
-    private ServicioRepository servicioRepo;
+    private final ServicioRepository servicioRepo;
 
-    @Autowired
-    private EspecialistaRepository especialistaRepo;
+    private final EspecialistaRepository especialistaRepo;
 
-    @Autowired
-    private TrabajaService trabajaService;
+    private final TrabajaService trabajaService;
 
-    @Autowired
-    private AdministraService administraService;
+    private final AdministraService administraService;
 
-    @Autowired
-    private ServicioMapper mapper;
+    private final ServicioMapper mapper;
+
+
+    LineaDeServiciosService(LineaDeServiciosRepository lineaDeServiciosRepository, ServicioRepository servicioRepo, EspecialistaRepository especialistaRepo, TrabajaService trabajaService, ServicioMapper mapper, AdministraService administraService) {
+        this.lineaDeServiciosRepository = lineaDeServiciosRepository;
+        this.servicioRepo = servicioRepo;
+        this.especialistaRepo = especialistaRepo;
+        this.trabajaService = trabajaService;
+        this.administraService = administraService;
+        this.mapper = mapper;
+    }
 
 
     @Transactional

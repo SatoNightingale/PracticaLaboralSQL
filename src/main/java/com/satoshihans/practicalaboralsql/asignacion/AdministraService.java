@@ -1,30 +1,36 @@
 package com.satoshihans.practicalaboralsql.asignacion;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.satoshihans.practicalaboralsql.asignacion.dto.*;
+import com.satoshihans.practicalaboralsql.asignacion.dto.AdministraCreacionDTO;
+import com.satoshihans.practicalaboralsql.asignacion.dto.AdministraCreacionDesdeLineaDeServiciosDTO;
 import com.satoshihans.practicalaboralsql.especialista.EspecialistaRepository;
-import com.satoshihans.practicalaboralsql.lineaservicio.*;
+import com.satoshihans.practicalaboralsql.lineaservicio.LineaDeServicios;
+import com.satoshihans.practicalaboralsql.lineaservicio.LineaDeServiciosRepository;
+import com.satoshihans.practicalaboralsql.lineaservicio.ServicioMapper;
 import com.satoshihans.practicalaboralsql.usuario.UsuarioRepository;
 
 @Service
 public class AdministraService {
 
-    @Autowired
-    private AdministraRepository administraRepository;
+    private final AdministraRepository administraRepository;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private EspecialistaRepository especialistaRepository;
+    private final EspecialistaRepository especialistaRepository;
 
-    @Autowired
-    private LineaDeServiciosRepository lineaDeServiciosRepository;
+    private final LineaDeServiciosRepository lineaDeServiciosRepository;
 
-    @Autowired
-    private ServicioMapper mapper;
+    private final ServicioMapper mapper;
+
+    
+    AdministraService(AdministraRepository administraRepository, UsuarioRepository usuarioRepository, EspecialistaRepository especialistaRepository, LineaDeServiciosRepository lineaDeServiciosRepository, ServicioMapper mapper) {
+        this.administraRepository = administraRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.especialistaRepository = especialistaRepository;
+        this.lineaDeServiciosRepository = lineaDeServiciosRepository;
+        this.mapper = mapper;
+    }
 
 
     public Administra add(AdministraCreacionDesdeLineaDeServiciosDTO dto, LineaDeServicios lineaServicios){
@@ -47,11 +53,11 @@ public class AdministraService {
     }
 
     public Administra getByIds(Long idAdmin, Long idEspecialista, Long idLineaServicios){
-        return administraRepository.getByUsuarioAndAsignadoAndLineaServicios(idAdmin, idEspecialista, idLineaServicios);
+        return administraRepository.getByUsuarioIdAndAsignadoIdAndLineaServiciosId(idAdmin, idEspecialista, idLineaServicios);
     }
 
     public void delete(Long idAdmin, Long idEspecialista, Long idLineaServicios){
-        administraRepository.deleteByUsuarioAndAsignadoAndLineaServicios(idAdmin, idEspecialista, idLineaServicios);
+        administraRepository.deleteByUsuarioIdAndAsignadoIdAndLineaServiciosId(idAdmin, idEspecialista, idLineaServicios);
     }
 
     public void delete(Administra a){

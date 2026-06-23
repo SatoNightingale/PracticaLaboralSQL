@@ -60,7 +60,7 @@ public class TrabajaService {
     }
 
     public void delete(Long idEspecialista, Long idLineaServicios){
-        trabajaRepository.deleteByEspecialistaAndLineaServicios(idEspecialista, idLineaServicios);
+        trabajaRepository.deleteByEspecialistaIdAndLineaServiciosId(idEspecialista, idLineaServicios);
     }
 
     public void delete(Trabaja t){

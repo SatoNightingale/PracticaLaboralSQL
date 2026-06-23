@@ -62,6 +62,7 @@ public class ControladorLineasDeServicio {
         @AuthenticationPrincipal UsuarioSecurity usuarioAdmin,
         @RequestParam Long idESpecialista
     ){
+        System.out.println(usuarioAdmin.getId());
         lineaDeServiciosService.eliminarAsignacion(idESpecialista, id, usuarioAdmin.getId());
         return ResponseEntity.accepted().build();
     }
