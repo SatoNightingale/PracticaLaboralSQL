@@ -14,8 +14,8 @@ public interface TrabajaRepository extends JpaRepository<Trabaja, Long> {
 
     void deleteByEspecialistaIdAndLineaServiciosId(Long idEspecialista, Long idLineaServicios);
 
-    @Query("SELECT COALESCE(SUM(t.importe), 0.0) FROM Trabaja t WHERE t.fechaContratacion BETWEEN :fechaInicio AND :fechaFin")
-    Double getIngresosTotalesPorPeriodo(LocalDate fechaInicio, LocalDate fechaFin);
+    // @Query("SELECT COALESCE(SUM(t.importe), 0.0) FROM Trabaja t WHERE t.fechaContratacion BETWEEN :fechaInicio AND :fechaFin")
+    // Double getIngresosTotalesPorPeriodo(LocalDate fechaInicio, LocalDate fechaFin);
 
     @Query("SELECT COALESCE(SUM(t.importe), 0.0) FROM Trabaja t WHERE t.especialista.id = :idEspecialista AND t.fechaContratacion BETWEEN :fechaInicio AND :fechaFin")
     Double getIngresosTotalesEspecialistaPorPeriodo(Long idEspecialista, LocalDate fechaInicio, LocalDate fechaFin);

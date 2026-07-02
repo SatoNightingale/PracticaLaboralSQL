@@ -11,4 +11,7 @@ public interface LineaDeServiciosRepository extends JpaRepository<LineaDeServici
 
     @Query("SELECT COALESCE(SUM(ls.repartido), 0) FROM LineaDeServicios ls WHERE ls.factura.id = :facturaId")
     Double totalRepartidoPorFactura(Long facturaId);
+
+    @Query("SELECT COALESCE(SUM(ls.repartido), 0) FROM LineaDeServicios ls WHERE ls.factura.periodo.id = :periodoId")
+    Double totalRepartidoPorPeriodo(Long periodoId);
 }

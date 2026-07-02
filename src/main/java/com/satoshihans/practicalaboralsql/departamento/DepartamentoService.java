@@ -126,7 +126,8 @@ public class DepartamentoService {
         List<EspecialistaCumplimientoPlanDTO> cumplimientosEspecialista = especialistaRepository
             .findAllByDepartamento(idDepartamento)
             .stream()
-            .map(id -> porcentajeCumplimientoPlanEspecialista(
+            .map(id -> 
+                porcentajeCumplimientoPlanEspecialista(
                     id,
                     periodo,
                     fraccionEspecialista

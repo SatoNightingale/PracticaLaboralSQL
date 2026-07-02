@@ -142,6 +142,14 @@ public class FacturaService {
         return pendiente;
     }
 
+    public Double totalRepartidoFactura(Factura factura){
+        double repartido = 0.0;
+        for(LineaDeServicios lds : lineaDeServiciosRepo.findAllByFacturaId(factura.getId())){
+            repartido += lds.getRepartido();
+        }
+        return repartido;
+    }
+
     public Double pendienteDeReparto(Long idFactura){
         Factura factura = facturaRepository.findById(idFactura).orElseThrow();
         return pendienteDeReparto(factura.getId());

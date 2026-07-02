@@ -10,6 +10,9 @@ public interface FacturaRepository extends JpaRepository<Factura, Long> {
     
 	List<Factura> findByPeriodoId(Long periodoId);
 
+	@Query("SELECT COALESCE(SUM(f.importeTotal), 0) FROM Factura f WHERE f.periodo.id = :periodoId")
+	Double sumImporteTotalByPeriodoId (Long periodoId);
+
 	@Query("SELECT SUM(COALESCE(importeTotal, 0)) FROM Factura")
 	Double totalFacturadoGlobal();
 

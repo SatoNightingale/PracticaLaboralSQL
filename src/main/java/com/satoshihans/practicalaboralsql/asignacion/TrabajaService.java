@@ -48,10 +48,6 @@ public class TrabajaService {
         return trabajaRepository.findByEspecialistaIdAndLineaServiciosId(idEspecialista, idLineaDeServicio);
     }
 
-    // public Double sumImporteByLineaServiciosId(Long id){
-    //     return trabajaRepository.sumImporteByLineaServiciosId(id);
-    // }
-
     public TrabajaDTO update(TrabajaModificacionDTO dto){
         Trabaja entity = trabajaRepository.findById(dto.getIdTrabaja()).orElseThrow();
         Trabaja actualizado = mapper.updateEntity(dto, entity, especialistaRepo, lineaDeServiciosRepo);

@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.satoshihans.practicalaboralsql.asignacion.TrabajaRepository;
 import com.satoshihans.practicalaboralsql.departamento.DepartamentoRepository;
 import com.satoshihans.practicalaboralsql.factura.*;
+import com.satoshihans.practicalaboralsql.lineaservicio.LineaDeServiciosRepository;
 import com.satoshihans.practicalaboralsql.periodo.dto.*;
 
 @Service
@@ -23,10 +24,10 @@ public class PeriodoService {
     private DepartamentoRepository departamentoRepository;
 
     @Autowired
-    private TrabajaRepository trabajaRepository;
+    private FacturaRepository facturaRepository;
 
     @Autowired
-    private FacturaRepository facturaRepository;
+    private LineaDeServiciosRepository lineaDeServiciosRepository;
 
     @Autowired
     private PlanRepository planRepository;
@@ -39,6 +40,9 @@ public class PeriodoService {
 
 
     public PeriodoDTO add(PeriodoCreacionDTO dto){
+        if(periodoRepository.findByAbiertoIsTrue()){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya hay un período abierto");
+        }
         Periodo periodo = mapper.toNewEntity(dto, departamentoRepository);
         Periodo guardado = periodoRepository.save(periodo);
         return mapper.toDTO(guardado);
@@ -68,22 +72,11 @@ public class PeriodoService {
         return mapper.toDTO(periodoRepository.getPeriodoByFecha(fecha));
     }
 
-    public Double getIngresosTotalesPeriodo(Long id){
-        Periodo periodo = getById(id);
-        return trabajaRepository.getIngresosTotalesPorPeriodo(
-            periodo.getFechaInicio(), periodo.getFechaFin()
-        );
-    }
-
     public PeriodoDTO cerrarPeriodo(Long id){
         Periodo periodo = getById(id);
         periodo.setAbierto(false);
         // Calcular ingresos totales (reales) del periodo
-        periodo.setIngresosTotales(
-            trabajaRepository.getIngresosTotalesPorPeriodo(
-                periodo.getFechaInicio(), periodo.getFechaFin()
-            )
-        );
+        periodo.setIngresosTotales(totalFacturadoPeriodo(id));
         Periodo actualizado = periodoRepository.save(periodo);
         return mapper.toDTO(actualizado);
     }
@@ -93,7 +86,7 @@ public class PeriodoService {
         // Calcular los ingresos del ultimo periodo, que aun esta activo y por tanto tiene el campo en null
         for(PeriodoIngresosDTO periodo : ingresos){
             if(periodo.getIngresos() == null){
-                periodo.setIngresos(getIngresosTotalesPeriodo(periodo.getId()));
+                periodo.setIngresos(totalFacturadoPeriodo(periodo.getId()));
             }
         }
         return ingresos;
@@ -101,12 +94,12 @@ public class PeriodoService {
 
     public Double totalFacturadoPeriodo(Long idPeriodo){
         periodoRepository.findById(idPeriodo).orElseThrow();
-        List<Factura> facturasPeriodo = facturaRepository.findByPeriodoId(idPeriodo);
-        double total = 0.0;
-        for (Factura factura : facturasPeriodo) {
-            total += factura.getImporteTotal();
-        }
-        return total;
+        // List<Factura> facturasPeriodo = facturaRepository.findByPeriodoId(idPeriodo);
+        // double total = 0.0;
+        // for (Factura factura : facturasPeriodo) {
+        //     total += factura.getImporteTotal();
+        // }
+        return lineaDeServiciosRepository.totalRepartidoPorPeriodo(idPeriodo); // facturaRepository.sumImporteTotalByPeriodoId(idPeriodo);
     }
 
     public Double pendienteDeRepartoPeriodo(Long idPeriodo){
